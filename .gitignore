@@ -49,3 +49,6 @@ ios/Podfile
 ios/Podfile.lock
 ios/Pods/
 ios/TCP.xcworkspace/
+app/global/const/
+app/page/me/subView/award/
+app/page/me/subView/myMoney/
