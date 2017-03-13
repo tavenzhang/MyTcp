@@ -33,15 +33,15 @@ function fetchMiddleware(extraArgument) {
                 requestHeader.body = JSON.stringify(requestData);
             }
 
-            TLog("http---------->" + action.url, requestHeader.body);
-             //fetch(action.url, requestHeader).then(response =>response.text())
-             fetch(action.url, requestHeader).then(response =>response.json())
+            TLog("http---------->" + action.url,requestHeader.body);
+             fetch(action.url, requestHeader).then(response =>response.text())
+             //fetch(action.url, requestHeader).then(response =>response.json())
                 .then(res => {
-                 // TLog(`http<----------${action.url}`, res);
-                   // const data = JSON.parse(res);
-                    const data = res;
-                    TLog(`http<----------${action.url}`, data);
+                    res=res.replace(/;/g,   "");
 
+                    const data = JSON.parse(res);
+                    //const data = res;
+                    TLog(`http<----------${action.url}:`,data);
                     //错误，显示错误信息
                     if (data && data.status == 0) {
                         next(ActionEnum.AppAct.showBox(data.msg || "操作错误~",'error'))

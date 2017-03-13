@@ -20,7 +20,13 @@ const HTTP_SERVER = {
     BET_DETAIL:{url:`${SERVERADDR}/mobile-projects/#id/view`,method:METHOD_POST,body:{}},
     //追号记录
     CHASE_RECODE:{url:`${SERVERADDR}/mobile-traces`,method:METHOD_POST,body:{bought_at_from:"",bought_at_to:"",issue:"",serial_number:"",lottery_id:"",way_id:"",username:"",user_id:"",page:1,pagesize:20}},
+    //追号详情
     CHASE_DETAIL:{url:`${SERVERADDR}/mobile-traces/#id/view`,method:METHOD_POST,body:{}},
+    //获取站内信列表
+    LETTER_LIST:{url:`${SERVERADDR}/mobile-station-letters`, method:METHOD_POST,body:{}},
+    LETTER_DETAIL:{url:`${SERVERADDR}/mobile-station-letters/#id/view`,method:METHOD_POST,body:{}},
+    //获取系统公告
+    GET_SYSTEM_LIST:{url:`${SERVERADDR}/mobile-announcements`, method:METHOD_GET,body:{}},
 };
 
 global.HTTP_SERVER=HTTP_SERVER

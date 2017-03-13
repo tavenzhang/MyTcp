@@ -8,7 +8,8 @@ import {
     Text,
     StyleSheet,
     TouchableHighlight,
-    ListView
+    ListView,
+    Alert
 } from 'react-native';
 
 
@@ -54,7 +55,18 @@ export default class GameDetail extends React.Component {
     itemClick=(data)=> {
         data.title=data.name;
        // TLog("rowData.openrowData.openrowData.open==",rowData.open=="1")
-        NavUtil.pushToView(NavViews.GameFast3(data));
+        if(data.open=="1")
+        {
+            NavUtil.pushToView(NavViews.GameFast3(data));
+        }
+        else{
+            // Alert.alert("", "请先登陆", [
+            //     {text: '登陆', onPress: this.clickLogin},
+            //     {text: '了解'}
+            // ])
+            Alert.alert("当前游戏还在筹备中","敬请期待！",[])
+        }
+
     }
 }
 

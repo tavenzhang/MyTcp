@@ -8,8 +8,6 @@ import {
 } from 'react-native';
 
 import {connect} from 'react-redux';
-import autobind from 'autobind-decorator';
-import {bindActionCreators} from 'redux';
 import {GlobelTheme,GlobeStyle} from '../../../global/config/style';
 import Button from 'react-native-button'
 import AIcon from 'react-native-vector-icons/FontAwesome';
@@ -24,7 +22,6 @@ const mapDispatchToProps=(dispatch)=>{
     }
 }
 
-@autobind
 @connect(mapStateToProps,mapDispatchToProps)
 
 export default class RegView extends React.Component {

@@ -64,7 +64,7 @@ export default class CardManageView extends BaseView {
     }
 
     onRightPressed() {
-      //  NavUtil.pushToView(NavViews.AddCardView({title:"添加银行卡"}));
+       NavUtil.pushToView(NavViews.AddCardView({title:"添加银行卡"}));
     }
 }
 

@@ -34,7 +34,7 @@ export default class ChaseRecordView extends BaseView {
             curPlay: null,
             curTime: null,
             dataList: [],
-            gameList: [{name: "全部彩种", id: "0", series_id: "0"}].concat(props.gamesDic.arrayList),
+            gameList: [{name: "全部彩种", id: "", series_id: ""}].concat(props.gamesDic.arrayList),
             timeList: [{name: "全部时间", date: ""}, {name: "最近一周", date: lastWeekTime}, {
                 name: "最近一个月",
                 date: lastMonth

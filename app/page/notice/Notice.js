@@ -39,9 +39,9 @@ export default class Notice extends BaseView {
     }
     componentDidMount() {
         let {actions, fetchtAct}= this.props;
-        fetchtAct.fetchWithResult("", (data) => {
-            actions.flushNoticeListView(data)
-        });
+        // fetchtAct.fetchWithResult("", (data) => {
+        //     actions.flushNoticeListView(data)
+        // });
     }
 
     componentWillUnmount() {

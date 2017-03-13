@@ -9,13 +9,13 @@ import AIcon from 'react-native-vector-icons/FontAwesome';
 import Home from "./home/Home";
 import MyView from "./me/MyView";
 import Notice from "./notice/Notice";
-import Game from "./discover/Discover";
+import Discover from "./discover/Discover";
 
 const tabBarItems = [
-    {title: '大厅', icon: 'home', selectIcon: "home", component: Home},
+    {title: '购彩', icon: 'home', selectIcon: "home", component: Home},
     {title: '开奖', icon: 'gift', selectIcon: "gift", component: Notice},
-    {title: '发现', icon: 'reorder', selectIcon: "reorder", component: Game},
-    {title: '个人', icon: 'user', selectIcon: 'user', component: MyView},
+    {title: '公告', icon: 'reorder', selectIcon: "reorder", component: Discover},
+    {title: '我的', icon: 'user', selectIcon: 'user', component: MyView},
 ]
 
 export default class TabbarView extends React.Component {
@@ -50,7 +50,6 @@ export default class TabbarView extends React.Component {
                         })
                     }
                 </TabNavigator>
-
             </View>
         );
     }

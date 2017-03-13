@@ -61,6 +61,7 @@ export  default class BetDetailView extends BaseView {
 
     componentDidMount() {
         let {id} = this.props.passProps
+        let tempUrl=HTTP_SERVER.LETTER_DETAIL.url;
         HTTP_SERVER.BET_DETAIL.url = HTTP_SERVER.BET_DETAIL.url.replace(/#id/g, id);
         TLog("HTTP_SERVER.BET_DETAIL.url---", HTTP_SERVER.BET_DETAIL.url)
         ActDispatch.FetchAct.fetchVoWithResult(HTTP_SERVER.BET_DETAIL, (result) => {
@@ -69,5 +70,6 @@ export  default class BetDetailView extends BaseView {
                 this.setState({data: result.data})
             }
         })
+        HTTP_SERVER.LETTER_DETAIL.url=tempUrl;
     }
 }

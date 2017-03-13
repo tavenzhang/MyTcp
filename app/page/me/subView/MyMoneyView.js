@@ -1,74 +1,73 @@
-
-import React from 'react';
-import {
-    View,
-    Text
-    , StyleSheet,
-    TextInput
-} from 'react-native';
-
-import {connect} from 'react-redux';
+import React, { Component } from 'react';
+import { View, StyleSheet } from 'react-native';
+import { TabViewAnimated, TabBar } from 'react-native-tab-view';
 import BaseView from "../../componet/BaseView";
 
-const mapStateToProps = state => {
-    return {
-        isLoading: state.fetchState.requesting || state.appState.requesting,
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+    },
+    page: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    tabStyle:{
+        //zIndex:0,
+        //backgroundColor:"white",
+        height:40,
+    },
+    labelStyle:{
+        color:"black",
+    },
+    indicatorStyle:{
+       backgroundColor:"red",
+    },
+    tstyle:{
+        backgroundColor:"white",
+
     }
-}
-@connect(mapStateToProps)
+});
+
 export default class MyMoneyView extends BaseView {
-    constructor(props) {
-        super(props);
-        this.state = {
-            nameText: "",
-            pwdText:""
-        };
-    }
+    state = {
+        index: 0,
+        routes: [
+            { key: '1', title: '全部' },
+            { key: '2', title: '充值' },
+            { key: '3', title: '支付' },
+            { key: '4', title: '派奖' },
+            { key: '5', title: '提现' },
+        ],
+    };
+    _handleChangeTab = (index) => {
+        this.setState({ index });
+    };
+
+    _renderHeader = (props) => {
+        return <TabBar style={styles.tstyle} {...props} tabStyle={styles.tabStyle} labelStyle={styles.labelStyle} indicatorStyle={styles.indicatorStyle} pressColor={"#ff4081"} pressOpacity={5} />;
+    };
+
+    _renderScene = ({ route }) => {
+        switch (route.key) {
+            case '1':
+                return <View style={[ styles.page, { backgroundColor: '#ff4081' } ]} />;
+            case '2':
+                return <View style={[ styles.page, { backgroundColor: '#673ab7' } ]} />;
+            default:
+                return <View style={[ styles.page, { backgroundColor: '#ff0' } ]} />;
+        }
+    };
 
     renderBody() {
         return (
-            <View style={GlobeStyle.appView}>
-                <View style={{flex:1}}>
-                    <Text>用户名：</Text>
-                    <Text>用户总额：</Text>
-                    <Text>可提金额：</Text>
-                </View>
-            </View>
+            <TabViewAnimated
+                style={styles.container}
+                navigationState={this.state}
+                renderScene={this._renderScene}
+                renderHeader={this._renderHeader}
+                onRequestChangeTab={this._handleChangeTab}
+            />
         );
     }
-
-    componentDidMount() {
-
-    }
 }
-
-
-const styles = StyleSheet.create({
-    textStyle: {
-        width: 150,
-        left: 10,
-        fontSize: 14
-    },
-    iconUser: {
-        color: GlobelTheme.gray,
-        fontSize: 18,
-    },
-    icoPwd: {
-        color: GlobelTheme.gray,
-        fontSize: 20,
-    },
-    inputContain: {
-        paddingBottom: 5,
-        marginBottom: 10,
-        marginTop: 10,
-        paddingLeft: 5,
-        flexDirection: "row",
-        height: 30,
-        justifyContent: "flex-start",
-        alignItems: "center",
-        borderColor: 'gray',
-        borderBottomWidth: 0.2
-    }
-
-
-});

@@ -18,8 +18,8 @@ let ItemNameEnum = {
     betRecord: "投注记录",
     chaseRecode: "追号记录",
     myMoney: "资金明细",
-    outerMoney: "提现",
-    inMoney: "充值",
+    outerMoney: "账户提现",
+    inMoney: "账户充值",
     pwdMange: "密码管理",
     cardMange: "银行卡管理",
     msgNotice: "消息通知"
@@ -160,8 +160,8 @@ export default class MyView extends BaseView{
                     NavUtil.pushToView(NavViews.ChangePwd({title: data.name}));
                     break;
                 case ItemNameEnum.cardMange:
-                    NavUtil.pushToView(NavViews.AddCardView({title:"添加银行卡"}));
-                   // NavUtil.pushToView(NavViews.CardManageView({title: data.name}));
+                    //NavUtil.pushToView(NavViews.AddCardView({title:"添加银行卡"}));
+                   NavUtil.pushToView(NavViews.CardManageView({title: data.name}));
                     break;
                 case ItemNameEnum.msgNotice:
                     NavUtil.pushToView(NavViews.MsgView({title: data.name}));

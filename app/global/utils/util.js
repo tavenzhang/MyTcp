@@ -1,9 +1,5 @@
-import {
-    InteractionManager,
-    AsyncStorage
-}
-    from "react-native";
-
+import { NativeModules,Platform } from 'react-native';
+let IOSLog=NativeModules.IOSLog;
 
 
 Date.prototype.Format = function (fmt) { //author: meizz
@@ -26,10 +22,27 @@ Date.prototype.Format = function (fmt) { //author: meizz
 const DateUitle={
     //2017-02-22  15:47:00
     formatRecodData:(date:Date)=>{
-
         return date.Format("yyyy-MM-dd hh:mm:ss");
+    },
+    /**
+     * 2012-11-16 10:36:50日期格式转时间戳
+     * @param datetime
+     * @returns {Number|*}
+     */
+    datetime2Date:(datetime) => {
+        let tmp_datetime = datetime.replace(/:/g, '-');
+        tmp_datetime = tmp_datetime.replace(/ /g, '-');
+        let arr = tmp_datetime.split("-");
+        let now = new Date(Date.UTC(arr[0], arr[1] - 1, arr[2], arr[3] - 8, arr[4], arr[5]));
+        return parseInt(now.getTime() / 1000);
+    },
+    formatItemDateString(dataString)
+    {
+        let newstr=dataString.replace(/-/g,   "/");
+        let  date = new Date(Date.parse(newstr));
+        let dataName=` ${date.getMonth() +1}月${date.getDate()}日 ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()} `
+        return dataName
     }
-
 }
 global.DateUitle = DateUitle;
 
@@ -40,7 +53,14 @@ global.DateUitle = DateUitle;
 export const TLog = (name = null, obj = []) => {
     //if( process.env.NODE_ENV == 'development') {//开发环境
     //	return console.TLog(name,obj)
-    return obj ? console.log(name, obj) : console.log(name)
+     if(Platform.OS === 'ios')
+     {
+         IOSLog.logClass("myLog",name+" \n"+ JSON.stringify(obj));
+     }
+     else{
+        obj ? console.log(name, obj) : console.log(name)
+    }
+
 };
 
 global.TLog = TLog;
@@ -103,18 +123,6 @@ export const obj2ser = objs => {
     return str.substring(0, str.length - 1);
 }
 
-/**
- * 2012-11-16 10:36:50日期格式转时间戳
- * @param datetime
- * @returns {Number|*}
- */
-export const datetime2unix = (datetime) => {
-    let tmp_datetime = datetime.replace(/:/g, '-');
-    tmp_datetime = tmp_datetime.replace(/ /g, '-');
-    let arr = tmp_datetime.split("-");
-    let now = new Date(Date.UTC(arr[0], arr[1] - 1, arr[2], arr[3] - 8, arr[4], arr[5]));
-    return parseInt(now.getTime() / 1000);
-}
 
 
 /**

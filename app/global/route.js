@@ -19,6 +19,7 @@ import GameFast3 from "../page/home/subview/games/GameFast3";
 import AddCardView from "../page/me/subView/cardManage/AddCardView";
 import BetDetailView from "../page/me/subView/betRecord/BetDetailView";
 import ChaseDeatilView from "../page/me/subView/betRecord/ChaseDeatilView";
+import MessageDetail from "../page/me/subView/message/MessageDetail";
 
 // PushFromLeft
 // FloatFromRight
@@ -62,6 +63,8 @@ let NavViews= {
     AddCardView:(data)=>({"component": AddCardView, "passProps": data}),
     BetDetailView:(data)=>({"component": BetDetailView, "passProps": data}),
     ChaseDeatilView:(data)=>({"component": ChaseDeatilView, "passProps": data}),
+    MessageDetail:(data)=>({"component": MessageDetail, "passProps": data}),
+
 }
 
 

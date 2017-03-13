@@ -1,6 +1,3 @@
-/**
- * Created by zhangxinhua on 16/12/11.
- */
 import React from 'react';
 import {
     View,
@@ -48,6 +45,4 @@ export default class Home extends BaseView {
         ActDispatch.FetchAct.fetchVoWithAction(HTTP_SERVER.GET_GAME_LIST_INFO,ActionType.AppType.GAMELIST_RESULT,false);
         ActDispatch.FetchAct.fetchVoWithAction(HTTP_SERVER.GET_PLAY_LIST_INFO,ActionType.AppType.PLAY_LIST_RESULT,false);
     }
-
-
 }

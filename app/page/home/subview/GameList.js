@@ -49,7 +49,7 @@ export  default class GameList extends React.Component {
             >
                 {newList.map((item, i) => {
                     return (
-                        <GameView key={i + 100} dataList={item} itemClick={(data) => this.gameClick(data)}/>
+                        <GameView key={i + 100} dataList={item}/>
                     )
                 })}
             </Swiper>
@@ -60,12 +60,6 @@ export  default class GameList extends React.Component {
                 {listView}
             </View>
         )
-    }
-
-
-    gameClick(data) {
-        data.title=data.name;
-        NavUtil.pushToView(NavViews.GameFast3(data));
     }
 
 }

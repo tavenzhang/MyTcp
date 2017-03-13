@@ -6,29 +6,11 @@ import {
     TextInput,
 } from 'react-native';
 import SegmentedControlTab from 'react-native-segmented-control-tab'
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
-import {GlobelTheme, GlobeStyle} from '../../../global/config/style';
-
 import Button from 'react-native-button'
 import AIcon from 'react-native-vector-icons/FontAwesome';
-const mapStateToProps = state => {
-    return {
-        isLoading: state.fetchState.requesting || state.appState.requesting,
-    }
-}
+import BaseView from "../../componet/BaseView";
 
-let FetchAct, AppAct;
-const mapDispatchToProps = (dispatch) => {
-    FetchAct = bindActionCreators(ActionEnum.FetchAct, dispatch);
-    AppAct = bindActionCreators(ActionEnum.AppAct, dispatch);
-    return {}
-}
-
-
-@connect(mapStateToProps, mapDispatchToProps)
-
-export default class ChangePwd extends React.Component {
+export default class ChangePwd extends BaseView {
     constructor(props) {
         super(props);
         this.state = {
@@ -39,15 +21,10 @@ export default class ChangePwd extends React.Component {
         };
     }
 
-    render() {
+    renderBody() {
         const {title} = this.props;
         return (
             <View style={GlobeStyle.appView}>
-                <NavigationBar
-                    title={title}
-                    isShowBack={true}
-                    {...this.props}
-                />
                 <SegmentedControlTab
                     values={['登陆密码', '资金密码']}
                     onTabPress={this.onTabChange}

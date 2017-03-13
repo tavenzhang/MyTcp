@@ -42,7 +42,9 @@ export default class Discover extends BaseView {
     }
 
     componentDidMount() {
+        ActDispatch.FetchAct.fetchVoWithResult(HTTP_SERVER.GET_SYSTEM_LIST, (result) => {
 
+        });
     }
 
     componentWillUnmount() {
