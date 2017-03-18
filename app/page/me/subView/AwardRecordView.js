@@ -13,7 +13,7 @@ import AwardListView from "../../componet/BaseListView";
 
 const mapStateToProps = state => {
     return {
-        gamesDic: state.appState.gamesDic
+        gameModel:state.appState.gameModel
     }
 }
 
@@ -80,12 +80,8 @@ export default class AwardRecordView extends BaseView {
     }
 
     _renderRow = (rowData) => {
-         let {gamesDic}=this.props;
-         let gameName="";
-         if(gamesDic[`${rowData.lottery_id}`])
-         {
-             gameName=gamesDic[`${rowData.lottery_id}`].name
-         }
+        let {gameModel}=this.props;
+        let gameName= gameModel.getGameNameById(rowData.lottery_id)
         return (
             <View>
                 <TouchableHighlight onPress={() => this.itemClick(rowData)} underlayColor='rgba(10,10,10,0.2)'>

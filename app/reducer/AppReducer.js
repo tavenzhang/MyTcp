@@ -1,4 +1,5 @@
-
+import GameModel from "../model/GameModel";
+import PlayModel from "../model/PlayModel";
 const initAppState = {
     requesting: false,
     fail: false,
@@ -10,10 +11,10 @@ const initAppState = {
         msg: "",//显示内容
         style: 'success'//success成功，error错误
     },
-    gamesDic:{arrayList:[]},
-    playsDic:{arrayList:[]},
+    playsDic: {arrayList: []},
+    gameModel: new GameModel (),
+    playModel: new PlayModel(),
 }
-
 const appState = (state = initAppState, action) => {
     switch (action.type) {
         case ActionType.AppType.SHOW_LOADING :
@@ -29,12 +30,12 @@ const appState = (state = initAppState, action) => {
                 success: true
             });
         case ActionType.AppType.LOGIN_RESULT:
-            AppData.userData=action.data;
-            AppData.isLogined=true;
+            AppData.userData = action.data;
+            AppData.isLogined = true;
             return {...state, userData: action.data, isLogined: true}
         case ActionType.AppType.LOG_OUT:
-            AppData.userData=null;
-            AppData.isLogined=false;
+            AppData.userData = null;
+            AppData.isLogined = false;
             return {...state, userData: null, isLogined: false}
         case ActionType.AppType.SHOW_INFOBOX:
             return {
@@ -45,7 +46,8 @@ const appState = (state = initAppState, action) => {
                 }
             };
         case ActionType.AppType.HIDE_INFOBOX:
-            return {...state,
+            return {
+                ...state,
                 infoBox: {
                     show: false,
                     msg: '',
@@ -53,29 +55,19 @@ const appState = (state = initAppState, action) => {
                 }
             };
         case ActionType.AppType.GAMELIST_RESULT:
-            action.httpResult.arrayList=[];
-            for(let key in action.httpResult){
-                action.httpResult[key].img="http://p.lgfxiu.com/43cadf050bb5ec86043a99343b2608ee";
-                if(action.httpResult[key].name)
-                {
-                    action.httpResult.arrayList.push(action.httpResult[key]);
-                }
-            }
-            return {...state,gamesDic:action.httpResult};
+            return {...state, gamesDic: action.httpResult, gameModel: new GameModel(action.httpResult)};
         case ActionType.AppType.PLAY_LIST_RESULT:
             //玩法数据预处理
-            for(let key in action.httpResult){
-                if(action.httpResult[key]["children"])
-                {
-                    let tmpList=[];
-                    for(let subKey in action.httpResult[key]["children"])
-                    {
-                        tmpList.push(action.httpResult[key]["children"][subKey]);
-                    }
-                    action.httpResult[key].arrayList=tmpList;
-                }
-            }
-            return {...state, playsDic:action.httpResult};
+            // for (let key in action.httpResult) {
+            //     if (action.httpResult[key]["children"]) {
+            //         let tmpList = [];
+            //         for (let subKey in action.httpResult[key]["children"]) {
+            //             tmpList.push(action.httpResult[key]["children"][subKey]);
+            //         }
+            //         action.httpResult[key].arrayList = tmpList;
+            //     }
+            // }
+            return {...state, playsDic: action.httpResult, playModel: new PlayModel(action.httpResult)};
         default:
             return state;
     }

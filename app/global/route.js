@@ -9,17 +9,18 @@ import InMoneyView from "../page/me/subView/InMoneyView";
 import OuterMoneyView from "../page/me/subView/OuterMoneyView";
 import ChangePwd from "../page/me/subView/ChangePwd";
 import CardManageView from "../page/me/subView/CardManageView";
-import MsgView from "../page/me/subView/MsgView";
+import MsgView from "../page/me/subView/MailView";
 import TabbarView from "../page/TabbarView";
 import RegView from "../page/me/subView/RegView";
 import LoginView from "../page/me/subView/LoginView";
-import Fast3Notice from "../page/notice/subView/Fast3Notice";
+import Fast3Notice from "../page/award/subView/Fast3Notice";
 import ADView from "../page/home/subview/ADView";
-import GameFast3 from "../page/home/subview/games/GameFast3";
 import AddCardView from "../page/me/subView/cardManage/AddCardView";
 import BetDetailView from "../page/me/subView/betRecord/BetDetailView";
 import ChaseDeatilView from "../page/me/subView/betRecord/ChaseDeatilView";
 import MessageDetail from "../page/me/subView/message/MessageDetail";
+import NoticeDeailView from "../page/notice/noticeDetail/NoticeDeailView";
+import SD11Choose5 from "../page/home/subview/games/SD11Choose5";
 
 // PushFromLeft
 // FloatFromRight
@@ -56,14 +57,15 @@ let NavViews= {
     OuterMoneyView: (data) => ({"name": "OuterMoneyView", "component": OuterMoneyView, "passProps": data}),
     ChangePwd:(data) => ({"name": "ChangePwd", "component": ChangePwd, "passProps": data}),
     CardManageView:(data) => ({"name": "CardManageView", "component": CardManageView, "passProps": data}),
-    MsgView:(data) => ({"name": "MsgView", "component": MsgView, "passProps": data}),
+    MsgView:(data) => ({"name": "MailView", "component": MsgView, "passProps": data}),
     //游戏玩法
-    GameFast3:(data)=>({"component": GameFast3, "passProps": data}),
+    SD11Choose5:(data)=>({"component": SD11Choose5, "passProps": data}),
     //添加银行卡
     AddCardView:(data)=>({"component": AddCardView, "passProps": data}),
     BetDetailView:(data)=>({"component": BetDetailView, "passProps": data}),
     ChaseDeatilView:(data)=>({"component": ChaseDeatilView, "passProps": data}),
     MessageDetail:(data)=>({"component": MessageDetail, "passProps": data}),
+    NoticeDeailView:(data)=>({"component": NoticeDeailView, "passProps": data}),
 
 }
 

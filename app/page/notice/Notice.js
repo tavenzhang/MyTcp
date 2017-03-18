@@ -1,154 +1,109 @@
 import React from 'react';
 import {
-    Image,
     View,
     Text
     , StyleSheet,
-    ListView,
     TouchableHighlight
 } from 'react-native';
 
 import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
-
 import AIcon from 'react-native-vector-icons/FontAwesome';
-import NumberCircle from "../componet/NumberCircle";
+;
 import BaseView from "../componet/BaseView";
+import MsgListView from "../componet/BaseListView";
 
 const mapStateToProps = state => {
     return {
-        noticeList: state.noticState.noticeList,
-        awardMondy: state.noticState.awardMondy
-    }
-}
-const mapDispatchToProps = (dispatch) => {
-    return {
-        fetchtAct:bindActionCreators(ActionEnum.FetchAct, dispatch),
-        actions: bindActionCreators(ActionEnum.NoticeAct, dispatch),
+        isLoading: state.fetchState.requesting || state.appState.requesting,
     }
 }
 
-@connect(mapStateToProps, mapDispatchToProps)
+@connect(mapStateToProps)
 export default class Notice extends BaseView {
-
     constructor(props) {
         super(props);
         this.state = {
-            dataSource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
+            dataList: []
         };
-    }
-    componentDidMount() {
-        let {actions, fetchtAct}= this.props;
-        // fetchtAct.fetchWithResult("", (data) => {
-        //     actions.flushNoticeListView(data)
-        // });
-    }
-
-    componentWillUnmount() {
-
     }
 
     renderBody() {
-        let {dataList, actions}= this.props;
-        dataList = [];
-        let i = 0;
-        while (i < 20) {
-            dataList.push({
-                name: "游戏" + i,
-                title: `第${i}期`,
-                date: "2017-12-11 22:10:15",
-                type: 1,
-                history: ["01", "02", "03", "09", "08", "13"],
-                specil: [i*1+10]
-            });
-            i++;
-        }
-        let ds = this.state.dataSource.cloneWithRows(dataList);
         return (
             <View style={GlobeStyle.appContentView}>
-                <ListView
-                    dataSource={ds}
-                    renderRow={this._renderRow}
-                />
+                <MsgListView dataList={this.state.dataList} loadMore={this.props.loadMore} renderRow={this._renderRow}/>
             </View>
         );
     }
 
-
-    _renderRow = (rowData) => {
-        let itemContentView = [];
-        switch (rowData.type) {
-            case 1:
-                if(rowData.history)
-                {
-                    rowData.history.map((item,index) => {
-                        itemContentView.push(<NumberCircle key={`${index}w`} data={item} color="#f00" radius={13} dim={index==0 ? 0:4}/>);
-                    })
+    componentDidMount() {
+        if (this.state.dataList.length <= 0) {
+            ActDispatch.FetchAct.fetchVoWithResult(HTTP_SERVER.GET_SYSTEM_LIST, (result) => {
+                if (result.data.data) {
+                    let arr = this.state.dataList.concat(result.data.data);
+                    this.setState({dataList: arr});
                 }
-                if(rowData.specil)
-                {
-                    rowData.specil.map((item,index) => {
-                        itemContentView.push(<NumberCircle key={`${index}s`} data={item} color="#0f0" radius={13} dim={8}/>);
-                    })
-                }
-                break;
+            });
         }
+    }
+
+    _renderRow = (data) => {
+       // let dataName = DateUitle.formatItemDateString(data.created_at);
         return (
-            <TouchableHighlight onPress={() => this.itemClick(rowData)} underlayColor='rgba(0,0,0,0)'>
-            <View style={styles.row} >
-                <View>
-                    <View style={{flexDirection: "row",paddingTop: 10,alignItems:"center"}}>
-                        <Text style={{fontSize: 14}}>{rowData.name}</Text>
-                        <Text style={{fontSize: 12,color:"#666" ,marginLeft: 10}}>{rowData.title}</Text>
-                        <Text style={{fontSize: 12,color:"#666",marginLeft: 10 }}>{rowData.date}</Text>
+            <View>
+                <TouchableHighlight onPress={() => this.itemClick(data)} underlayColor='rgba(10,10,10,0.2)'>
+                    <View style={styles.row}>
+                        <View style={[styles.itemContentStyle, {flex: 3, alignItems:"center"}]}>
+                            <Text style={styles.textHeadStyle}>{data.title}</Text>
+                        </View>
+                        {/*<View style={styles.itemContentStyle}>*/}
+                          {/**/}
+                        {/*</View>*/}
+                        <View style={styles.itemContentStyle}>
+                            <AIcon name={"angle-right"}
+                                   style={{fontSize: 25, alignSelf: "center", color: "gray"}}/>
+                        </View>
                     </View>
-                    <View style={{marginTop:5,justifyContent:"center",flexDirection:"row"}}>
-                        {itemContentView}
-                    </View>
-                </View>
-                <AIcon name="angle-right" style={styles.iconNormal}/>
+                </TouchableHighlight>
             </View>
-            </TouchableHighlight>
         );
     }
 
-    itemClick=(data)=>{
-        NavUtil.pushToView(NavViews.Fast3Notice(data));
+    itemClick = (data) => {
+        NavUtil.pushToView(NavViews.NoticeDeailView({...data, title: "公告详情"}));
     }
 }
 
-const gridSize = 100;
-const gridMargin = 10;
-const listWidth = Math.floor(GlobelTheme.screenWidth/(gridSize + gridMargin * 2)) * (gridSize + gridMargin * 2);
-var styles = StyleSheet.create({
-    list: {
-        //justifyContent: 'flex-start',
-        // flexDirection: 'row',
-        //flexWrap: 'wrap',
-        //alignItems: 'flex-start',
-        width: listWidth,
-        alignSelf: "center",
-        marginTop: 31,
+
+const styles = StyleSheet.create({
+    itemHeadStyle: {
+        alignItems: "center",
+        borderRightWidth: 1,
+        justifyContent: "center",
+        textAlign: "center"
+        // borderWidth: 1
+    },
+    itemContentStyle: {
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center"
+        // borderWidth: 1
+    },
+    textHeadStyle: {
+        fontSize: 14,
+        fontWeight: "bold",
+
+    },
+    textItemStyle: {
+        fontSize: 12,
+        color: "gray"
     },
     row: {
         flexDirection: 'row',
-        justifyContent: "space-between",
-        // alignItems: "center",
-        height: 70,
-        borderBottomColor: "#ddd",
-        borderBottomWidth: 1,
-        marginLeft: 10
-    },
-    text: {
-        flex: 1,
-        marginTop: 5,
-        fontWeight: 'bold'
-    },
-    iconNormal: {
-        color: GlobelTheme.gray,
-        fontSize: 20,
-        right: 20,
-        alignSelf: "center",
+        height: 50,
+        borderBottomWidth: 0.5,
+        marginLeft: 10,
+        borderColor: "gray",
+        // borderWidth: 1,
     },
 
 });

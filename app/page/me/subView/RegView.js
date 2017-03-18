@@ -33,7 +33,6 @@ export default class RegView extends React.Component {
         };
     }
 
-
     render() {
         const {title} = this.props;
         return (

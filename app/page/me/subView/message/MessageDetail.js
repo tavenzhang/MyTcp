@@ -9,8 +9,8 @@ import {
 } from 'react-native';
 import BaseView from "../../../componet/BaseView";
 
-
 export  default class MessageDetail extends BaseView {
+
 
     constructor(props) {
         super(props)
@@ -40,9 +40,6 @@ export  default class MessageDetail extends BaseView {
             </View>
             <View>
                 <Text>邮件类型: 【{typeName}】 </Text>
-            </View>
-            <View>
-                <Text>邮件内容:</Text>
             </View>
            <WebView source={{html:this.state.data.content}}  automaticallyAdjustContentInsets={false} />
         </View>);

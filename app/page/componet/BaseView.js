@@ -21,25 +21,25 @@ export default class BaseView extends Component {
         this.renderBody = this.renderBody.bind(this);
         this.onLeftPressed = this.onLeftPressed.bind(this);
         this.onRightPressed = this.onRightPressed.bind(this);
+        this.onHeadPressed=this.onHeadPressed.bind(this)
     }
-    /**
-     * 子类可重写
-     * @returns {null}
-     */
+
     getNavigationBarProps () {
-        return {};
+        return {
+        };
     }
 
     renderNavigationBar() {
         let navigationBarProps = this.getNavigationBarProps();
         if(navigationBarProps != null)
         {
-            Object.assign(navigationBarProps,this.props.passProps);
+            Object.assign(this.props.passProps,navigationBarProps);
             return (
                 <NavigationBar
-                    {...navigationBarProps}
+                    {...this.props.passProps}
                     onLeftPressed={this.onLeftPressed}
                     onRightPressed={this.onRightPressed}
+                    onHeadPressed={this.onHeadPressed}
                 />
             );
         }
@@ -73,4 +73,10 @@ export default class BaseView extends Component {
     onRightPressed() {
         TLog('onRightPressed');
     }
+
+    onHeadPressed() {
+        TLog('onHeadPressed');
+    }
+
+
 }

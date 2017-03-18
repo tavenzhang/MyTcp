@@ -14,10 +14,12 @@ const ListType = {
     PlayList: "22",
     TimeList: "11",
 }
+
 const mapStateToProps = state => {
     return {
-        gamesDic: state.appState.gamesDic,
-        playsDic: state.appState.playsDic,
+       // playsDic: state.appState.playsDic,
+        gameModel:state.appState.gameModel,
+        playModel:state.appState.playModel
     }
 }
 
@@ -34,7 +36,6 @@ export default class BetRecordView extends BaseView {
             curPlay: null,
             curTime: null,
             dataList: [],
-            gameList: [{name: "全部彩种", id: "", series_id: ""}].concat(props.gamesDic.arrayList),
             timeList: [{name: "全部时间", date: ""}, {name: "最近一周", date: lastWeekTime}, {
                 name: "最近一个月",
                 date: lastMonth
@@ -44,19 +45,21 @@ export default class BetRecordView extends BaseView {
     }
 
     renderBody() {
-        let {gamesDic, playsDic} = this.props;
+        let {gameModel, playModel} = this.props;
+        let gameList=[{name: "全部彩种", id: "", series_id: ""}].concat(gameModel.gameInfoList)
         let playList = [{name: "全部玩法", id: ""}];
-        if (this.state.curGame && gamesDic[`${this.state.curGame.series_id}`]) {
-            let sid = `series_id_${this.state.curGame.series_id}`;
-            if (playsDic[`${sid}`]) {
-                playList = playList.concat(playsDic[`${sid}`].arrayList);
+        //if (this.state.curGame && gamesDic[`${this.state.curGame.series_id}`]) {
+           if (this.state.curGame) {
+            let mod = playModel.getPlayByGid(this.state.curGame.series_id)
+            if (mod) {
+                playList = mod.arrayList;
             }
         }
-        let gameBtnName = this.state.curGame ? this.state.curGame.name : this.state.gameList[0].name;
+        let gameBtnName = this.state.curGame ? this.state.curGame.name : gameList[0].name;
         let playBtnName = this.state.curPlay ? this.state.curPlay.name : playList[0].name;
         let timeBtnName = this.state.curTime ? this.state.curTime.name : this.state.timeList[0].name;
 
-        let gameView = this.state.curClickType == ListType.GameList ? this.menuView(this.state.gameList, ListType.GameList, gameBtnName) : null;
+        let gameView = this.state.curClickType == ListType.GameList ? this.menuView(gameList, ListType.GameList, gameBtnName) : null;
         let tiemView = this.state.curClickType == ListType.TimeList ? this.menuView(this.state.timeList, ListType.TimeList, timeBtnName) : null;
         let playView = this.state.curClickType == ListType.PlayList ? this.menuView(playList, ListType.PlayList, playBtnName) : null;
 
@@ -132,17 +135,15 @@ export default class BetRecordView extends BaseView {
                     {tiemView}
                 </View>
                 <View style={{flex: 1, backgroundColor: "yellow"}}>
-                    <BetRecordListView dataList={this.state.dataList} loadMore={this.loadMore} gamesDic={gamesDic}/>
+                    <BetRecordListView dataList={this.state.dataList} loadMore={this.loadMore} gamesDic={gameModel.data}/>
                 </View>
             </View>
         );
     }
 
-
     componentDidMount() {
         this.loadMore(null, 1);
     }
-
 
     onPressMenu = (btnType) => {
         if (this.state.curClickType == btnType) {
@@ -170,7 +171,6 @@ export default class BetRecordView extends BaseView {
                             if (btnName == item.name) {
                                 selectColor = GlobelTheme.primary;
                             }
-
                             return (<TouchableHighlight key={"menuView" + i}
                                                         style={{
                                                             paddingHorizontal: 10,

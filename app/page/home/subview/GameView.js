@@ -12,9 +12,7 @@ import {
     Alert
 } from 'react-native';
 
-
 export default class GameDetail extends React.Component {
-
     // 构造
     constructor(props) {
         super(props);
@@ -34,6 +32,7 @@ export default class GameDetail extends React.Component {
                   />
         )
     }
+
     _renderRow = (rowData) => {
         var imgSource = {
             uri: rowData.img,
@@ -57,13 +56,9 @@ export default class GameDetail extends React.Component {
        // TLog("rowData.openrowData.openrowData.open==",rowData.open=="1")
         if(data.open=="1")
         {
-            NavUtil.pushToView(NavViews.GameFast3(data));
+            NavUtil.pushToView(NavViews.SD11Choose5(data));
         }
         else{
-            // Alert.alert("", "请先登陆", [
-            //     {text: '登陆', onPress: this.clickLogin},
-            //     {text: '了解'}
-            // ])
             Alert.alert("当前游戏还在筹备中","敬请期待！",[])
         }
 

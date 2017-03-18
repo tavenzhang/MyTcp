@@ -24,10 +24,8 @@ export default class BetRecordListView extends React.Component {
 
     _renderRow = (rowData) => {
         let {gamesDic}  = this.props;
-        let newstr=rowData.bought_at.replace(/-/g,   "/");
-        let  date = new Date(Date.parse(newstr));
-        let dataName=` ${date.getMonth() +1}月${date.getDay()}日 \n${date.getHours()}:${date.getMinutes()}:${date.getSeconds()} `;
-         let   gameName = ""
+        let dataName =  DateUitle.formatItemDateString(rowData.bought_at);
+        let gameName = "";
         if(gamesDic[`${rowData.lottery_id}`])
         {
             gameName=gamesDic[`${rowData.lottery_id}`].name
@@ -58,11 +56,10 @@ export default class BetRecordListView extends React.Component {
     }
 
     itemClick = (data) => {
-        let {gamesDic}  = this.props;
-        NavUtil.pushToView(NavViews.BetDetailView({...data,title:"投注详情",gamesDic:gamesDic}));
+        let {gameModel}  = this.props;
+        NavUtil.pushToView(NavViews.BetDetailView({...data,title:"投注详情",gamesDic:gameModel}));
     }
 }
-
 
 const styles = StyleSheet.create({
     itemHeadStyle: {

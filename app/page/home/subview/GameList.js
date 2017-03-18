@@ -3,12 +3,8 @@
  */
 import React from 'react';
 import {
-    Image,
-    InteractionManager,
     View,
-    Text
-    , StyleSheet,
-    TouchableOpacity
+     StyleSheet,
 } from 'react-native';
 
 import Swiper from 'react-native-swiper';
@@ -61,7 +57,6 @@ export  default class GameList extends React.Component {
             </View>
         )
     }
-
 }
 
 const styles = StyleSheet.create({

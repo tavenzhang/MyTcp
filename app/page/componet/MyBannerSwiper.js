@@ -41,11 +41,9 @@ export default class MyBannerSwiper extends React.Component {
         )
     }
 
-
     bannerClick=(data)=> {
         NavUtil.pushToView(NavViews.ADView(data));
     }
-
 }
 
 const styles = StyleSheet.create({

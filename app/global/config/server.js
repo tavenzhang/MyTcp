@@ -1,5 +1,5 @@
 
-const SERVERADDR = "http://104.250.140.242:8080";
+const SERVERADDR = "http://104.250.140.242:8081";
 
 const METHOD_GET = "GET";
 const METHOD_POST = "POST";
@@ -26,7 +26,9 @@ const HTTP_SERVER = {
     LETTER_LIST:{url:`${SERVERADDR}/mobile-station-letters`, method:METHOD_POST,body:{}},
     LETTER_DETAIL:{url:`${SERVERADDR}/mobile-station-letters/#id/view`,method:METHOD_POST,body:{}},
     //获取系统公告
-    GET_SYSTEM_LIST:{url:`${SERVERADDR}/mobile-announcements`, method:METHOD_GET,body:{}},
+    GET_SYSTEM_LIST:{url:`${SERVERADDR}/mobile-announcements`, method:METHOD_POST,body:{}},
+    GET_SYSTEM_DETAIL:{url:`${SERVERADDR}/mobile-announcements/#id/view`, method:METHOD_POST,body:{}},
+    Domain:`${SERVERADDR}`
 };
 
 global.HTTP_SERVER=HTTP_SERVER

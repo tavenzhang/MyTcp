@@ -5,7 +5,6 @@ import {
     TextInput,
 } from 'react-native';
 
-
 import {connect} from 'react-redux';
 import AIcon from 'react-native-vector-icons/FontAwesome';
 import Button from 'react-native-button';
@@ -82,9 +81,11 @@ export default class LoginView extends BaseView {
     }
 
     componentDidMount() {
+
     }
 
     componentWillUnmount() {
+
     }
 
     clickLogin = () => {

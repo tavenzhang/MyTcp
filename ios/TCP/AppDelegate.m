@@ -19,10 +19,13 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
   
-#ifdef DEBUG
-  LoggerStart(LoggerGetDefaultLogger());
+//#ifdef DEBUG
+  Logger *log=LoggerGetDefaultLogger();
+ // LoggerSetOptions(log, kLoggerOption_BrowseBonjour);
+ // LoggerSetupBonjour(log,nil, CFSTR("cp-release"));
+  LoggerStart(log);
   LogMarker(@"thomas");
-#endif
+//#endif
   
   NSURL *jsCodeLocation;
 

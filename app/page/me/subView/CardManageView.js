@@ -3,7 +3,6 @@ import {
     View,
     Text, StyleSheet,
     TouchableHighlight,
-    LayoutAnimation,
     ScrollView
 } from 'react-native';
 import {connect} from 'react-redux';
@@ -14,8 +13,6 @@ import {HeaderPlusRightMenu} from "../../componet/navBarMenu/HeaderMenu";
 
 const mapStateToProps = state => {
     return {
-        gamesDic: state.appState.gamesDic,
-        playsDic: state.appState.playsDic,
     }
 }
 
@@ -33,8 +30,6 @@ export default class CardManageView extends BaseView {
      {
         return {rightView:HeaderPlusRightMenu}
      }
-
-
 
     renderBody() {
         let contentView = this.state.dataList.map((item, index)=> {

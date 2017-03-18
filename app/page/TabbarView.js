@@ -8,8 +8,8 @@ import TabNavigator from 'react-native-tab-navigator';
 import AIcon from 'react-native-vector-icons/FontAwesome';
 import Home from "./home/Home";
 import MyView from "./me/MyView";
-import Notice from "./notice/Notice";
-import Discover from "./discover/Discover";
+import Notice from "./award/GameResultView";
+import Discover from "./notice/Notice";
 
 const tabBarItems = [
     {title: '购彩', icon: 'home', selectIcon: "home", component: Home},

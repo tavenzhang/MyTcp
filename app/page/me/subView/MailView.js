@@ -8,7 +8,6 @@ import {
 } from 'react-native';
 
 import {connect} from 'react-redux';
-import Button from 'react-native-button'
 import AIcon from 'react-native-vector-icons/FontAwesome';
 import BaseView from "../../componet/BaseView";
 import MsgListView from "../../componet/BaseListView";
@@ -20,7 +19,7 @@ const mapStateToProps = state => {
 }
 
 @connect(mapStateToProps)
-export default class MsgView extends BaseView {
+export default class MailView extends BaseView {
     constructor(props) {
         super(props);
         this.state = {
