@@ -66,6 +66,39 @@ export default class InMoneyView extends BaseView {
                             secureTextEntry={true}
                         />
                     </View>
+                    <View style={styles.inputContain}>
+                        <AIcon name="lock" style={styles.icoPwd}/>
+                        <TextInput
+                            style={styles.textStyle}
+                            onChangeText={(pwdText) => this.setState({pwdText})}
+                            value={this.state.newPwd}
+                            maxLength={8}
+                            placeholder={"重复密码"}
+                            secureTextEntry={true}
+                        />
+                    </View>
+                    <View style={styles.inputContain}>
+                        <AIcon name="lock" style={styles.icoPwd}/>
+                        <TextInput
+                            style={styles.textStyle}
+                            onChangeText={(pwdText) => this.setState({pwdText})}
+                            value={this.state.newPwd}
+                            maxLength={8}
+                            placeholder={"重复密码"}
+                            secureTextEntry={true}
+                        />
+                    </View>
+                    <View style={styles.inputContain}>
+                        <AIcon name="lock" style={styles.icoPwd}/>
+                        <TextInput
+                            style={styles.textStyle}
+                            onChangeText={(pwdText) => this.setState({pwdText})}
+                            value={this.state.newPwd}
+                            maxLength={8}
+                            placeholder={"重复密码"}
+                            secureTextEntry={true}
+                        />
+                    </View>
                     <Button
                         containerStyle={{padding:5,margin: 10,  overflow:'hidden', borderRadius:3, backgroundColor: '#d7213c'}}
                         style={{ fontSize: 14,color:"white"}}

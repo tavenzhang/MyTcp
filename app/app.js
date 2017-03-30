@@ -110,7 +110,6 @@ export default  class App extends React.Component {
         }
         this.lastClickTime = now;
         ActDispatch.AppAct.showBox("再按一次退出");
-        TLog('再按一次退出一个');
         return true;
     }
 }

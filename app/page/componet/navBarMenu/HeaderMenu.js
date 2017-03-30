@@ -13,7 +13,6 @@ export class HeaderPlusRightMenu extends React.Component {
 }
 
 export class HeaderSD11Choose5 extends React.Component {
-
     render() {
         return (
                  <View style={[{flexDirection:"row"}]}>
@@ -24,6 +23,11 @@ export class HeaderSD11Choose5 extends React.Component {
     }
 }
 
+export class HeaderRightLoginOut extends React.Component {
+    render() {
+        return (<View><Text style={{fontSize:16,color:"white", fontWeight:"bold"}}>注销</Text></View>)
+    }
+}
 
 const styles = StyleSheet.create({
     navigationBarContainer: {

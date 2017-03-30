@@ -19,12 +19,9 @@ export  default class BetDetailView extends BaseView {
     }
 
     renderBody() {
-        let {gamesDic} = this.props.passProps
-        let   gameName = ""
-        if(gamesDic[`${this.state.data.lottery_id}`])
-        {
-            gameName=gamesDic[`${this.state.data.lottery_id}`].name
-        }
+        let {gameModel} = this.props.passProps
+        let  gameName = gameModel.getGameNameById(this.state.data.lottery_id)
+
         return (<View style={[GlobeStyle.appContentView]}>
             <View>
                 <Text>游戏名称:   {gameName}</Text>

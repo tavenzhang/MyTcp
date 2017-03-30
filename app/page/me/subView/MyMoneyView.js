@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { TabViewAnimated, TabBar } from 'react-native-tab-view';
+import {TabViewAnimated, TabBar } from 'react-native-tab-view';
 import BaseView from "../../componet/BaseView";
+import MoneyChangeHistoryView from "./myMoney/MoneyChangeHistoryView";
+import connect from "react-redux/src/components/connect";
 
 const styles = StyleSheet.create({
     container: {
@@ -23,37 +25,53 @@ const styles = StyleSheet.create({
     indicatorStyle:{
        backgroundColor:"red",
     },
-    tstyle:{
+    tabViewStyle:{
         backgroundColor:"white",
-
     }
 });
 
+
+const mapStateToProps = state => {
+    return {
+        gameModel:state.appState.gameModel,
+        playModel:state.appState.playModel,
+        typesModel:state.appState.typesModel
+    }
+}
+
+@connect(mapStateToProps)
 export default class MyMoneyView extends BaseView {
     state = {
         index: 0,
         routes: [
             { key: '1', title: '全部' },
             { key: '2', title: '充值' },
-            { key: '3', title: '支付' },
+            { key: '3', title: '提现' },
             { key: '4', title: '派奖' },
-            { key: '5', title: '提现' },
+            { key: '5', title: '转账' }
         ],
     };
+
     _handleChangeTab = (index) => {
-        this.setState({ index });
+        this.setState({index});
     };
 
     _renderHeader = (props) => {
-        return <TabBar style={styles.tstyle} {...props} tabStyle={styles.tabStyle} labelStyle={styles.labelStyle} indicatorStyle={styles.indicatorStyle} pressColor={"#ff4081"} pressOpacity={5} />;
+        return <TabBar style={styles.tabViewStyle} {...props} tabStyle={styles.tabStyle} labelStyle={styles.labelStyle} indicatorStyle={styles.indicatorStyle} pressColor={"#ff4081"} pressOpacity={5} />;
     };
 
     _renderScene = ({ route }) => {
         switch (route.key) {
             case '1':
-                return <View style={[ styles.page, { backgroundColor: '#ff4081' } ]} />;
+                return <MoneyChangeHistoryView {...this.props} style={[ styles.page]} httpService={HTTP_SERVER.LIST_REANSACTON} />;
             case '2':
-                return <View style={[ styles.page, { backgroundColor: '#673ab7' } ]} />;
+                return <MoneyChangeHistoryView {...this.props} style={[ styles.page]} httpService={HTTP_SERVER.LIST_ADD_MONEY}/>;
+            case '3':
+                return <MoneyChangeHistoryView {...this.props} style={[ styles.page]} httpService={HTTP_SERVER.LIST_DRAW} />;
+            case '4':
+                return <MoneyChangeHistoryView {...this.props} style={[ styles.page]} httpService={HTTP_SERVER.LIST_AWARD_MONEY} />;
+            case '5':
+                return <MoneyChangeHistoryView {...this.props} style={[ styles.page]} httpService={HTTP_SERVER.LIST_TRANSLATE_MONEY} />;
             default:
                 return <View style={[ styles.page, { backgroundColor: '#ff0' } ]} />;
         }
@@ -62,6 +80,7 @@ export default class MyMoneyView extends BaseView {
     renderBody() {
         return (
             <TabViewAnimated
+                lazy={true}
                 style={styles.container}
                 navigationState={this.state}
                 renderScene={this._renderScene}

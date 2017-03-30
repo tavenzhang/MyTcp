@@ -44,5 +44,6 @@ export default class Home extends BaseView {
     componentDidMount() {
         ActDispatch.FetchAct.fetchVoWithAction(HTTP_SERVER.GET_GAME_LIST_INFO,ActionType.AppType.GAMELIST_RESULT,false);
         ActDispatch.FetchAct.fetchVoWithAction(HTTP_SERVER.GET_PLAY_LIST_INFO,ActionType.AppType.PLAY_LIST_RESULT,false);
+        ActDispatch.FetchAct.fetchVoWithAction(HTTP_SERVER.GET_DATA_DEATIL,ActionType.AppType.MOBILE_TYPES_RESULT,false);
     }
 }

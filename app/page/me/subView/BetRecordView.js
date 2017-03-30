@@ -17,7 +17,6 @@ const ListType = {
 
 const mapStateToProps = state => {
     return {
-       // playsDic: state.appState.playsDic,
         gameModel:state.appState.gameModel,
         playModel:state.appState.playModel
     }
@@ -48,7 +47,6 @@ export default class BetRecordView extends BaseView {
         let {gameModel, playModel} = this.props;
         let gameList=[{name: "全部彩种", id: "", series_id: ""}].concat(gameModel.gameInfoList)
         let playList = [{name: "全部玩法", id: ""}];
-        //if (this.state.curGame && gamesDic[`${this.state.curGame.series_id}`]) {
            if (this.state.curGame) {
             let mod = playModel.getPlayByGid(this.state.curGame.series_id)
             if (mod) {
@@ -60,7 +58,7 @@ export default class BetRecordView extends BaseView {
         let timeBtnName = this.state.curTime ? this.state.curTime.name : this.state.timeList[0].name;
 
         let gameView = this.state.curClickType == ListType.GameList ? this.menuView(gameList, ListType.GameList, gameBtnName) : null;
-        let tiemView = this.state.curClickType == ListType.TimeList ? this.menuView(this.state.timeList, ListType.TimeList, timeBtnName) : null;
+        let timeView = this.state.curClickType == ListType.TimeList ? this.menuView(this.state.timeList, ListType.TimeList, timeBtnName) : null;
         let playView = this.state.curClickType == ListType.PlayList ? this.menuView(playList, ListType.PlayList, playBtnName) : null;
 
         let gameStyle = this.state.curClickType == ListType.GameList ? {
@@ -118,10 +116,10 @@ export default class BetRecordView extends BaseView {
                     >
                         <View style={{flexDirection: "row"}}>
                             <Text
-                                style={{color: !tiemView ? GlobelTheme.black : GlobelTheme.primary}}>{timeBtnName}</Text>
+                                style={{color: !timeView ? GlobelTheme.black : GlobelTheme.primary}}>{timeBtnName}</Text>
                             <AIcon name={EnumFontNames.list_arrow_desc}
                                    style={{
-                                       color: !tiemView ? GlobelTheme.black : GlobelTheme.primary,
+                                       color: !timeView ? GlobelTheme.black : GlobelTheme.primary,
                                        fontSize: 15,
                                        marginLeft: 5,
                                        top: -3
@@ -132,10 +130,10 @@ export default class BetRecordView extends BaseView {
                 <View style={{position: "absolute", zIndex: 6, top: 35}}>
                     {gameView}
                     {playView}
-                    {tiemView}
+                    {timeView}
                 </View>
                 <View style={{flex: 1, backgroundColor: "yellow"}}>
-                    <BetRecordListView dataList={this.state.dataList} loadMore={this.loadMore} gamesDic={gameModel.data}/>
+                    <BetRecordListView dataList={this.state.dataList} loadMore={this.loadMore} gameModel={gameModel}/>
                 </View>
             </View>
         );
@@ -145,7 +143,7 @@ export default class BetRecordView extends BaseView {
         this.loadMore(null, 1);
     }
 
-    onPressMenu = (btnType) => {
+    -onPressMenu = (btnType) => {
         if (this.state.curClickType == btnType) {
             this.setState({curClickType: ""});
         }
@@ -220,9 +218,7 @@ export default class BetRecordView extends BaseView {
                 this.setState({curClickType: "", curPlay: data},()=>{this.loadMore(null, 1)});
                 break;
         }
-
     }
-
 
     loadMore = (callBack, forcePage = 0) => {
         HTTP_SERVER.BET_RECODE.body.bought_at_from = this.state.curTime ? this.state.curTime.date : "";
@@ -246,9 +242,7 @@ export default class BetRecordView extends BaseView {
             this.setState({dataList: arr});
         }, false);
     }
-
 }
-
 
 const styles = StyleSheet.create({
     touchTabButton: {

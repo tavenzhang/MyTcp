@@ -37,7 +37,7 @@ export default class Notice extends BaseView {
 
     componentDidMount() {
         if (this.state.dataList.length <= 0) {
-            ActDispatch.FetchAct.fetchVoWithResult(HTTP_SERVER.GET_SYSTEM_LIST, (result) => {
+            ActDispatch.FetchAct.fetchVoWithResult(HTTP_SERVER.GET_LIST_SYSTEM, (result) => {
                 if (result.data.data) {
                     let arr = this.state.dataList.concat(result.data.data);
                     this.setState({dataList: arr});
@@ -69,7 +69,7 @@ export default class Notice extends BaseView {
     }
 
     itemClick = (data) => {
-        NavUtil.pushToView(NavViews.NoticeDeailView({...data, title: "公告详情"}));
+        NavUtil.pushToView(NavViews.NoticeDeailView({...data, title: data.title}));
     }
 }
 

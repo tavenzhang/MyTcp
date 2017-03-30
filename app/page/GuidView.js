@@ -1,6 +1,3 @@
-/**
- * Created by zhangxinhua on 16/12/10.
- */
 import React  from 'react';
 import {
     Image,

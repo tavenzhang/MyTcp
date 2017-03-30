@@ -42,10 +42,19 @@ const DateUitle={
         let  date = new Date(Date.parse(newstr));
         let dataName=` ${date.getMonth() +1}月${date.getDate()}日 ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()} `
         return dataName
+    },
+    formatSimpleItemDateString(dataString)
+    {
+        let newstr=dataString.replace(/-/g,   "/");
+        let  date = new Date(Date.parse(newstr));
+        let day=date.getDate()>9 ? `${date.getDate()}日`:`0${date.getDate()}日`;
+        let hour=date.getHours()>9 ? `${date.getHours()}`:`0${date.getHours()}`;
+        let min=date.getMinutes()>9 ? `${date.getMinutes()}`:`0${date.getMinutes()}`;
+        let dataName=` ${day} \n ${hour}:${min} `
+        return dataName
     }
 }
 global.DateUitle = DateUitle;
-
 
 /**
  * 打印
@@ -60,7 +69,6 @@ export const TLog = (name = null, obj = []) => {
      else{
         obj ? console.log(name, obj) : console.log(name)
     }
-
 };
 
 global.TLog = TLog;

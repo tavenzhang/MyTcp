@@ -18,7 +18,8 @@ const ListType = {
 const mapStateToProps = state => {
     return {
         gameModel:state.appState.gameModel,
-        playsDic: state.appState.playsDic,
+        playModel:state.appState.playModel,
+        typesModel:state.appState.typesModel
     }
 }
 @connect(mapStateToProps)
@@ -35,23 +36,22 @@ export default class ChaseRecordView extends BaseView {
             curTime: null,
             dataList: [],
             gameList: [],
-            timeList: [{name: "全部时间", date: ""}, {name: "最近一周", date: lastWeekTime}, {
+            timeList: [{name: "全部时间", date: ""},{name: "最近一周", date: lastWeekTime},{
                 name: "最近一个月",
                 date: lastMonth
-            }, {name: "最近二个月", date: lastTowMonth}],
+            },{name: "最近二个月", date: lastTowMonth}],
             curClickType: "",
         }
     }
 
     renderBody() {
-        let {gameModel, playsDic} = this.props;
+        let {gameModel, playModel} = this.props;
         let gameList=[{name: "全部彩种", id: "", series_id: ""}].concat(gameModel.gameInfoList)
         let playList = [{name: "全部玩法", id: ""}];
-        //if (this.state.curGame && gamesDic[`${this.state.curGame.series_id}`]) {
         if (this.state.curGame) {
-            let sid = `series_id_${this.state.curGame.series_id}`;
-            if (playsDic[`${sid}`]) {
-                playList = playList.concat(playsDic[`${sid}`].arrayList);
+            let mod = playModel.getPlayByGid(this.state.curGame.series_id)
+            if (mod) {
+                playList = mod.arrayList;
             }
         }
         let gameBtnName = this.state.curGame ? this.state.curGame.name : gameList[0].name;
@@ -74,7 +74,6 @@ export default class ChaseRecordView extends BaseView {
             borderBottomWidth: 1,
             borderBottomColor: GlobelTheme.primary
         } : null;
-
         return (
             <View style={GlobeStyle.appContentView}>
                 <View
@@ -135,7 +134,7 @@ export default class ChaseRecordView extends BaseView {
                     {tiemView}
                 </View>
                 <View style={{flex: 1, backgroundColor: "yellow"}}>
-                    <ChaseRecodListView dataList={this.state.dataList} loadMore={this.loadMore} gamesDic={gamesDic}/>
+                    <ChaseRecodListView dataList={this.state.dataList} loadMore={this.loadMore} {...this.props}/>
                 </View>
             </View>
         );

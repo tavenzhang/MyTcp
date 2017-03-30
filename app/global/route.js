@@ -85,7 +85,10 @@ const NavUtil = {
         });
     },
     pop: () => {
-        Navgator.pop();
+        InteractionManager.runAfterInteractions(() => {
+            Navgator.pop();
+        });
+
     },
 }
 global.NavUtil = NavUtil

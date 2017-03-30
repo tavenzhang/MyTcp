@@ -2,7 +2,6 @@ import React from 'react';
 import {
     View,
     Text, StyleSheet,
-    ListView,
     TouchableHighlight,
     LayoutAnimation
 } from 'react-native';
@@ -27,7 +26,6 @@ export default class AwardRecordView extends BaseView {
     }
 
     renderBody() {
-
         return (
             <View style={GlobeStyle.appContentView}>
                 <View style={styles.row}>
@@ -57,6 +55,7 @@ export default class AwardRecordView extends BaseView {
         HTTP_SERVER.GET_BET_WIN.body.page = 1;
         HTTP_SERVER.GET_BET_WIN.body.pagesize = 15;
        ActDispatch.FetchAct.fetchVoWithResult(HTTP_SERVER.GET_BET_WIN, (result) => {
+           TLog("rowData------------------------------------",result.data);
             if (result.data.data) {
                 this.setState({dataList: result.data.data});
             }
@@ -76,12 +75,11 @@ export default class AwardRecordView extends BaseView {
                 callFinishBack();
             }
         })
-
     }
 
-    _renderRow = (rowData) => {
+    _renderRow = (rowData,section) => {
         let {gameModel}=this.props;
-        let gameName= gameModel.getGameNameById(rowData.lottery_id)
+        let gameName= gameModel.getGameNameById(rowData.lottery_id);
         return (
             <View>
                 <TouchableHighlight onPress={() => this.itemClick(rowData)} underlayColor='rgba(10,10,10,0.2)'>
@@ -135,7 +133,7 @@ const styles = StyleSheet.create({
     row: {
         flexDirection: 'row',
         height: 35,
-        borderBottomColor: "#ddd",
+        borderBottomColor: "gray",
         borderBottomWidth: 1,
     },
 

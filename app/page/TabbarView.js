@@ -50,8 +50,7 @@ export default class TabbarView extends React.Component {
                         })
                     }
                 </TabNavigator>
-            </View>
-        );
+            </View>);
     }
 
     componentDidMount() {

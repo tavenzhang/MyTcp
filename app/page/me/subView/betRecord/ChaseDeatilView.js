@@ -7,7 +7,7 @@ import {
     Text,
 } from 'react-native';
 import BaseView from "../../../componet/BaseView";
-
+import DetailListView from "../../../componet/BaseListView";
 
 export  default class BetDetailView extends BaseView {
 
@@ -19,12 +19,9 @@ export  default class BetDetailView extends BaseView {
     }
 
     renderBody() {
-        let {gamesDic} = this.props.passProps
-        let   gameName = ""
-        if(gamesDic[`${this.state.data.lottery_id}`])
-        {
-            gameName=gamesDic[`${this.state.data.lottery_id}`].name
-        }
+        let {gameModel,typesModel} = this.props.passProps
+        let  gameName = gameModel.getGameNameById(this.state.data.lottery_id)
+        let dataList= this.state.data.detail_list ? this.state.data.detail_list.data:[];
         return (<View style={[GlobeStyle.appContentView]}>
             <View>
                 <Text>游戏名称:   {gameName}</Text>
@@ -33,13 +30,13 @@ export  default class BetDetailView extends BaseView {
                 <Text>序列号:   {this.state.data.serial_number}</Text>
             </View>
             <View>
-                <Text>奖期:   {this.state.data.issue}</Text>
+                <Text>奖期:   {this.state.data.start_issue}</Text>
             </View>
             <View>
-                <Text>投注号码:  {this.state.data.bet_number}</Text>
+                <Text>追号号码:  {this.state.data.bet_number}</Text>
             </View>
             <View>
-                <Text>模式:   {this.state.data.coefficient}元</Text>
+                <Text>模式:   {typesModel.getACoefficients(this.state.data.coefficient)}</Text>
             </View>
             <View>
                 <Text>金额:   {this.state.data.amount}元</Text>
@@ -51,12 +48,14 @@ export  default class BetDetailView extends BaseView {
                 <Text>中奖号码:   {this.state.data.winning_number}</Text>
             </View>
             <View>
-                <Text>开奖状态:   {this.state.data.status}</Text>
+                <Text>追号状态:   {typesModel.getATraceStatuss(this.state.data.status)}</Text>
             </View>
             <View>
                 <Text>购彩时间:  {this.state.data.bought_at}</Text>
             </View>
-        </View>);
+             <DetailListView dataList={dataList} loadMore={this.loadMore} renderRow={this._renderRow}/>
+        </View>
+        );
     }
 
     componentDidMount() {
@@ -69,4 +68,39 @@ export  default class BetDetailView extends BaseView {
             }
         })
     }
+
+    loadMore = (callBack, forcePage = 0) => {
+
+    }
+
+    _renderRow = (rowData) => {
+        TLog("rowData----",rowData);
+        //let {gameModel} = this.props;
+        //let gameName = gameModel.getGameNameById(rowData.lottery_id);
+        return (
+            <View>
+                {/*<TouchableHighlight onPress={() => this.itemClick(rowData)} underlayColor='rgba(10,10,10,0.2)'>*/}
+                    {/*<View style={styles.row}>*/}
+                        {/*<View style={[styles.itemContentStyle,{flex:2}]}>*/}
+                            {/*<Text style={styles.textItemStyle}>{gameName}</Text>*/}
+                        {/*</View>*/}
+                        {/*<View style={[styles.itemContentStyle,{flex:2}]}>*/}
+                            {/*<Text style={styles.textItemStyle}>{rowData.title}</Text>*/}
+                            {/*<Text style={{fontSize: 12,color:"gray", marginTop:5}} numberOfLines={1}>{`投注号码:${rowData.bet_number}`}</Text>*/}
+                        {/*</View>*/}
+                        {/*<View style={styles.itemContentStyle}>*/}
+                            {/*<Text style={styles.textItemStyle} >{rowData.status}</Text>*/}
+                        {/*</View>*/}
+                        {/*<View style={styles.itemContentStyle}>*/}
+                            {/*<AIcon name={"angle-right"}*/}
+                                   {/*style={{fontSize: 25, alignSelf:"center",color:"gray"}}/>*/}
+                        {/*</View>*/}
+                    {/*</View>*/}
+                {/*</TouchableHighlight>*/}
+            </View>
+        );
+    }
+
+
+
 }

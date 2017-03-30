@@ -48,7 +48,6 @@ const EnumFontIco={
     list_arrow_desc:"sort-desc",
     list_arrow_up:"sort-up",
     plus:"plus",
-
 }
 
 global.EnumFontNames=EnumFontIco;

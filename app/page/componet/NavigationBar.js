@@ -66,7 +66,7 @@ export default class NavigationBar extends React.Component {
                     style={styles.titleContain}
                     onPress={this.props.onHeadPressed}
                 >
-                    <Text key={'title'} style={styles.title}>{this.props.title}</Text>
+                    <Text key={'title'} style={styles.title} numberOfLines={2}>{this.props.title}</Text>
                 </TouchableOpacity>
             )
         }

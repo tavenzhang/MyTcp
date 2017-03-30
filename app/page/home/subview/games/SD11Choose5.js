@@ -134,7 +134,6 @@ export default class SD11Choose5 extends BaseView {
             this.setState({isShowMenu: !this.state.isShowMenu});
         }
     }
-
     onSelectSubView=()=>{
         TLog("onSelectSubView---------------",this.state.selectSecondMenu);
     }

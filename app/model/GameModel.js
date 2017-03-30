@@ -13,7 +13,6 @@ export  default class GameModel{
                 this.gameInfoList.push(data[key]);
             }
         }
-
     }
 
     getGameInfoById(id)

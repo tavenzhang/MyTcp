@@ -38,7 +38,6 @@ function fetchMiddleware(extraArgument) {
              //fetch(action.url, requestHeader).then(response =>response.json())
                 .then(res => {
                     res=res.replace(/;/g,   "");
-
                     const data = JSON.parse(res);
                     //const data = res;
                     TLog(`http<----------${action.url}:`,data);

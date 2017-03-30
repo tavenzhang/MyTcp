@@ -8,6 +8,7 @@ export  const ActionType = {
         HIDE_INFOBOX: "app/HIDE_INFOBOX",
         GAMELIST_RESULT: "app/GAMELIST_RESULT",
         PLAY_LIST_RESULT: "app/PLAT_LIST_RESULT",
+        MOBILE_TYPES_RESULT: "app/MOBILE_TYPES_RESULT",
     },
     FetchType: {
         FETCH_REQUEST: "fetch/REQUEST",

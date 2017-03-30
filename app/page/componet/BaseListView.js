@@ -8,28 +8,32 @@ import {
 } from 'react-native';
 
 let canLoadMore = false;
+let oldLength=0;
 export default class BaseListView extends React.Component {
     constructor(props) {
         super(props);
-        this.state={
+        this.state = {
             isRefreshing: false,
             dataSource: new ListView.DataSource({
                 rowHasChanged: (r1, r2) => r1 !== r2,
             }),
+            canLoadMore: false
         }
         this.finishLoadData.bind(this);
     }
 
     render() {
-        let ds = this.state.dataSource.cloneWithRows(this.props.dataList);
+        let dataList=this.props.dataList;
+        dataList = dataList ? dataList:[];
+        let ds = this.state.dataSource.cloneWithRows(dataList);
         return (
             <View style={GlobeStyle.appContentView}>
                 <ListView
                     dataSource={ds}
                     renderRow={this.props.renderRow}
-                   // onEndReached={this.props.loadMore}
-                   // onEndReachedThreshold={50}
-                  //  renderFooter={this._renderFooter}
+                    onEndReached={this._onFootFlush}
+                    onEndReachedThreshold={-10}
+                    renderFooter={this._renderFooter}
                     onScroll={this._onScroll}
                     enableEmptySections={true}
                     pageSize={15}
@@ -46,7 +50,6 @@ export default class BaseListView extends React.Component {
             </View>
         );
     }
-
     // _renderRow = (rowData) => {
     //
     // }
@@ -58,36 +61,67 @@ export default class BaseListView extends React.Component {
 
     }
 
-    _onRefresh = () => {
-        this.setState({isRefreshing: true});
-        if(this.props.loadMore!=null)
+    _onFootFlush = () => {
+       // TLog("_onFootFlush---data---------", this.state.canLoadMore);
+        if(oldLength==this.props.dataList.length)
         {
-            this.props.loadMore(this.finishLoadData);
+            return;
         }
-        else{
-            this.finishLoadData();
+        if(this.props.dataList.length >= 15) {
+            oldLength= this.props.dataList.length;
+          //  TLog("this.state.canLoadMore----", this.state.canLoadMore)
+            if(!this.state.canLoadMore)
+           {
+                this.setState({canLoadMore: true}, () => {
+                    if (this.props.loadMore != null) {
+                        this.props.loadMore(this.finishLoadData);
+                    }
+                    else {
+                        this.finishLoadData();
+                    }
+                })
+           }
+        } else {
+            this.setState({canLoadMore: false});
         }
-
     }
 
-    _onScroll = () => {
-        if (!canLoadMore) canLoadMore = true;
+    _onRefresh = () => {
+        this.setState({isRefreshing: true, canLoadMore: false});
+        // canLoadMore=false;
+        if (this.props.loadMore != null) {
+            this.props.loadMore(this.finishLoadData);
+        }
+        else {
+            this.finishLoadData();
+        }
+    }
+
+    _onScroll = (event: Object) => {
+        // TLog("_onScroll-----event",event.nativeEvent);
+        // if(event.nativeEvent.layoutMeasurement.height>(event.nativeEvent.contentSize.height+50))
+        // {
+        //
+        // }
+        // else{
+        //     if (!canLoadMore) canLoadMore = true;
+        // }
     }
 
     _renderFooter = () => {
-        if (!canLoadMore) {
+        //if (!canLoadMore) {
+        if (!this.state.canLoadMore) {
             return null;
         }
-        // return (
-        //     <View style={{height: 50}}>
-        //         <ActivityIndicator />
-        //     </View>
-        // );
+        return (
+            <View style={{height: 50, justifyContent: "center", alignItems: "center"}}>
+                <ActivityIndicator />
+            </View>
+        );
     }
 
-    finishLoadData=()=>{
-        canLoadMore = false;
-        this.setState({isRefreshing: false});
+    finishLoadData = () => {
+        this.setState({isRefreshing: false, canLoadMore: false});
     }
 
 }

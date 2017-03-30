@@ -12,6 +12,7 @@ import {connect} from 'react-redux';
 import AIcon from 'react-native-vector-icons/FontAwesome';
 import Button from 'react-native-button';
 import BaseView from "../componet/BaseView";
+import {HeaderRightLoginOut} from "../componet/navBarMenu/HeaderMenu";
 
 let ItemNameEnum = {
     awardFind: "中奖查询",
@@ -25,10 +26,10 @@ let ItemNameEnum = {
     msgNotice: "消息通知"
 }
 
+
 const mapStateToProps = state => {
     return {
         userData: state.appState.userData,
-        isLogined: state.appState.isLogined,
     }
 }
 
@@ -55,11 +56,28 @@ export default class MyView extends BaseView{
         };
     }
 
+    getNavigationBarProps() {
+        let {userData}=this.props;
+        if(userData) {
+            return {rightView: HeaderRightLoginOut};
+        }
+        else{
+            return {};
+        }
+
+    }
+
+    onRightPressed(){
+        ActDispatch.FetchAct.fetchVoWithResult(HTTP_SERVER.LOGIN_OUT,(result)=>{
+            ActDispatch.AppAct.loginOut();
+        })
+    }
+
     renderBody() {
-        let {isLogined, userData}=this.props
+        let {userData}=this.props
         let ds = this.state.dataSource.cloneWithRowsAndSections(this.state.dataS);
         let infoView = null;
-        if (isLogined) {
+        if (userData) {
             infoView = <View style={styles.headContent2}>
                 <View style={{flexDirection: "row",height: 60}}>
                     <View style={{justifyContent: "space-around",flex:1,paddingLeft: 10}}>
@@ -126,6 +144,8 @@ export default class MyView extends BaseView{
 
     }
 
+
+
     clickReg = () => {
         NavUtil.pushToView(NavViews.RegView({title: "注册"}));
     }
@@ -135,8 +155,8 @@ export default class MyView extends BaseView{
     }
 
     itemClick = (data) => {
-        let {isLogined}=this.props
-        if (isLogined) {
+        let {userData}=this.props
+        if (userData) {
             switch (data.name) {
                 case ItemNameEnum.awardFind:
                     NavUtil.pushToView(NavViews.AwardRecord({title: data.name}))
@@ -220,7 +240,7 @@ const styles = StyleSheet.create({
         justifyContent: "flex-start",
         shadowColor: "gray",
         shadowOffset: {width: 2, height: 2},
-        shadowOpacity: 0.6
+        shadowOpacity: 0.6,
     },
     headContent: {
         margin: 10,

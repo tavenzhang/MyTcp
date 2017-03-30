@@ -58,6 +58,7 @@ export default class LoginView extends BaseView {
                             value={this.state.pwdText}
                             placeholder={"密码"}
                             secureTextEntry={true}
+                            multiline={true}
                         />
                     </View>
                     <Button

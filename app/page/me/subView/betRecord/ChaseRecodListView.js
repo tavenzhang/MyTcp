@@ -4,13 +4,13 @@ import {
     Text, StyleSheet,
     TouchableHighlight,
 } from 'react-native';
-
 import BetListView from "../../../componet/BaseListView";
 import AIcon from 'react-native-vector-icons/FontAwesome';
 
 export default class ChaseRecodListView extends React.Component {
     constructor(props) {
         super(props);
+        this.itemClick=this.itemClick.bind(this);
     }
 
     render() {
@@ -23,12 +23,8 @@ export default class ChaseRecodListView extends React.Component {
     }
 
     _renderRow = (rowData) => {
-        let {gamesDic}  = this.props;
-        let   gameName = ""
-        if(gamesDic[`${rowData.lottery_id}`])
-        {
-            gameName=gamesDic[`${rowData.lottery_id}`].name
-        }
+        let {gameModel} = this.props;
+        let gameName = gameModel.getGameNameById(rowData.lottery_id);
         return (
             <View>
                 <TouchableHighlight onPress={() => this.itemClick(rowData)} underlayColor='rgba(10,10,10,0.2)'>
@@ -55,8 +51,7 @@ export default class ChaseRecodListView extends React.Component {
     }
 
     itemClick = (data) => {
-        let {gamesDic}  = this.props;
-        NavUtil.pushToView(NavViews.ChaseDeatilView({...data,title:"追号详情",gamesDic:gamesDic}));
+        NavUtil.pushToView(NavViews.ChaseDeatilView({...data,title:"追号详情",...this.props}));
     }
 }
 
@@ -65,13 +60,11 @@ const styles = StyleSheet.create({
         alignItems: "center",
         borderRightWidth: 1,
         justifyContent: "center"
-        // borderWidth: 1
     },
     itemContentStyle: {
         flex: 1,
         alignItems: "center",
         justifyContent: "center"
-        // borderWidth: 1
     },
     textHeadStyle: {
         fontSize: 14,
@@ -93,8 +86,5 @@ const styles = StyleSheet.create({
         borderBottomWidth:0.5,
         marginLeft:10,
         borderColor: "gray",
-        // borderWidth: 1,
     },
-
-
 });

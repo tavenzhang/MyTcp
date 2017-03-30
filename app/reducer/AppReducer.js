@@ -1,5 +1,6 @@
 import GameModel from "../model/GameModel";
 import PlayModel from "../model/PlayModel";
+import MobileTypes from "../model/typesModel";
 const initAppState = {
     requesting: false,
     fail: false,
@@ -14,6 +15,7 @@ const initAppState = {
     playsDic: {arrayList: []},
     gameModel: new GameModel (),
     playModel: new PlayModel(),
+    typesModel:new MobileTypes()
 }
 const appState = (state = initAppState, action) => {
     switch (action.type) {
@@ -55,19 +57,11 @@ const appState = (state = initAppState, action) => {
                 }
             };
         case ActionType.AppType.GAMELIST_RESULT:
-            return {...state, gamesDic: action.httpResult, gameModel: new GameModel(action.httpResult)};
+            return {...state, gameModel: new GameModel(action.httpResult)};
         case ActionType.AppType.PLAY_LIST_RESULT:
-            //玩法数据预处理
-            // for (let key in action.httpResult) {
-            //     if (action.httpResult[key]["children"]) {
-            //         let tmpList = [];
-            //         for (let subKey in action.httpResult[key]["children"]) {
-            //             tmpList.push(action.httpResult[key]["children"][subKey]);
-            //         }
-            //         action.httpResult[key].arrayList = tmpList;
-            //     }
-            // }
-            return {...state, playsDic: action.httpResult, playModel: new PlayModel(action.httpResult)};
+            return {...state, playModel: new PlayModel(action.httpResult)};
+        case ActionType.AppType.MOBILE_TYPES_RESULT:
+            return {...state, typesModel: new MobileTypes(action.httpResult)};
         default:
             return state;
     }

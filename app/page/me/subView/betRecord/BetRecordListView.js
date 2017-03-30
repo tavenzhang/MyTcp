@@ -23,31 +23,28 @@ export default class BetRecordListView extends React.Component {
     }
 
     _renderRow = (rowData) => {
-        let {gamesDic}  = this.props;
-        let dataName =  DateUitle.formatItemDateString(rowData.bought_at);
-        let gameName = "";
-        if(gamesDic[`${rowData.lottery_id}`])
-        {
-            gameName=gamesDic[`${rowData.lottery_id}`].name
-        }
+        let {gameModel} = this.props;
+        let dataName = DateUitle.formatItemDateString(rowData.bought_at);
+        let gameName = gameModel.getGameNameById(rowData.lottery_id);
         return (
             <View>
                 <TouchableHighlight onPress={() => this.itemClick(rowData)} underlayColor='rgba(10,10,10,0.2)'>
                     <View style={styles.row}>
-                        <View style={[styles.itemContentStyle,{flex:1}]}>
+                        <View style={[styles.itemContentStyle, {flex: 1}]}>
                             <Text style={styles.textItemStyle} numberOfLines={2}>{dataName}</Text>
                         </View>
-                        <View style={[styles.itemContentStyle,{flex:2}]}>
+                        <View style={[styles.itemContentStyle, {flex: 2}]}>
                             <Text style={styles.textItemStyle}>{gameName}</Text>
-                            <Text style={{fontSize: 12,color:"gray", marginTop:5}} numberOfLines={1}>{`投注号码:${rowData.bet_number}`}</Text>
+                            <Text style={{fontSize: 12, color: "gray", marginTop: 5}}
+                                  numberOfLines={1}>{`投注号码:${rowData.bet_number}`}</Text>
 
                         </View>
                         <View style={styles.itemContentStyle}>
-                            <Text style={styles.textItemStyle} >{rowData.status}</Text>
+                            <Text style={styles.textItemStyle}>{rowData.status}</Text>
                         </View>
                         <View style={styles.itemContentStyle}>
                             <AIcon name={"angle-right"}
-                                   style={{fontSize: 25, alignSelf:"center",color:"gray"}}/>
+                                   style={{fontSize: 25, alignSelf: "center", color: "gray"}}/>
                         </View>
                     </View>
                 </TouchableHighlight>
@@ -56,8 +53,8 @@ export default class BetRecordListView extends React.Component {
     }
 
     itemClick = (data) => {
-        let {gameModel}  = this.props;
-        NavUtil.pushToView(NavViews.BetDetailView({...data,title:"投注详情",gamesDic:gameModel}));
+        let {gameModel} = this.props;
+        NavUtil.pushToView(NavViews.BetDetailView({...data, title: "投注详情", gameModel: gameModel}));
     }
 }
 
@@ -77,7 +74,7 @@ const styles = StyleSheet.create({
     textHeadStyle: {
         fontSize: 14,
         fontWeight: "bold",
-        color:"gray"
+        color: "gray"
     },
     textItemStyle: {
         fontSize: 13,
@@ -91,8 +88,8 @@ const styles = StyleSheet.create({
     row: {
         flexDirection: 'row',
         height: 50,
-        borderBottomWidth:0.5,
-        marginLeft:10,
+        borderBottomWidth: 0.5,
+        marginLeft: 10,
         borderColor: "gray",
         // borderWidth: 1,
     },
