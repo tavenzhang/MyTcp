@@ -6,15 +6,8 @@ import {
     , StyleSheet,
 } from 'react-native';
 
-import {connect} from 'react-redux';
 import BaseView from "../../componet/BaseView";
-const mapStateToProps = state => {
-    return {
-    }
-}
 
-
-@connect(mapStateToProps)
 export default class Fast3Notice extends BaseView {
 
     renderBody() {

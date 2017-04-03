@@ -11,7 +11,7 @@ export default class GuidView extends React.Component {
     constructor(props) {
         super(props);
         this.state={
-            fadeInOpacity:new Animated.Value(0),
+            fadeInOpacity:new Animated.Value(0.3),
         }
     }
 
@@ -29,7 +29,7 @@ export default class GuidView extends React.Component {
     componentDidMount() {
         Animated.timing(this.state.fadeInOpacity,{
             toValue:1,
-            duration:1500,
+            duration:1000,
             easing:Easing.linear()
         }).start(this.toApp());
     }

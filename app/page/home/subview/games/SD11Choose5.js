@@ -11,8 +11,8 @@ import {HeaderSD11Choose5} from "../../../componet/navBarMenu/HeaderMenu";
 
 const mapStateToProps = state => {
     return {
-        gameModel: state.appState.gameModel,
-        playModel: state.appState.playModel
+        playModel: state.get("appState").get("playModel"),
+        gameModel:state.get("appState").get("gameModel")
     }
 }
 

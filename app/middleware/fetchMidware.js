@@ -43,7 +43,7 @@ function fetchMiddleware(extraArgument) {
                     TLog(`http<----------${action.url}:`,data);
                     //错误，显示错误信息
                     if (data && data.status == 0) {
-                        next(ActionEnum.AppAct.showBox(data.msg || "操作错误~",'error'))
+                        next(ActionEnum.AppAct.showBox(data.msg || "操作错误~",'error'));
                     }
                     else {
                         if (action.callback) {
@@ -70,8 +70,8 @@ function fetchMiddleware(extraArgument) {
             return action(dispatch, getState, extraArgument);
         }
         //如果需要隐藏提示框 先返回null  不提示
-        //return action.isHideHint ? null : next(action);
-        return next(action)
+        return action.isHideHint ? null : next(action);
+      //  return next(action)
     };
 }
 

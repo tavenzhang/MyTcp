@@ -17,10 +17,11 @@ import BaseView from "../componet/BaseView";
 
 const mapStateToProps = state => {
     return {
-        noticeList: state.noticState.noticeList,
-        awardMondy: state.noticState.awardMondy
+        noticeList: state.get("noticState").get("noticeList"),
+        awardMondy: state.get("noticState").get("awardMondy")
     }
 }
+
 const mapDispatchToProps = (dispatch) => {
     return {
         fetchtAct:bindActionCreators(ActionEnum.FetchAct, dispatch),

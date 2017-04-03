@@ -1,7 +1,9 @@
 import GameModel from "../model/GameModel";
 import PlayModel from "../model/PlayModel";
 import MobileTypes from "../model/typesModel";
-const initAppState = {
+import {fromJS} from 'immutable';
+
+const initAppState = fromJS({
     requesting: false,
     fail: false,
     success: true,
@@ -16,17 +18,17 @@ const initAppState = {
     gameModel: new GameModel (),
     playModel: new PlayModel(),
     typesModel:new MobileTypes()
-}
+})
 const appState = (state = initAppState, action) => {
     switch (action.type) {
         case ActionType.AppType.SHOW_LOADING :
-            return Object.assign({}, state, {
+            return state.merge({
                 requesting: true,
                 fail: false,
                 success: false
             });
         case ActionType.AppType.HIDE_LOADING :
-            return Object.assign({}, state, {
+            return state.merge({
                 requesting: false,
                 fail: false,
                 success: true
@@ -34,34 +36,32 @@ const appState = (state = initAppState, action) => {
         case ActionType.AppType.LOGIN_RESULT:
             AppData.userData = action.data;
             AppData.isLogined = true;
-            return {...state, userData: action.data, isLogined: true}
+            return state.merge({userData: action.data, isLogined: true})
         case ActionType.AppType.LOG_OUT:
             AppData.userData = null;
             AppData.isLogined = false;
-            return {...state, userData: null, isLogined: false}
+            return state.merge({userData: null, isLogined: false})
         case ActionType.AppType.SHOW_INFOBOX:
-            return {
-                ...state, infoBox: {
+            return state.merge({infoBox: {
                     show: true,
                     msg: action.msg,
                     style: action.style
                 }
-            };
+            });
         case ActionType.AppType.HIDE_INFOBOX:
-            return {
-                ...state,
+            return state.merge({
                 infoBox: {
                     show: false,
                     msg: '',
                     style: ''
                 }
-            };
+            })
         case ActionType.AppType.GAMELIST_RESULT:
-            return {...state, gameModel: new GameModel(action.httpResult)};
+            return state.merge({gameModel: new GameModel(action.httpResult)});
         case ActionType.AppType.PLAY_LIST_RESULT:
-            return {...state, playModel: new PlayModel(action.httpResult)};
+            return state.merge({playModel: new PlayModel(action.httpResult)});
         case ActionType.AppType.MOBILE_TYPES_RESULT:
-            return {...state, typesModel: new MobileTypes(action.httpResult)};
+            return state.merge({typesModel: new MobileTypes(action.httpResult)});
         default:
             return state;
     }

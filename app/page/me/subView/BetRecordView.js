@@ -3,11 +3,14 @@ import {
     View,
     Text, StyleSheet,
     TouchableHighlight,
+    TouchableOpacity,
+    InteractionManager
 } from 'react-native';
 import {connect} from 'react-redux';
 import AIcon from 'react-native-vector-icons/FontAwesome';
 import BaseView from "../../componet/BaseView";
 import BetRecordListView from "./betRecord/BetRecordListView";
+
 
 const ListType = {
     GameList: "33",
@@ -81,7 +84,7 @@ export default class BetRecordView extends BaseView {
                         height: 35,
                         borderBottomColor: GlobelTheme.gray, borderBottomWidth:1
                     }}>
-                    <TouchableHighlight style={[styles.touchTabButton, gameStyle]}
+                    <TouchableOpacity style={[styles.touchTabButton, gameStyle]}
                                         onPress={() => this.onPressMenu(ListType.GameList)}
                     >
                         <View style={{flexDirection: "row"}}>
@@ -95,8 +98,8 @@ export default class BetRecordView extends BaseView {
                                        top: -3
                                    }}/>
                         </View>
-                    </TouchableHighlight>
-                    <TouchableHighlight style={[styles.touchTabButton, playStyle]}
+                    </TouchableOpacity>
+                    <TouchableOpacity style={[styles.touchTabButton, playStyle]}
                                         onPress={() => this.onPressMenu(ListType.PlayList)}
                     >
                         <View style={{flexDirection: "row", alignItems: "center"}}>
@@ -110,8 +113,8 @@ export default class BetRecordView extends BaseView {
                                        top: -3
                                    }}/>
                         </View>
-                    </TouchableHighlight>
-                    <TouchableHighlight style={[styles.touchTabButton, timeStyle]}
+                    </TouchableOpacity>
+                    <TouchableOpacity style={[styles.touchTabButton, timeStyle]}
                                         onPress={() => this.onPressMenu(ListType.TimeList)}
                     >
                         <View style={{flexDirection: "row"}}>
@@ -125,7 +128,7 @@ export default class BetRecordView extends BaseView {
                                        top: -3
                                    }}/>
                         </View>
-                    </TouchableHighlight>
+                    </TouchableOpacity>
                 </View>
                 <View style={{position: "absolute", zIndex: 6, top: 35}}>
                     {gameView}
@@ -140,10 +143,12 @@ export default class BetRecordView extends BaseView {
     }
 
     componentDidMount() {
-        this.loadMore(null, 1);
+        InteractionManager.runAfterInteractions(() => {
+            this.loadMore(null, 1);
+        });
     }
 
-    -onPressMenu = (btnType) => {
+    onPressMenu = (btnType) => {
         if (this.state.curClickType == btnType) {
             this.setState({curClickType: ""});
         }
@@ -232,17 +237,17 @@ export default class BetRecordView extends BaseView {
         else {
             HTTP_SERVER.BET_RECODE.body.page += 1;
         }
-
         HTTP_SERVER.BET_RECODE.body.pagesize = 20;
         ActDispatch.FetchAct.fetchVoWithResult(HTTP_SERVER.BET_RECODE, (result) => {
             if (callBack) {
                 callBack()
             }
-            let arr =this.state.dataList.concat(result.data.data);
+            let arr = this.state.dataList.concat(result.data.data);
             this.setState({dataList: arr});
         }, false);
     }
 }
+
 
 const styles = StyleSheet.create({
     touchTabButton: {

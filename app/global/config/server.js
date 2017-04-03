@@ -4,8 +4,6 @@ const SERVERADDR = "http://104.250.140.242:8081";
 const METHOD_GET = "GET";
 const METHOD_POST = "POST";
 
-//系列彩种：/dist/js/data/lottery-series.js
-//玩法群与玩法：/dist/js/data/series-way-groups-way-group-ways.js
 //接口配置
 const HTTP_SERVER = {
     //获取接口配置详情
@@ -44,16 +42,24 @@ const HTTP_SERVER = {
     LIST_AWARD_MONEY:{url:`${SERVERADDR}/mobile-transactions/send-prize`,method:METHOD_POST,body:{page:1,pagesize:20}},
     //转账明细
     LIST_TRANSLATE_MONEY:{url:`${SERVERADDR}/mobile-transactions/my-transfer`,method:METHOD_POST,body:{page:1,pagesize:20}},
-    //mobile-bank-cards/银行卡列表
-    LIST_BANGK_CARDS:{url:`${SERVERADDR}/mobile-bank-cards`,method:METHOD_POST,body:{page:1,pagesize:15}},
     // 修改登陆密码
     PWD_LOGIN:{url:`${SERVERADDR}/mobile-users/password-management/0`, method:METHOD_POST,body:{old_password:"",password:"",password_confirmation:""}},
     // 修改资金密码
     PWD_FUND:{url:`${SERVERADDR}/mobile-users/password-management/1`, method:METHOD_POST,body:{old_fund_password:"",fund_password:"",fund_password_confirmation:""}},
     //设置资金密码
     PWD_CONFIG_FUND:{url:`${SERVERADDR}/mobile-users/safe-reset-fund-password`, method:METHOD_POST,body:{fund_password:"",fund_password_confirmation:""}},
-
-
+    //mobile-bank-cards/银行卡列表
+    LIST_BANGK_CARDS:{url:`${SERVERADDR}/mobile-bank-cards`,method:METHOD_POST,body:{page:1,pagesize:15}},
+    //mobile-bank-cards/destroy 删除bangkCard
+    BANGK_CARDS_DEL:{url:`${SERVERADDR}/mobile-bank-cards/destroy`,method:METHOD_POST,body:{id:1,account_name:"",account:"",fund_password:""}},
+    // mobile-bank-cards/{step}/bind-card
+    BANK_CARD_STEP_O:{url:`${SERVERADDR}/mobile-bank-cards/1/bind-card`,method:METHOD_POST,body:{id:1,account_name:"",account:"",fund_password:""}},
+    // mobile-bank-cards/{step}/bind-card
+    BANK_CARD_STEP_1:{url:`${SERVERADDR}/mobile-bank-cards/2/bind-card`,method:METHOD_POST,body:{id:1,account_name:"",account:"",fund_password:""}},
+    // mobile-bank-cards/{step}/bind-card
+    BANK_CARD_STEP_2:{url:`${SERVERADDR}/mobile-bank-cards/3/bind-card`,method:METHOD_POST,body:{bank_id:1,branch:0,province_id:0,city_id:0,account_name:"",account:"",account_confirmation:"",fund_password:""}},
+    //
+    BANK_CARD_STEP_3:{url:`${SERVERADDR}/mobile-bank-cards/4/bind-card`,method:METHOD_POST,body:{bank_id:1,branch:0,province_id:0,city_id:0,account_name:"",account:"",account_confirmation:"",fund_password:""}},
 };
 global.HTTP_SERVER=HTTP_SERVER
 

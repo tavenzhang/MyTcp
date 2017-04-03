@@ -9,8 +9,8 @@ import MyBannerSwiper from "../componet/MyBannerSwiper";
 
 const mapStateToProps = state => {
     return {
-        bannerList: state.homeState.bannerList,
-        gameModel:state.appState.gameModel
+        bannerList: state.get("homeState").get("gameModel"),
+        gameModel:state.get("appState").get("gameModel")
     }
 }
 

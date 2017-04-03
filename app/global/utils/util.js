@@ -50,12 +50,12 @@ const DateUitle={
         let day=date.getDate()>9 ? `${date.getDate()}日`:`0${date.getDate()}日`;
         let hour=date.getHours()>9 ? `${date.getHours()}`:`0${date.getHours()}`;
         let min=date.getMinutes()>9 ? `${date.getMinutes()}`:`0${date.getMinutes()}`;
-        let dataName=` ${day} \n ${hour}:${min} `
+        let dataName =` ${day} \n ${hour}:${min} `;
         return dataName
     }
 }
-global.DateUitle = DateUitle;
 
+global.DateUitle = DateUitle;
 /**
  * 打印
  */
@@ -67,7 +67,7 @@ export const TLog = (name = null, obj = []) => {
          IOSLog.logClass("myLog",name+" \n"+ JSON.stringify(obj));
      }
      else{
-        obj ? console.log(name, obj) : console.log(name)
+        obj ? console.log(name, obj) : console.log(name);
     }
 };
 

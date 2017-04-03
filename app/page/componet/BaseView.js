@@ -5,6 +5,7 @@ import {
     LayoutAnimation
 } from 'react-native';
 import NavigationBar from './NavigationBar';
+import PureRenderMixin from 'react-addons-pure-render-mixin';
 
 const styles = StyleSheet.create({
     container: {
@@ -21,7 +22,8 @@ export default class BaseView extends Component {
         this.renderBody = this.renderBody.bind(this);
         this.onLeftPressed = this.onLeftPressed.bind(this);
         this.onRightPressed = this.onRightPressed.bind(this);
-        this.onHeadPressed=this.onHeadPressed.bind(this)
+        this.onHeadPressed=this.onHeadPressed.bind(this);
+        this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
     }
 
     getNavigationBarProps () {

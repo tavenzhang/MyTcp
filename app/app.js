@@ -30,8 +30,9 @@ const mapDispatchToProps = (dispatch) => {
 
 const mapStateToProps = state => {
     return {
-        isLoading: state.fetchState.requesting || state.appState.requesting,
-        infoBox: state.appState.infoBox
+        //isLoading: state.get("fetchState").get("requesting") || state.appState.requesting,
+        isLoading: state.get("fetchState").get("requesting"),
+        infoBox: state.get("appState").get("infoBox")
     }
 }
 
@@ -86,7 +87,7 @@ export default  class App extends React.Component {
             return sceneAnimation;
         }
         //默认
-        return Navigator.SceneConfigs.PushFromRight
+        return Navigator.SceneConfigs.FloatFromLeft
     }
 
     renderScene = (route, navigator) => {

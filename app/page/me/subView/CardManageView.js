@@ -3,7 +3,8 @@ import {
     View,
     Text, StyleSheet,
     TouchableHighlight,
-    ScrollView
+    ScrollView,
+    TouchableOpacity
 } from 'react-native';
 import {connect} from 'react-redux';
 import BaseView from "../../componet/BaseView";
@@ -29,15 +30,6 @@ export default class CardManageView extends BaseView {
     }
 
     renderBody() {
-        // let contentView = this.state.dataList.map((item, index)=> {
-        //     return (<TouchableHighlight key={"menuView" + index} onPress={()=>this.itemClick(item)}
-        //                                 underlayColor='rgba(10,10,10,0.2)'>
-        //         <View style={styles.row}>
-        //             <Text style={{color:"white",fontWeight: "bold"}}>{item.name}</Text>
-        //             <Text style={{color:"white",marginTop:10}}>{item.card}</Text>
-        //         </View>
-        //     </TouchableHighlight>)
-        // })
         return (
             <MyListView dataList={this.state.dataList} loadMore={this._loadMore} renderRow={this._renderRow}/>
         );
@@ -77,38 +69,46 @@ export default class CardManageView extends BaseView {
         // let dateStr=   DateUitle.formatSimpleItemDateString(rowData.created_at);
         // let playName = playModel.getWayNameById(rowData.way_id);
         // let money= rowData.is_income ? `+${ parseInt(rowData.amount)}`:`-${ parseInt(rowData.amount)}`
+        let subCard = rowData.account.substr(0, rowData.account.length - 4);
+        subCard = subCard.replace(/./g, "*");
+        subCard += rowData.account.substr(rowData.account.length - 4);
+        rowData.accountEny=subCard;
+        let countName = rowData.account_name.replace(/./g, "*");
+        let lockSate = rowData.islock ? "被锁定" : "使用中"
+
         return (
-            <View>
-                {/*<TouchableHighlight onPress={() => this.itemClick(rowData)} underlayColor='rgba(10,10,10,0.2)'>*/}
-                {/*<View style={styles.row}>*/}
-                {/*<View style={[styles.itemContentStyle,{flex:1}]}>*/}
-                {/*<Text style={styles.textItemStyle}>{dateStr}</Text>*/}
-                {/*</View>*/}
+            <View style={styles.row}>
+                <View style={{flex: 2}}>
+                    <Text style={{color: "white"}}>{rowData.bank}</Text>
+                    <Text style={{color: "white", fontSize: 12, marginTop: 3, letterSpacing: 2}}>卡号:{subCard}</Text>
+                    <Text style={{color: "white", fontSize: 12, marginTop: 3, letterSpacing: 2}}>账户:{countName}</Text>
+                    <Text style={{color: "white", fontSize: 12, marginTop: 3,}}>银行卡状态:{lockSate}</Text>
+                </View>
+                <View style={{flex: 1, justifyContent: "center", alignItems: "center", flexDirection: "row"}}>
+                    <TouchableOpacity onPress={()=>{this.itemEditClcik(rowData)}}>
+                        <Text style={{color: "yellow",}}>编辑</Text>
+                    </TouchableOpacity>
+                    <Text style={{color: "white", marginHorizontal:3}}>|</Text>
+                    <TouchableOpacity onPress={()=>{this.itemDeleteClcik(rowData)}}>
+                        <Text style={{color: "red"}}>删除</Text>
+                    </TouchableOpacity>
+                </View>
 
-                {/*<View style={[styles.itemContentStyle,{flex:2}]}>*/}
-                {/*<Text style={[styles.textItemStyle,{color:rowData.is_income ? "green":"red"}]}>{money}</Text>*/}
-                {/*</View>*/}
-
-                {/*<View style={[styles.itemContentStyle,{flex:2}]}>*/}
-                {/*<Text style={styles.textItemStyle}>{typesModel.getATransactionType(rowData.type_id)}</Text>*/}
-                {/*</View>*/}
-                {/*<View style={[styles.itemContentStyle,{flex:2}]}>*/}
-                {/*<Text style={styles.textItemStyle}>{gameName}</Text>*/}
-                {/*<Text style={{fontSize:12,color:GlobelTheme.gray, marginTop:5}} >{playName}</Text>*/}
-                {/*</View>*/}
-                {/*<View style={[styles.itemContentStyle,{flex:2}]}>*/}
-                {/*<Text style={styles.textItemStyle}>{parseInt(rowData.available)}</Text>*/}
-                {/*</View>*/}
-                {/*</View>*/}
-                {/*</TouchableHighlight>*/}
             </View>
         );
     }
 
 
-    itemClick = (data) => {
-        TLog("data------", data);
+    itemEditClcik=(data)=>
+    {
+        NavUtil.pushToView(NavViews.EditCardView({title: "编辑银行卡",...data}));
     }
+
+    itemDeleteClcik=(data)=>
+    {
+        NavUtil.pushToView(NavViews.DelCardView({title: "删除银行卡",...data}));
+    }
+
 
     onRightPressed() {
         NavUtil.pushToView(NavViews.AddCardView({title: "添加银行卡"}));
@@ -122,14 +122,16 @@ const styles = StyleSheet.create({
         flex: 1, alignItems: "center", justifyContent: "center",
     },
     row: {
+        flexDirection: "row",
         height: 100,
         backgroundColor: "green",
         borderColor: "green",
         borderWidth: 1,
         borderRadius: 8,
-        margin: 5,
+        marginHorizontal: 5,
+        marginVertical: 3,
         paddingLeft: 30,
-        justifyContent: "center"
+        alignItems: "center"
     },
     scrollView: {
         flex: 1

@@ -21,6 +21,8 @@ import ChaseDeatilView from "../page/me/subView/betRecord/ChaseDeatilView";
 import MessageDetail from "../page/me/subView/message/MessageDetail";
 import NoticeDeailView from "../page/notice/noticeDetail/NoticeDeailView";
 import SD11Choose5 from "../page/home/subview/games/SD11Choose5";
+import DelCardView from "../page/me/subView/cardManage/DelCardView";
+import EditCardView from "../page/me/subView/cardManage/EditCardView";
 
 // PushFromLeft
 // FloatFromRight
@@ -62,6 +64,11 @@ let NavViews= {
     SD11Choose5:(data)=>({"component": SD11Choose5, "passProps": data}),
     //添加银行卡
     AddCardView:(data)=>({"component": AddCardView, "passProps": data}),
+    //del银行卡
+    DelCardView:(data)=>({"component": DelCardView, "passProps": data}),
+    //edit
+    EditCardView:(data)=>({"component": EditCardView, "passProps": data}),
+
     BetDetailView:(data)=>({"component": BetDetailView, "passProps": data}),
     ChaseDeatilView:(data)=>({"component": ChaseDeatilView, "passProps": data}),
     MessageDetail:(data)=>({"component": MessageDetail, "passProps": data}),
