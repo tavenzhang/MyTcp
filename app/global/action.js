@@ -1,11 +1,11 @@
 /**
  * Created by zhangxinhua on 16/12/11.
  */
-import { FetchAct } from '../action/FetchAction';
-import { HomeAct } from '../action/HomeAction';
-import { AppAct } from '../action/AppAction';
-import { NoticeAct } from '../action/NoticeAction';
-import { ActionType } from '../action/ActionType';
+import { FetchAct } from '../redux/action/FetchAction';
+import { HomeAct } from '../redux/action/HomeAction';
+import { AppAct } from '../redux/action/AppAction';
+import { NoticeAct } from '../redux/action/NoticeAction';
+import { ActionType } from '../redux/action/ActionType';
 export {
     FetchAct,
     HomeAct,

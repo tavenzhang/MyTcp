@@ -44,7 +44,7 @@ android/app/libs
 .eslintrc.json
 app/assets/welcome/start2.png
 app/global/animationHelp.js
-app/store/
+app/redux/store/
 ios/Podfile
 ios/Podfile.lock
 ios/Pods/

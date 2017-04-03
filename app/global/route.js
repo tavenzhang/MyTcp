@@ -1,28 +1,28 @@
 import {
    InteractionManager,
 } from 'react-native';
-import AwardRecord from "../page/me/subView/AwardRecordView";
-import BetRecord from "../page/me/subView/BetRecordView";
-import ChaseRecord from "../page/me/subView/ChaseRecordView";
-import MyMoneyView from "../page/me/subView/MyMoneyView";
-import InMoneyView from "../page/me/subView/InMoneyView";
-import OuterMoneyView from "../page/me/subView/OuterMoneyView";
-import ChangePwd from "../page/me/subView/ChangePwd";
-import CardManageView from "../page/me/subView/CardManageView";
-import MsgView from "../page/me/subView/MailView";
-import TabbarView from "../page/TabbarView";
-import RegView from "../page/me/subView/RegView";
-import LoginView from "../page/me/subView/LoginView";
-import Fast3Notice from "../page/award/subView/Fast3Notice";
-import ADView from "../page/home/subview/ADView";
-import AddCardView from "../page/me/subView/cardManage/AddCardView";
-import BetDetailView from "../page/me/subView/betRecord/BetDetailView";
-import ChaseDeatilView from "../page/me/subView/betRecord/ChaseDeatilView";
-import MessageDetail from "../page/me/subView/message/MessageDetail";
-import NoticeDeailView from "../page/notice/noticeDetail/NoticeDeailView";
-import SD11Choose5 from "../page/home/subview/games/SD11Choose5";
-import DelCardView from "../page/me/subView/cardManage/DelCardView";
-import EditCardView from "../page/me/subView/cardManage/EditCardView";
+import AwardRecord from "../view/page/me/subView/AwardRecordView";
+import BetRecord from "../view/page/me/subView/BetRecordView";
+import ChaseRecord from "../view/page/me/subView/ChaseRecordView";
+import MyMoneyView from "../view/page/me/subView/MyMoneyView";
+import InMoneyView from "../view/page/me/subView/InMoneyView";
+import OuterMoneyView from "../view/page/me/subView/OuterMoneyView";
+import ChangePwd from "../view/page/me/subView/ChangePwd";
+import CardManageView from "../view/page/me/subView/CardManageView";
+import MsgView from "../view/page/me/subView/MailView";
+import TabbarView from "../view/page/TabbarView";
+import LoginView from "../view/page/me/subView/LoginView";
+import Fast3Notice from "../view/page/award/subView/Fast3Notice";
+import ADView from "../view/page/home/subview/ADView";
+import AddCardView from "../view/page/me/subView/cardManage/AddCardView";
+import BetDetailView from "../view/page/me/subView/betRecord/BetDetailView";
+import ChaseDeatilView from "../view/page/me/subView/betRecord/ChaseDeatilView";
+import MessageDetail from "../view/page/me/subView/message/MessageDetail";
+import NoticeDeailView from "../view/page/notice/noticeDetail/NoticeDeailView";
+import SD11Choose5 from "../view/page/home/subview/games/SD11Choose5";
+import DelCardView from "../view/page/me/subView/cardManage/DelCardView";
+import EditCardView from "../view/page/me/subView/cardManage/EditCardView";
+
 
 // PushFromLeft
 // FloatFromRight
@@ -44,8 +44,7 @@ let NavViews= {
     ADView:(data)=>({"component": ADView, "passProps": data}),
     //tab页面
     TabbarView:()=>({component: TabbarView}),
-    //注册
-    RegView:(data)=> ({"component": RegView, "passProps": data}),
+
     //登陆
     LoginView:(data)=> ({"component": LoginView, "passProps": data}),
     //快3游戏通知

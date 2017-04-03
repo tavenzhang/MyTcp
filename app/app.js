@@ -6,11 +6,6 @@ import {
     Platform,
     BackAndroid,
 } from 'react-native';
-import GuidView from './page/GuidView';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
-import Loading from "./page/componet/Loading";
-import ToastBox from "./page/componet/InfoBox/ToastBox"
 import  style from "./global/config/style";
 import  server from "./global/config/server";
 import  storage from "./global/utils/storage";
@@ -18,6 +13,13 @@ import  uitls from "./global/utils/util";
 import  AnimationHelp from "./global/animationHelp";
 import  route   from "./global/route";
 import  action   from "./global/action";
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import Loading from "./view/componet/Loading";
+import ToastBox from "./view/componet/InfoBox/ToastBox";
+import GuidView from "./view/page/GuidView";
+
+
 
 //定义全局Dispatch 方便使用
 const mapDispatchToProps = (dispatch) => {

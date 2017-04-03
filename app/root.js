@@ -2,7 +2,7 @@ import React  from 'react';
 import CodePush from 'react-native-code-push';
 
 import { Provider } from 'react-redux';
-import configureStore from './store/store';
+import configureStore from './redux/store/store';
 const store = configureStore();
 
 import App from './app';
