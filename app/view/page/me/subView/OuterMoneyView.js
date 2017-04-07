@@ -54,12 +54,15 @@ export default class OuterMoneyView extends BaseView {
                         </View>
                         <View style={styles.trRight}>
                             <Picker
-                                mode={'dropdown'}
+                                mode={'dialog'}
                                 selectedValue={this.state.language}
                                 onValueChange={(lang) => this.setState({language: lang})}>
                                 <Picker.Item label="Java" value="java" />
                                 <Picker.Item label="JavaScript" value="js" />
                                 <Picker.Item label="swift" value="swift" />
+                                <Picker.Item label="swift1" value="swift1" />
+                                <Picker.Item label="swift3" value="swift3" />
+                                <Picker.Item label="swift4" value="swift4" />
                             </Picker>
                         </View>
                     </View>

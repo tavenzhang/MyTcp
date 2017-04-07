@@ -7,11 +7,13 @@ const METHOD_POST = "POST";
 //接口配置
 const HTTP_SERVER = {
     //获取接口配置详情
-    GET_DATA_DEATIL:{url:`${SERVERADDR}/mobile-types`, method:METHOD_GET},
+    GET_DATA_DEATIL:{url:`${SERVERADDR}/mobile-types`},
     //获取游戏列表
-    GET_GAME_LIST_INFO:{url:`${SERVERADDR}/dist/js/data/lottery-series.json`, method:METHOD_GET},
+    GET_GAME_LIST_INFO:{url:`${SERVERADDR}/dist/js/data/lottery-series.json`},
     //获取玩法列表
     GET_PLAY_LIST_INFO:{url:`${SERVERADDR}/dist/js/data/series-way-groups-way-group-ways.json`},
+    //获取银行卡city 信息
+    GET_BANG_CITY_INFO:{url:`${SERVERADDR}/dist/js/data/districts.json`},
     //登陆
     LOGIN_IN: {url:`${SERVERADDR}/mobile-auth/login`, method:METHOD_POST,body:{username:"",password:""}},
     //登出
@@ -27,7 +29,7 @@ const HTTP_SERVER = {
     CHASE_DETAIL:{url:`${SERVERADDR}/mobile-traces/#id/view`,method:METHOD_POST,body:{}},
     //获取站内信列表
     LETTER_LIST:{url:`${SERVERADDR}/mobile-station-letters`, method:METHOD_POST,body:{}},
-    LETTER_DETAIL:{url:`${SERVERADDR}/mobile-station-letters/#id/view`,method:METHOD_POST,body:{}},
+    LETTER_DETAIL:{url:"",formatUrl:`${SERVERADDR}/mobile-station-letters/#id/view`,method:METHOD_POST,body:{}},
     //获取系统公告
     GET_LIST_SYSTEM:{url:`${SERVERADDR}/mobile-announcements`, method:METHOD_POST,body:{}},
     GET_SYSTEM_DETAIL:{url:`${SERVERADDR}/mobile-announcements/#id/view`, method:METHOD_POST,body:{}},
@@ -50,16 +52,21 @@ const HTTP_SERVER = {
     PWD_CONFIG_FUND:{url:`${SERVERADDR}/mobile-users/safe-reset-fund-password`, method:METHOD_POST,body:{fund_password:"",fund_password_confirmation:""}},
     //mobile-bank-cards/银行卡列表
     LIST_BANGK_CARDS:{url:`${SERVERADDR}/mobile-bank-cards`,method:METHOD_POST,body:{page:1,pagesize:15}},
-    //mobile-bank-cards/destroy 删除bangkCard
-    BANGK_CARDS_DEL:{url:`${SERVERADDR}/mobile-bank-cards/destroy`,method:METHOD_POST,body:{id:1,account_name:"",account:"",fund_password:""}},
-    // mobile-bank-cards/{step}/bind-card
-    BANK_CARD_STEP_O:{url:`${SERVERADDR}/mobile-bank-cards/1/bind-card`,method:METHOD_POST,body:{id:1,account_name:"",account:"",fund_password:""}},
-    // mobile-bank-cards/{step}/bind-card
-    BANK_CARD_STEP_1:{url:`${SERVERADDR}/mobile-bank-cards/2/bind-card`,method:METHOD_POST,body:{id:1,account_name:"",account:"",fund_password:""}},
-    // mobile-bank-cards/{step}/bind-card
-    BANK_CARD_STEP_2:{url:`${SERVERADDR}/mobile-bank-cards/3/bind-card`,method:METHOD_POST,body:{bank_id:1,branch:0,province_id:0,city_id:0,account_name:"",account:"",account_confirmation:"",fund_password:""}},
-    //
-    BANK_CARD_STEP_3:{url:`${SERVERADDR}/mobile-bank-cards/4/bind-card`,method:METHOD_POST,body:{bank_id:1,branch:0,province_id:0,city_id:0,account_name:"",account:"",account_confirmation:"",fund_password:""}},
+    //删除bangkCard
+    BANK_CARDS_DEL:{url:`${SERVERADDR}/mobile-bank-cards/destroy`,method:METHOD_POST,body:{id:1,account_name:"",account:"",fund_password:""}},
+    // step1验证旧银行卡信息:
+    BANK_CARD_ADD_STEP_0:{url:`${SERVERADDR}/mobile-bank-cards/0/bind-card`,method:METHOD_POST,body:{id:1,account_name:"",account:"",fund_password:""}},
+    // step2获取增加银行的数据
+    BANK_CARD_ADD_STEP_1:{url:`${SERVERADDR}/mobile-bank-cards/1/bind-card`,method:METHOD_POST,body:{}},
+    //step3提交确认银行卡信息
+    BANK_CARD_ADD_STEP_2:{url:`${SERVERADDR}/mobile-bank-cards/2/bind-card`,method:METHOD_POST,body:{bank_id:1,branch:0,province_id:0,city_id:0,account_name:"",account:"",account_confirmation:"",fund_password:""}},
+    //添加银行卡 step1验证旧银行卡信息:
+    BANK_CARD_MODIFY_STEP_O:{url:"",formatUrl:`${SERVERADDR}/mobile-bank-cards/0/#id/modify-card`,method:METHOD_POST,body:{id:1,account_name:"",account:"",fund_password:""}},
+    //step2获取增加银行的数据
+    BANK_CARD_MODIFY_STEP_1:{url:"",formatUrl:`${SERVERADDR}/mobile-bank-cards/1/#id/modify-card`,method:METHOD_POST,body:{}},
+    //step3提交确认银行卡信息
+    BANK_CARD_MODIFY_STEP_2:{url:"",formatUrl:`${SERVERADDR}/mobile-bank-cards/2/#id/modify-card`,method:METHOD_POST,body:{bank_id:1,branch:0,province_id:0,city_id:0,account_name:"",account:"",account_confirmation:"",fund_password:""}},
+
 };
 global.HTTP_SERVER=HTTP_SERVER
 

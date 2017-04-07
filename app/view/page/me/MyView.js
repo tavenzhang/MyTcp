@@ -154,7 +154,7 @@ export default class MyView extends BaseView{
 
     itemClick = (data) => {
         let {userData}=this.props
-        if (userData) {
+        if (userData.isLogined) {
             switch (data.name) {
                 case ItemNameEnum.awardFind:
                     NavUtil.pushToView(NavViews.AwardRecord({title: data.name}))

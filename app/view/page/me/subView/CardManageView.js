@@ -12,26 +12,29 @@ import {HeaderPlusRightMenu} from "../../../componet/navBarMenu/HeaderMenu";
 import MyListView from "../../../componet/BaseListView";
 
 const mapStateToProps = state => {
-    return {}
+    return {
+        cardList:state.get("appState").get("cardList").toJS(),
+    }
 }
 
 @connect(mapStateToProps)
 export default class CardManageView extends BaseView {
     constructor(props) {
         super(props);
-        // let dataList = [{name: "招商银行", card: "1111122344332323233"}, {name: "建设银行", card: "1111122344332323233"}]
-        this.state = {
-            dataList: []
-        }
     }
 
     getNavigationBarProps() {
         return {rightView: HeaderPlusRightMenu}
     }
 
+    shouldComponentUpdate() {
+
+    }
+
     renderBody() {
+        TLog("cardList----------------------------")
         return (
-            <MyListView dataList={this.state.dataList} loadMore={this._loadMore} renderRow={this._renderRow}/>
+            <MyListView dataList={this.props.cardList} loadMore={this._loadMore} renderRow={this._renderRow}/>
         );
     }
 
@@ -39,23 +42,14 @@ export default class CardManageView extends BaseView {
     componentDidMount() {
         HTTP_SERVER.LIST_BANGK_CARDS.body.page = 1;
         HTTP_SERVER.LIST_BANGK_CARDS.body.pagesize = 15;
-        ActDispatch.FetchAct.fetchVoWithResult(HTTP_SERVER.LIST_BANGK_CARDS, (result) => {
-            if (result.data.data) {
-                let arr = this.state.dataList.concat(result.data.data);
-                this.setState({dataList: arr});
-            }
-        })
+        ActDispatch.FetchAct.fetchVoWithAction(HTTP_SERVER.LIST_BANGK_CARDS, ActionType.AppType.CARD_LIST_GET);
     }
 
 
     _loadMore = (callFinishBack) => {
         HTTP_SERVER.LIST_BANGK_CARDS.body.page += 1;
         HTTP_SERVER.LIST_BANGK_CARDS.body.pagesize = 15;
-        ActDispatch.FetchAct.fetchVoWithResult(HTTP_SERVER.LIST_BANGK_CARDS, (result) => {
-            if (result.data.data) {
-                let arr = this.state.dataList.concat(result.data.data);
-                this.setState({dataList: arr});
-            }
+        ActDispatch.FetchAct.fetchVoWithAction(HTTP_SERVER.LIST_BANGK_CARDS,ActionType.AppType.CARD_LIST_GET, (result) => {
             if (callFinishBack) {
                 callFinishBack();
             }
@@ -64,11 +58,7 @@ export default class CardManageView extends BaseView {
 
 
     _renderRow = (rowData, section) => {
-        // let {gameModel,playModel,typesModel}=this.props;
-        // let gameName= gameModel.getGameNameById(rowData.lottery_id);
-        // let dateStr=   DateUitle.formatSimpleItemDateString(rowData.created_at);
-        // let playName = playModel.getWayNameById(rowData.way_id);
-        // let money= rowData.is_income ? `+${ parseInt(rowData.amount)}`:`-${ parseInt(rowData.amount)}`
+
         let subCard = rowData.account.substr(0, rowData.account.length - 4);
         subCard = subCard.replace(/./g, "*");
         subCard += rowData.account.substr(rowData.account.length - 4);
@@ -98,22 +88,21 @@ export default class CardManageView extends BaseView {
         );
     }
 
-
-    itemEditClcik=(data)=>
-    {
-        NavUtil.pushToView(NavViews.EditCardView({title: "编辑银行卡",...data}));
+    itemEditClcik=(data)=> {
+        NavUtil.pushToView(NavViews.EditCardView({title: "1. 验证银行卡",...data}));
     }
 
-    itemDeleteClcik=(data)=>
-    {
+    itemDeleteClcik=(data)=> {
         NavUtil.pushToView(NavViews.DelCardView({title: "删除银行卡",...data}));
     }
 
-
     onRightPressed() {
-        NavUtil.pushToView(NavViews.AddCardView({title: "添加银行卡"}));
+        if(this.props.cardList.length<=0) {
+            NavUtil.pushToView(NavViews.AddCardView({title: "添加银行卡"}));
+        }else {
+            NavUtil.pushToView(NavViews.AddValidView({title: "1. 验证银行卡",cardList:this.props.cardList}));
+        }
     }
-
 }
 
 

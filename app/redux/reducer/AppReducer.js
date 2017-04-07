@@ -2,6 +2,7 @@ import GameModel from "../model/GameModel";
 import PlayModel from "../model/PlayModel";
 import MobileTypes from "../model/MobileTypesModel";
 import {fromJS} from 'immutable';
+import BankCityModel from "../model/BankCityModel";
 
 const initAppState = fromJS({
     requesting: false,
@@ -17,7 +18,9 @@ const initAppState = fromJS({
     playsDic: {arrayList: []},
     gameModel: new GameModel (),
     playModel: new PlayModel(),
-    typesModel:new MobileTypes()
+    typesModel:new MobileTypes(),
+    bankCityModel:new BankCityModel(),
+    cardList:[]
 })
 const appState = (state = initAppState, action) => {
     switch (action.type) {
@@ -63,6 +66,19 @@ const appState = (state = initAppState, action) => {
             return state.merge({playModel: new PlayModel(action.httpResult)});
         case ActionType.AppType.MOBILE_TYPES_RESULT:
             return state.merge({typesModel: new MobileTypes(action.httpResult)});
+        case ActionType.AppType.BANG_CITY_INFO:
+            return state.merge({bankCityModel: new BankCityModel(action.httpResult)});
+        case ActionType.AppType.CARD_LIST_GET:
+            let tempList= state.get("cardList");
+            if( action.httpResult.data.current_page == 1)
+            {
+                tempList= action.httpResult.data.data;
+            }
+            else{
+                tempList=tempList.concat( action.httpResult.data.data);
+            }
+            TLog("ActionType.AppType.CARD_LIST_GET---",tempList)
+            return state.merge({cardList:tempList});
         default:
             return state;
     }

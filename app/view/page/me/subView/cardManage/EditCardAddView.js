@@ -11,7 +11,7 @@ import ModalDropdown from 'react-native-modal-dropdown';
 import Button from "react-native-button";
 import BankCityModel from "../../../../../redux/model/BankCityModel";
 
-export default class AddCardView extends BaseView {
+export default class EditCardAddView extends BaseView {
     constructor(props) {
         super(props);
         this.state = {
@@ -28,7 +28,7 @@ export default class AddCardView extends BaseView {
 
     renderBody() {
         let {passProps} = this.props;
-        TLog("EditCardView-----------", passProps)
+        TLog("EditCardAddView-----------", passProps)
         let backList = this.state.bankCityModel ? this.state.bankCityModel.bankList : [];
         let princeList = this.state.bankCityModel ? this.state.bankCityModel.princeList : [];
         let cityList = [];
@@ -150,7 +150,7 @@ export default class AddCardView extends BaseView {
                     style={{fontSize: 14, color: "white"}}
                     styleDisabled={{color: '#fff'}}
                     onPress={this.clickNext}>
-                    下一步
+                    更新
                 </Button>
             </View>
         );
@@ -166,7 +166,9 @@ export default class AddCardView extends BaseView {
     }
 
     componentDidMount() {
-        ActDispatch.FetchAct.fetchVoWithResult(HTTP_SERVER.BANK_CARD_ADD_STEP_1, (result) => {
+        let {passProps} = this.props;
+        HTTP_SERVER.BANK_CARD_MODIFY_STEP_1.url= HTTP_SERVER.BANK_CARD_MODIFY_STEP_1.formatUrl.replace("#id",passProps.id);
+        ActDispatch.FetchAct.fetchVoWithResult(HTTP_SERVER.BANK_CARD_MODIFY_STEP_1, (result) => {
             this.setState({bankCityModel: new BankCityModel(result)})
             //ActDispatch.AppAct.showErrorBox(result.Msg);
         })
@@ -197,15 +199,16 @@ export default class AddCardView extends BaseView {
             Alert.alert("", "银行卡号确认不一致，请重新输入!", [])
         }
         else {
-            HTTP_SERVER.BANK_CARD_ADD_STEP_2.body.account_name=this.state.countName;
-            HTTP_SERVER.BANK_CARD_ADD_STEP_2.body.account_confirmation=this.state.careNumRepeat;
-            HTTP_SERVER.BANK_CARD_ADD_STEP_2.body.account=this.state.careNumText;
-            HTTP_SERVER.BANK_CARD_ADD_STEP_2.body.bank_id=this.state.bankData.id;
-            HTTP_SERVER.BANK_CARD_ADD_STEP_2.body.province_id=this.state.provinceData.id;
-            HTTP_SERVER.BANK_CARD_ADD_STEP_2.body.city_id=this.state.cityData.id;
-            HTTP_SERVER.BANK_CARD_ADD_STEP_2.body.branch=this.state.brunchName;
+            HTTP_SERVER.BANK_CARD_MODIFY_STEP_2.body.account_name=this.state.countName;
+            HTTP_SERVER.BANK_CARD_MODIFY_STEP_2.body.account_confirmation=this.state.careNumRepeat;
+            HTTP_SERVER.BANK_CARD_MODIFY_STEP_2.body.account=this.state.careNumText;
+            HTTP_SERVER.BANK_CARD_MODIFY_STEP_2.body.bank_id=this.state.bankData.id;
+            HTTP_SERVER.BANK_CARD_MODIFY_STEP_2.body.province_id=this.state.provinceData.id;
+            HTTP_SERVER.BANK_CARD_MODIFY_STEP_2.body.city_id=this.state.cityData.id;
+            HTTP_SERVER.BANK_CARD_MODIFY_STEP_2.body.branch=this.state.brunchName;
             let {passProps} = this.props;
-             ActDispatch.FetchAct.fetchVoWithResult(HTTP_SERVER.BANK_CARD_ADD_STEP_2, (result) => {
+            HTTP_SERVER.BANK_CARD_MODIFY_STEP_2.url= HTTP_SERVER.BANK_CARD_MODIFY_STEP_2.formatUrl.replace("#id",passProps.id);
+             ActDispatch.FetchAct.fetchVoWithResult(HTTP_SERVER.BANK_CARD_MODIFY_STEP_2, (result) => {
                  if(result.isSuccess)
                  {
                      if(passProps.isStep2)

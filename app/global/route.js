@@ -1,5 +1,6 @@
 import {
-   InteractionManager,
+    InteractionManager,
+    Navigator
 } from 'react-native';
 import AwardRecord from "../view/page/me/subView/AwardRecordView";
 import BetRecord from "../view/page/me/subView/BetRecordView";
@@ -22,6 +23,8 @@ import NoticeDeailView from "../view/page/notice/noticeDetail/NoticeDeailView";
 import SD11Choose5 from "../view/page/home/subview/games/SD11Choose5";
 import DelCardView from "../view/page/me/subView/cardManage/DelCardView";
 import EditCardView from "../view/page/me/subView/cardManage/EditCardView";
+import AddValidView from "../view/page/me/subView/cardManage/AddValidView";
+import EditCardAddView from "../view/page/me/subView/cardManage/EditCardAddView";
 
 
 // PushFromLeft
@@ -34,21 +37,20 @@ import EditCardView from "../view/page/me/subView/cardManage/EditCardView";
 // HorizontalSwipeJumpFromRight
 // VerticalUpSwipeJump
 // VerticalDownSwipeJump
-global.Navgator=null;
+global.Navgator = null;
 
 let navigator;
 //  sceneAnimation: Navigator.SceneConfigs.FloatFromBottom
 //跳转页面集中控制 方便管理 和自定义动画
 
-let NavViews= {
-    ADView:(data)=>({"component": ADView, "passProps": data}),
+let NavViews = {
+    ADView: (data) => ({"component": ADView, "passProps": data}),
     //tab页面
-    TabbarView:()=>({component: TabbarView}),
-
+    TabbarView: () => ({component: TabbarView}),
     //登陆
-    LoginView:(data)=> ({"component": LoginView, "passProps": data}),
+    LoginView: (data) => ({"component": LoginView, "passProps": data}),
     //快3游戏通知
-    Fast3Notice:(data)=>({"component": Fast3Notice, "passProps": data}),
+    Fast3Notice: (data) => ({"component": Fast3Notice, "passProps": data}),
     //个人中心页面
     AwardRecord: (data) => ({"name": "AwardRecordView", "component": AwardRecord, "passProps": data}),
     BetRecord: (data) => ({"name": "BetRecordView", "component": BetRecord, "passProps": data}),
@@ -56,33 +58,41 @@ let NavViews= {
     MyMoneyView: (data) => ({"name": "MyMoneyView", "component": MyMoneyView, "passProps": data}),
     InMoneyView: (data) => ({"name": "InMoneyView", "component": InMoneyView, "passProps": data}),
     OuterMoneyView: (data) => ({"name": "OuterMoneyView", "component": OuterMoneyView, "passProps": data}),
-    ChangePwd:(data) => ({"name": "ChangePwd", "component": ChangePwd, "passProps": data}),
-    CardManageView:(data) => ({"name": "CardManageView", "component": CardManageView, "passProps": data}),
-    MsgView:(data) => ({"name": "MailView", "component": MsgView, "passProps": data}),
+    ChangePwd: (data) => ({"name": "ChangePwd", "component": ChangePwd, "passProps": data}),
+    CardManageView: (data) => ({"name": "CardManageView", "component": CardManageView, "passProps": data}),
+    MsgView: (data) => ({"name": "MailView", "component": MsgView, "passProps": data}),
     //游戏玩法
-    SD11Choose5:(data)=>({"component": SD11Choose5, "passProps": data}),
+    SD11Choose5: (data) => ({"component": SD11Choose5, "passProps": data}),
     //添加银行卡
-    AddCardView:(data)=>({"component": AddCardView, "passProps": data}),
+    AddCardView: (data) => ({"component": AddCardView, "passProps": data}),
+    //add step one
+    AddValidView: (data) => ({"component": AddValidView, "passProps": data}),
+    EditCardAddView: (data) => ({"component": EditCardAddView, "passProps": data}),
     //del银行卡
-    DelCardView:(data)=>({"component": DelCardView, "passProps": data}),
+    DelCardView: (data) => ({"component": DelCardView, "passProps": data}),
     //edit
-    EditCardView:(data)=>({"component": EditCardView, "passProps": data}),
+    EditCardView: (data) => ({"component": EditCardView, "passProps": data}),
+    BetDetailView: (data) => ({"component": BetDetailView, "passProps": data}),
+    ChaseDeatilView: (data) => ({"component": ChaseDeatilView, "passProps": data}),
+    MessageDetail: (data) => ({"component": MessageDetail, "passProps": data}),
+    NoticeDeailView: (data) => ({"component": NoticeDeailView, "passProps": data}),
 
-    BetDetailView:(data)=>({"component": BetDetailView, "passProps": data}),
-    ChaseDeatilView:(data)=>({"component": ChaseDeatilView, "passProps": data}),
-    MessageDetail:(data)=>({"component": MessageDetail, "passProps": data}),
-    NoticeDeailView:(data)=>({"component": NoticeDeailView, "passProps": data}),
 
 }
 
 
-global.NavViews=NavViews;
+global.NavViews = NavViews;
 
 
 const NavUtil = {
     pushToView: (data) => {
         InteractionManager.runAfterInteractions(() => {
             Navgator.push(data);
+        });
+    },
+    replace: (data) => {
+        InteractionManager.runAfterInteractions(() => {
+            Navgator.replace(data);
         });
     },
     resetToView: (data) => {
@@ -92,12 +102,22 @@ const NavUtil = {
     },
     pop: () => {
         InteractionManager.runAfterInteractions(() => {
-            Navgator.pop();
+            Navgator.pop()
         });
 
     },
-}
-global.NavUtil = NavUtil
+    popN: (n = 1) => {
+        InteractionManager.runAfterInteractions(() => {
+            Navgator.popN(n)
+        });
+    },
+     popToRoute:(data) => {
+            InteractionManager.runAfterInteractions(() => {
+                Navgator.popToRoute(data);
+            });
+        }
+    }
+    global.NavUtil = NavUtil
 
 
 

@@ -5,6 +5,7 @@ import {
     Easing,
 } from 'react-native';
 import {startImg} from "../../assets/index";
+import NetInfo from "react-native/Libraries/Network/NetInfo";
 
 export default class GuidView extends React.Component {
     constructor(props) {
@@ -31,6 +32,9 @@ export default class GuidView extends React.Component {
             duration:1000,
             easing:Easing.linear()
         }).start(this.toApp());
+        NetInfo.isConnected.fetch().done((isConnected) => {
+            console.log('First, is ' + (isConnected ? 'online' : 'offline'));
+        })
     }
 
     componentWillUnmount() {

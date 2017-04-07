@@ -12,7 +12,7 @@ import AwardListView from "../../../componet/BaseListView";
 
 const mapStateToProps = state => {
     return {
-        userData: state.get("appState").get("userData"),
+        gameModel:state.get("appState").get("gameModel"),
     }
 }
 

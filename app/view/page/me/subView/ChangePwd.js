@@ -13,7 +13,7 @@ import connect from "react-redux/src/components/connect";
 
 const mapStateToProps = state => {
     return {
-        userData: state.get("appState").get("userData"),
+        userData: state.get("appState").get("userData").toJS(),
     }
 }
 
@@ -141,6 +141,10 @@ export default class ChangePwd extends BaseView {
                 HTTP_SERVER.PWD_LOGIN.body.password_confirmation = this.state.repeatPwd;
                 ActDispatch.FetchAct.fetchVoWithResult(HTTP_SERVER.PWD_LOGIN, (data) => {
                     ActDispatch.AppAct.showErrorBox(data.Msg);
+                    if(data.isSuccess)
+                    {
+                        NavUtil.pop();
+                    }
                 }, false)
             }
             else {//修改资金密码
@@ -150,7 +154,11 @@ export default class ChangePwd extends BaseView {
                     HTTP_SERVER.PWD_FUND.body.fund_password = this.state.newPwd;
                     HTTP_SERVER.PWD_FUND.body.fund_password_confirmation = this.state.repeatPwd;
                     ActDispatch.FetchAct.fetchVoWithResult(HTTP_SERVER.PWD_FUND, (data) => {
-                            ActDispatch.AppAct.showErrorBox(data.Msg);
+                        ActDispatch.AppAct.showErrorBox(data.Msg);
+                        if(data.isSuccess)
+                        {
+                            NavUtil.pop();
+                        }
                     }, false)
                 }
                 else {
@@ -159,6 +167,10 @@ export default class ChangePwd extends BaseView {
                     HTTP_SERVER.PWD_CONFIG_FUND.body.fund_password_confirmation = this.state.repeatPwd;
                     ActDispatch.FetchAct.fetchVoWithResult(HTTP_SERVER.PWD_CONFIG_FUND, (data) => {
                         ActDispatch.AppAct.showErrorBox(data.Msg);
+                        if(data.isSuccess)
+                        {
+                            NavUtil.pop();
+                        }
                     }, false)
 
                 }

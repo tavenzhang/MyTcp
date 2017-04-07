@@ -129,6 +129,7 @@ android {
 }
 
 dependencies {
+    compile project(':rn-splash-screen')
     compile project(':react-native-material-kit')
     compile project(':react-native-vector-icons')
     compile project(':react-native-code-push')

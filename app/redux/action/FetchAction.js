@@ -21,7 +21,7 @@ export const FetchAct = {
             isText,
         }
     ),
-    fetchVoWithAction:(dataVo,endAction,isHideHint = false, isHideError = false, isText=false)=>({
+    fetchVoWithAction:(dataVo,endAction,callback = null,isHideHint = false, isHideError = false, isText=false)=>({
             type: ActionType.FetchType.FETCH_REQUEST,
             url:dataVo.url,
             requestType:dataVo.method ? dataVo.method:"GET",
@@ -29,6 +29,7 @@ export const FetchAct = {
             isHideError,
             isHideHint,
             endAction,
+            callback,
             isText,
         }
     ),

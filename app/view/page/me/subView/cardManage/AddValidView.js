@@ -5,37 +5,49 @@ import {
     TextInput,
     Alert
 } from 'react-native';
-
 import BaseView from "../../../../componet/BaseView";
 import Button from "react-native-button";
+import ModalDropdown from 'react-native-modal-dropdown';
 
-export default class EditCardView extends BaseView {
+export default class AddValidView extends BaseView {
     constructor(props) {
         super(props);
         this.state = {
             countName: "",
             careNumText: "",
-            password: ""
+            password: "",
+            cardData: null
         }
     }
 
     renderBody() {
         let {passProps} = this.props;
-        //TLog("EditCardView-----------", passProps)
+        TLog("ValidCardView-----------", passProps);
         return (
             <View style={GlobeStyle.appContentView}>
                 <View style={{height: GlobelTheme.screenHeight / 3, backgroundColor: "white", paddingLeft: 10}}>
-                    <Text style={{
-                        fontSize: 14,
-                        color: GlobelTheme.gray,
-                        margin: 10,
-                        alignSelf: "center"
-                    }}>卡号: {passProps.accountEny}</Text>
+                    <View style={{flex: 1, alignItems: "center", flexDirection: "row"}}>
+                        <View style={{width: GlobelTheme.screenWidth * 1 / 3, alignItems: "flex-end"}}>
+                            <Text>开户银行: </Text>
+                        </View>
+                        <ModalDropdown style={styles.dropdown_1}
+                                       options={passProps.cardList}
+                                       renderRow={this.rendCardRow}
+                                       onSelect={(idx, value) => {
+                                           this.setState({cardData: value})
+                                       }}
+                        >
+                            <Text
+                                style={{textAlign: "center"}}>{this.state.cardData ? this.state.cardData.accountEny : "请选择验证卡"}</Text>
+
+                        </ModalDropdown>
+                    </View>
 
                     <View style={{flex: 1, alignItems: "center", flexDirection: "row"}}>
                         <View style={{width: GlobelTheme.screenWidth * 1 / 3, alignItems: "flex-end"}}>
                             <Text >开户人姓名: </Text>
                         </View>
+
                         <TextInput
                             style={styles.cardInput}
                             autoCapitalize="none"
@@ -86,15 +98,29 @@ export default class EditCardView extends BaseView {
                     style={{fontSize: 14, color: "white"}}
                     styleDisabled={{color: '#fff'}}
                     onPress={this.clickNext}>
-                    下一步
+                    添加
                 </Button>
             </View>
         );
     }
 
+    rendCardRow = (rowData, rowID, highlighted) => {
+        return (<View style={{
+            margin: 10,
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center"
+        }}><Text>{rowData.accountEny}</Text></View>)
+    }
+
     clickNext = () => {
-       // TLog("-----------------------his.state.careNumText-:" + this.state.careNumText.length, this.state.careNumText);
-        if (this.state.countName.length < 1) {
+        //TLog("-----------------------his.state.careNumText-:" + this.state.careNumText.length, this.state.careNumText);
+        if (this.state.cardData == null) {
+            Alert.alert("", "请先选择一个验证银行卡", [
+                {text: 'ok'},
+            ]);
+        }
+        else if (this.state.countName.length < 1) {
             Alert.alert("", "请输入有效的用户名", [
                 {text: '了解'},
             ])
@@ -106,16 +132,14 @@ export default class EditCardView extends BaseView {
             Alert.alert("", "资金密码不能为空", [])
         }
         else {
-            let {passProps} = this.props;
             //id:1,account_name:"",account:"",fund_password:""
-            HTTP_SERVER.BANK_CARD_MODIFY_STEP_O.body.id = passProps.id;
-            HTTP_SERVER.BANK_CARD_MODIFY_STEP_O.body.account = passProps.account;
-            HTTP_SERVER.BANK_CARD_MODIFY_STEP_O.body.account_name = this.state.countName;
-            HTTP_SERVER.BANK_CARD_MODIFY_STEP_O.body.fund_password = this.state.password;
-            HTTP_SERVER.BANK_CARD_MODIFY_STEP_O.url=  HTTP_SERVER.BANK_CARD_MODIFY_STEP_O.formatUrl.replace("#id", passProps.id)
-            ActDispatch.FetchAct.fetchVoWithResult(HTTP_SERVER.BANK_CARD_MODIFY_STEP_O, (result) => {
+            HTTP_SERVER.BANK_CARD_ADD_STEP_0.body.id = this.state.cardData.id;
+            HTTP_SERVER.BANK_CARD_ADD_STEP_0.body.account = this.state.careNumText.trim();
+            HTTP_SERVER.BANK_CARD_ADD_STEP_0.body.account_name = this.state.countName.trim();
+            HTTP_SERVER.BANK_CARD_ADD_STEP_0.body.fund_password = this.state.password.trim();
+            ActDispatch.FetchAct.fetchVoWithResult(HTTP_SERVER.BANK_CARD_ADD_STEP_0, (result) => {
                 if (result.isSuccess) {
-                    NavUtil.pushToView(NavViews.EditCardAddView({...passProps,title: "2. 修改银行卡",isStep2:true}));
+                    NavUtil.pushToView(NavViews.AddCardView({title: "2. 添加新银行卡",isStep2:true}));
                 }
                 else {
                     ActDispatch.AppAct.showErrorBox(result.Msg);
@@ -139,6 +163,13 @@ const styles = StyleSheet.create({
         marginLeft: 20,
         fontSize: 14,
         flex: 2,
+    },
+    dropdown_1: {
+        flex: 1,
+        top: 0,
+        left: 8,
+        borderColor: "gray",
+        borderWidth: StyleSheet.hairlineWidth,
     }
 
 });
