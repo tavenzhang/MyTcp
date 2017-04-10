@@ -8,7 +8,6 @@ import BaseView from "../../../../componet/BaseView";
 
 export  default class MessageDetail extends BaseView {
 
-
     constructor(props) {
         super(props)
         this.state = {
@@ -17,7 +16,6 @@ export  default class MessageDetail extends BaseView {
     }
 
     renderBody() {
-        let {gamesDic} = this.props.passProps
         let typeInfo=this.state.data.msg_type;
         let typeName="";
         for(let key in typeInfo)
@@ -44,13 +42,11 @@ export  default class MessageDetail extends BaseView {
 
     componentDidMount() {
         let {id} = this.props.passProps
-        let tempUrl=HTTP_SERVER.LETTER_DETAIL.url;
-        HTTP_SERVER.LETTER_DETAIL.url = HTTP_SERVER.LETTER_DETAIL.url.replace(/#id/g, id);
+        HTTP_SERVER.LETTER_DETAIL.url = HTTP_SERVER.LETTER_DETAIL.formatUrl.replace(/#id/g, id);
         ActDispatch.FetchAct.fetchVoWithResult(HTTP_SERVER.LETTER_DETAIL, (result) => {
             if (result.data) {
-                this.setState({data: result.data})
+                this.setState({data: result.data});
             }
         })
-        HTTP_SERVER.LETTER_DETAIL.url=tempUrl;
     }
 }

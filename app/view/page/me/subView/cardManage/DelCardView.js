@@ -119,7 +119,7 @@ export default class DelCardView extends BaseView {
             HTTP_SERVER.BANK_CARDS_DEL.body.account_name=this.state.countName.trim();
             HTTP_SERVER.BANK_CARDS_DEL.body.fund_password = this.state.password.trim();
             ActDispatch.FetchAct.fetchVoWithResult( HTTP_SERVER.BANK_CARDS_DEL, (result) => {
-                ActDispatch.AppAct.showErrorBox(result.Msg);
+                //ActDispatch.AppAct.showErrorBox(result.Msg);
                 if(result.isSuccess)
                 {
                     NavUtil.pop();

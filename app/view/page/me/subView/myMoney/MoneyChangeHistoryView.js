@@ -87,7 +87,7 @@ export default class MoneyChangeHistoryView extends React.Component {
     _renderRow = (rowData,section) => {
         let {gameModel,playModel,typesModel}=this.props;
         let gameName= gameModel.getGameNameById(rowData.lottery_id);
-         let dateStr=   DateUitle.formatSimpleItemDateString(rowData.created_at);
+         let dateStr=   DateUtil.formatSimpleItemDateString(rowData.created_at);
          let playName = playModel.getWayNameById(rowData.way_id);
          let money= rowData.is_income ? `+${ parseInt(rowData.amount)}`:`-${ parseInt(rowData.amount)}`
 
@@ -98,7 +98,6 @@ export default class MoneyChangeHistoryView extends React.Component {
                         <View style={[styles.itemContentStyle,{flex:1}]}>
                             <Text style={styles.textItemStyle}>{dateStr}</Text>
                         </View>
-
                         <View style={[styles.itemContentStyle,{flex:2}]}>
                             <Text style={[styles.textItemStyle,{color:rowData.is_income ? "green":"red"}]}>{money}</Text>
                         </View>

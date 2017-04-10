@@ -118,7 +118,7 @@ export default class EditCardView extends BaseView {
                     NavUtil.pushToView(NavViews.EditCardAddView({...passProps,title: "2. 修改银行卡",isStep2:true}));
                 }
                 else {
-                    ActDispatch.AppAct.showErrorBox(result.Msg);
+                    //ActDispatch.AppAct.showErrorBox(result.Msg);
                 }
             })
         }

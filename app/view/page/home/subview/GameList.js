@@ -8,11 +8,12 @@ import {
 } from 'react-native';
 
 import Swiper from 'react-native-swiper';
+
 import GameView from './GameView';
 export  default class GameList extends React.Component {
 
     render() {
-        let {dataList} = this.props;
+        let {dataList,gameModel,playModel} = this.props;
         let newList = []
         let listView = null;
          //每9个为一页 分页处理
@@ -28,7 +29,6 @@ export  default class GameList extends React.Component {
                 tempArr.push(dataList[i]);
             }
         }
-
         if (newList.length > 0) {
             listView = <Swiper
                 height={468}
@@ -45,7 +45,7 @@ export  default class GameList extends React.Component {
             >
                 {newList.map((item, i) => {
                     return (
-                        <GameView key={i + 100} dataList={item}/>
+                        <GameView key={i + 100} dataList={item} gameModel={gameModel} playModel={playModel}/>
                     )
                 })}
             </Swiper>

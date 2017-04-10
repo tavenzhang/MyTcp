@@ -1,6 +1,3 @@
-/**
- * Created by thomas on 2017/3/15.
- */
 export  default class MobileTypesModel {
 
     constructor(data) {

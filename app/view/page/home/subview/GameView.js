@@ -53,10 +53,11 @@ export default class GameDetail extends React.Component {
 
     itemClick=(data)=> {
         data.title=data.name;
+        const {gameModel,playModel}= this.props
        // TLog("rowData.openrowData.openrowData.open==",rowData.open=="1")
         if(data.open=="1")
         {
-            NavUtil.pushToView(NavViews.SD11Choose5(data));
+            NavUtil.pushToView(NavViews.SD11Choose5({...data,gameModel:gameModel, playModel:playModel}));
         }
         else{
             Alert.alert("当前游戏还在筹备中","敬请期待！",[])

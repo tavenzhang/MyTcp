@@ -25,6 +25,7 @@ import DelCardView from "../view/page/me/subView/cardManage/DelCardView";
 import EditCardView from "../view/page/me/subView/cardManage/EditCardView";
 import AddValidView from "../view/page/me/subView/cardManage/AddValidView";
 import EditCardAddView from "../view/page/me/subView/cardManage/EditCardAddView";
+import MoneyTransferView from "../view/page/me/subView/MoneyTransferView";
 
 
 // PushFromLeft
@@ -76,6 +77,8 @@ let NavViews = {
     ChaseDeatilView: (data) => ({"component": ChaseDeatilView, "passProps": data}),
     MessageDetail: (data) => ({"component": MessageDetail, "passProps": data}),
     NoticeDeailView: (data) => ({"component": NoticeDeailView, "passProps": data}),
+
+    MoneyTransferView:(data) => ({"component": MoneyTransferView, "passProps": data})
 
 
 }

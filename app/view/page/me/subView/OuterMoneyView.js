@@ -29,6 +29,7 @@ export default class OuterMoneyView extends BaseView {
     }
 
     renderBody() {
+        TLog("OuterMoneyView--------------------",this.props.passProps);
         return (
             <View style={GlobeStyle.appContentView}>
                 <View style={{flex: 2, marginLeft: 30, marginRight: 30}}>

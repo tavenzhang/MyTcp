@@ -34,20 +34,17 @@ export default class AddValidView extends BaseView {
                                        options={passProps.cardList}
                                        renderRow={this.rendCardRow}
                                        onSelect={(idx, value) => {
-                                           this.setState({cardData: value})
+                                           this.setState({cardData: value});
                                        }}
                         >
-                            <Text
-                                style={{textAlign: "center"}}>{this.state.cardData ? this.state.cardData.accountEny : "请选择验证卡"}</Text>
-
+                            <Text style={{textAlign: "center"}}>{this.state.cardData ? this.state.cardData.accountEny : "请选择验证卡"}</Text>
                         </ModalDropdown>
                     </View>
 
                     <View style={{flex: 1, alignItems: "center", flexDirection: "row"}}>
                         <View style={{width: GlobelTheme.screenWidth * 1 / 3, alignItems: "flex-end"}}>
-                            <Text >开户人姓名: </Text>
+                            <Text>开户人姓名: </Text>
                         </View>
-
                         <TextInput
                             style={styles.cardInput}
                             autoCapitalize="none"
@@ -142,7 +139,7 @@ export default class AddValidView extends BaseView {
                     NavUtil.pushToView(NavViews.AddCardView({title: "2. 添加新银行卡",isStep2:true}));
                 }
                 else {
-                    ActDispatch.AppAct.showErrorBox(result.Msg);
+                   // ActDispatch.AppAct.showErrorBox(result.Msg);
                 }
             })
         }

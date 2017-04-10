@@ -19,7 +19,7 @@ Date.prototype.Format = function (fmt) { //author: meizz
 }
 
 
-const DateUitle={
+const DateUtil={
     //2017-02-22  15:47:00
     formatRecodData:(date:Date)=>{
         return date.Format("yyyy-MM-dd hh:mm:ss");
@@ -55,7 +55,20 @@ const DateUitle={
     }
 }
 
-global.DateUitle = DateUitle;
+global.DateUtil = DateUtil;
+
+
+const StringUtil={
+    //2017-02-22  15:47:00
+    formatBankCard:(str)=>{
+        let tempStr = str.substr(0, str.length - 4);
+        tempStr = tempStr.replace(/./g, "*");
+        tempStr += str.substr(str.length - 4);
+         return tempStr;
+    },
+}
+global.StringUtil=StringUtil;
+
 /**
  * 打印
  */

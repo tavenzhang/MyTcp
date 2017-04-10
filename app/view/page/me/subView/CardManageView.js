@@ -2,8 +2,6 @@ import React from 'react';
 import {
     View,
     Text, StyleSheet,
-    TouchableHighlight,
-    ScrollView,
     TouchableOpacity
 } from 'react-native';
 import {connect} from 'react-redux';
@@ -27,17 +25,14 @@ export default class CardManageView extends BaseView {
         return {rightView: HeaderPlusRightMenu}
     }
 
-    shouldComponentUpdate() {
 
-    }
 
     renderBody() {
-        TLog("cardList----------------------------")
+       // TLog("cardList----------------------------");
         return (
             <MyListView dataList={this.props.cardList} loadMore={this._loadMore} renderRow={this._renderRow}/>
         );
     }
-
 
     componentDidMount() {
         HTTP_SERVER.LIST_BANGK_CARDS.body.page = 1;
@@ -58,11 +53,12 @@ export default class CardManageView extends BaseView {
 
 
     _renderRow = (rowData, section) => {
+       if(!rowData)
+       {
+           return null;
+       }
 
-        let subCard = rowData.account.substr(0, rowData.account.length - 4);
-        subCard = subCard.replace(/./g, "*");
-        subCard += rowData.account.substr(rowData.account.length - 4);
-        rowData.accountEny=subCard;
+        rowData.accountEny=StringUtil.formatBankCard(rowData.account);
         let countName = rowData.account_name.replace(/./g, "*");
         let lockSate = rowData.islock ? "被锁定" : "使用中"
 
@@ -70,7 +66,7 @@ export default class CardManageView extends BaseView {
             <View style={styles.row}>
                 <View style={{flex: 2}}>
                     <Text style={{color: "white"}}>{rowData.bank}</Text>
-                    <Text style={{color: "white", fontSize: 12, marginTop: 3, letterSpacing: 2}}>卡号:{subCard}</Text>
+                    <Text style={{color: "white", fontSize: 12, marginTop: 3, letterSpacing: 2}}>卡号:{rowData.accountEny}</Text>
                     <Text style={{color: "white", fontSize: 12, marginTop: 3, letterSpacing: 2}}>账户:{countName}</Text>
                     <Text style={{color: "white", fontSize: 12, marginTop: 3,}}>银行卡状态:{lockSate}</Text>
                 </View>
@@ -97,6 +93,7 @@ export default class CardManageView extends BaseView {
     }
 
     onRightPressed() {
+        TLog("this.props.cardList---"+this.props.cardList.length)
         if(this.props.cardList.length<=0) {
             NavUtil.pushToView(NavViews.AddCardView({title: "添加银行卡"}));
         }else {

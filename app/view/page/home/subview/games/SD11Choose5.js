@@ -5,24 +5,15 @@ import {
     , StyleSheet,
     TouchableHighlight
 } from 'react-native';
-import {connect} from 'react-redux';
 import BaseView from "../../../../componet/BaseView";
 import {HeaderSD11Choose5} from "../../../../componet/navBarMenu/HeaderMenu";
 
-const mapStateToProps = state => {
-    return {
-        playModel: state.get("appState").get("playModel"),
-        gameModel:state.get("appState").get("gameModel")
-    }
-}
-
-@connect(mapStateToProps)
 export default class SD11Choose5 extends BaseView {
 
     constructor(props) {
         super(props);
-        let {passProps, playModel} = this.props;
-        this.firstMenu = playModel.getPlayByGid(passProps.series_id).arrayList;
+        let {series_id, playModel} = this.props.passProps;
+        this.firstMenu = playModel.getPlayByGid(series_id).arrayList;
         this.state = {
             subMenuList: [],
             selectFirstMenu: null,
@@ -33,8 +24,8 @@ export default class SD11Choose5 extends BaseView {
     }
 
     getNavigationBarProps() {
-        let {passProps, gameModel} = this.props;
-        let gameName = gameModel.getGameNameById(passProps.id);
+        let {id, gameModel} = this.props.passProps;
+        let gameName = gameModel.getGameNameById(id);
         if (this.state.selectFirstMenu) {
             gameName = gameName + "-" + this.state.selectFirstMenu.name;
         }
@@ -134,6 +125,7 @@ export default class SD11Choose5 extends BaseView {
             this.setState({isShowMenu: !this.state.isShowMenu});
         }
     }
+
     onSelectSubView=()=>{
         TLog("onSelectSubView---------------",this.state.selectSecondMenu);
     }

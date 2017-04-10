@@ -38,7 +38,7 @@ function fetchMiddleware(extraArgument) {
              //fetch(action.url, requestHeader).then(response =>response.json())
                 .then(res => {
                     res=res.replace(/;/g,   "");
-                   // TLog(`http<----------${action.url}:`,res);
+                  // TLog(`http<----------${action.url}:`,res);
                     const data = JSON.parse(res);
                     //const data = res;
                     TLog(`http<----------${action.url}:`,data);
@@ -48,11 +48,26 @@ function fetchMiddleware(extraArgument) {
                     }
                     else {
                         if (action.callback) {
-                            action.callback(data)
+                            try{
+                                action.callback(data)
+                            }
+                            catch (err){
+                                TLog(`callback error<----------${action.url}:`,err);
+                            }
                         }
                         if(action.endAction)
                         {
                             next({type:action.endAction,httpResult:data});
+                        }
+                        if(data.Msg)//警告提示信息
+                        {
+                            if(data.isSuccess)
+                            {
+                                next(ActionEnum.AppAct.showBox(data.Msg));
+                            }
+                            else{
+                                next(ActionEnum.AppAct.showErrorBox(data.Msg));
+                            }
                         }
                     }
                     //更改请求状态

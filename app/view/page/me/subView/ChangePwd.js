@@ -16,19 +16,19 @@ const mapStateToProps = state => {
         userData: state.get("appState").get("userData").toJS(),
     }
 }
-
 @connect(mapStateToProps)
 export default class ChangePwd extends BaseView {
 
     constructor(props) {
         super(props);
         let {userData} = this.props;
+        let {defaultIndex}=this.props.passProps;
         this.isSetFundPwd=userData.data.is_set_fund_password;
         this.state = {
             oldPwd: "",
             newPwd: "",
             repeatPwd: "",
-            selectedTabIndex: 0,
+            selectedTabIndex: defaultIndex,
         };
     }
 
@@ -91,7 +91,7 @@ export default class ChangePwd extends BaseView {
                         }}
                         style={{fontSize: 14, color: "white"}}
                         styleDisabled={{color: '#fff'}}
-                        onPress={this.onCommitAction}>
+                        onPress={()=>this.onCommitAction()}>
                         {this.state.selectedTabIndex ? "资金密码" : "登陆密码"}
                         提交
                     </Button>
@@ -118,14 +118,13 @@ export default class ChangePwd extends BaseView {
     }
 
     onCommitAction = () => {
-        if (this.state.oldPwd == "") {
-            if(this.isSetFundPwd||this.state.selectedTabIndex==0)
+        if (this.state.oldPwd == ""&&(this.isSetFundPwd||this.state.selectedTabIndex==0)) {
             {
                 ActDispatch.AppAct.showErrorBox("原密码不能为空.")
             }
         }
         else if (this.state.newPwd == "") {
-            ActDispatch.AppAct.showErrorBox("新密码不能为空.")
+            ActDispatch.AppAct.showErrorBox("新密码不能为空.");
         }
         else if (this.state.repeatPwd == "") {
             ActDispatch.AppAct.showErrorBox("确认密码不能为空.")

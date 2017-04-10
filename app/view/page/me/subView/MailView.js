@@ -6,18 +6,11 @@ import {
     TouchableHighlight
 } from 'react-native';
 
-import {connect} from 'react-redux';
 import AIcon from 'react-native-vector-icons/FontAwesome';
 import BaseView from "../../../componet/BaseView";
 import MsgListView from "../../../componet/BaseListView";
 
-const mapStateToProps = state => {
-    return {
 
-    }
-}
-
-@connect(mapStateToProps)
 export default class MailView extends BaseView {
     constructor(props) {
         super(props);
@@ -49,7 +42,7 @@ export default class MailView extends BaseView {
     }
 
     _renderRow=(data)=>{
-        let dataName =  DateUitle.formatItemDateString(data.updated_at);
+        let dataName =  DateUtil.formatItemDateString(data.updated_at);
         return (
             <View>
                 <TouchableHighlight onPress={() => this.itemClick(data)} underlayColor='rgba(10,10,10,0.2)'>
@@ -61,7 +54,6 @@ export default class MailView extends BaseView {
                         <View style={styles.itemContentStyle}>
                             <Text style={[styles.textItemStyle,{fontWeight: "bold",color:data.is_readed ? "gray":GlobelTheme.primary}]} >{data.is_readed ? "已读":"未读"}</Text>
                         </View>
-
                         <View style={styles.itemContentStyle}>
                             <AIcon name={"angle-right"}
                                    style={{fontSize: 25, alignSelf:"center",color:"gray"}}/>

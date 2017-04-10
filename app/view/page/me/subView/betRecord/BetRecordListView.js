@@ -24,7 +24,7 @@ export default class BetRecordListView extends React.Component {
 
     _renderRow = (rowData) => {
         let {gameModel} = this.props;
-        let dataName = DateUitle.formatItemDateString(rowData.bought_at);
+        let dataName = DateUtil.formatItemDateString(rowData.bought_at);
         let gameName = gameModel.getGameNameById(rowData.lottery_id);
         return (
             <View>

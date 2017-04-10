@@ -47,7 +47,7 @@ export default class Notice extends BaseView {
     }
 
     _renderRow = (data) => {
-       // let dataName = DateUitle.formatItemDateString(data.created_at);
+       // let dataName = DateUitil.formatItemDateString(data.created_at);
         return (
             <View>
                 <TouchableHighlight onPress={() => this.itemClick(data)} underlayColor='rgba(10,10,10,0.2)'>

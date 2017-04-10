@@ -17,7 +17,6 @@ const ListType = {
 
 const mapStateToProps = state => {
     return {
-        typesModel:state.get("appState").get("typesModel"),
         gameModel:state.get("appState").get("gameModel"),
         playModel:state.get("appState").get("playModel"),
     }
@@ -27,9 +26,9 @@ export default class ChaseRecordView extends BaseView {
     constructor(props) {
         super(props);
         let now = new Date();
-        let lastWeekTime = DateUitle.formatRecodData(new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000));
-        let lastMonth = DateUitle.formatRecodData(new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000));
-        let lastTowMonth = DateUitle.formatRecodData(new Date(now.getTime() - 60 * 24 * 60 * 60 * 1000));
+        let lastWeekTime = DateUtil.formatRecodData(new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000));
+        let lastMonth = DateUtil.formatRecodData(new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000));
+        let lastTowMonth = DateUtil.formatRecodData(new Date(now.getTime() - 60 * 24 * 60 * 60 * 1000));
         this.state = {
             curGame: null,
             curPlay: null,
@@ -225,7 +224,7 @@ export default class ChaseRecordView extends BaseView {
 
     loadMore = (callBack, forcePage = 0) => {
         HTTP_SERVER.CHASE_RECODE.body.bought_at_from = this.state.curTime ? this.state.curTime.date : "";
-        HTTP_SERVER.CHASE_RECODE.body.bought_at_to = DateUitle.formatRecodData(new Date());
+        HTTP_SERVER.CHASE_RECODE.body.bought_at_to = DateUtil.formatRecodData(new Date());
         HTTP_SERVER.CHASE_RECODE.body.lottery_id = this.state.curGame ? this.state.curGame.id : "";
         HTTP_SERVER.CHASE_RECODE.body.way_id = this.state.curPlay ? this.state.curPlay.id : "";
         if (forcePage > 0) {

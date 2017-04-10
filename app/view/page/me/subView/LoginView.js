@@ -3,21 +3,14 @@ import {
     View
     , StyleSheet,
     TextInput,
+    Alert
 } from 'react-native';
 
-import {connect} from 'react-redux';
 import AIcon from 'react-native-vector-icons/FontAwesome';
 import Button from 'react-native-button';
 import md5 from "react-native-md5";
 import BaseView from "../../../componet/BaseView";
 
-const mapStateToProps = state => {
-    return {
-       // isLoading: state.fetchState.requesting || state.appState.requesting,
-    }
-}
-
-@connect(mapStateToProps)
 export default class LoginView extends BaseView {
 
     constructor(props) {
@@ -36,8 +29,8 @@ export default class LoginView extends BaseView {
 
     renderBody() {
         return (
-            <View style={GlobeStyle.appView}>
-                <View style={{marginLeft:40,marginRight: 40,top:GlobelTheme.screenHeight/6}}>
+            <View style={[GlobeStyle.appContentView,{justifyContent:"center"}]}>
+                <View style={{marginLeft:40,marginRight: 40, marginBottom:GlobelTheme.screenHeight/5,}}>
                     <View
                         style={styles.inputContain}>
                         <AIcon name="user-o" style={styles.iconUser}/>
@@ -68,14 +61,14 @@ export default class LoginView extends BaseView {
                         onPress={this.clickLogin}>
                         登陆
                     </Button>
-                    <View style={{flexDirection: "row",justifyContent: "space-between"}}>
-                        <Button
-                            containerStyle={{padding:5, overflow:'hidden'}}
-                            style={{ fontSize: 14,color:"#00f"}}
-                            onPress={this.clickReg}>
-                            忘记密码?
-                        </Button>
-                    </View>
+                    {/*<View style={{flexDirection: "row",justifyContent: "space-between"}}>*/}
+                        {/*<Button*/}
+                            {/*containerStyle={{padding:5, overflow:'hidden'}}*/}
+                            {/*style={{ fontSize: 14,color:"#00f"}}*/}
+                            {/*onPress={this.clickReg}>*/}
+                            {/*忘记密码?*/}
+                        {/*</Button>*/}
+                    {/*</View>*/}
                 </View>
             </View>
         );
@@ -129,14 +122,14 @@ const styles = StyleSheet.create({
     },
     inputContain: {
         paddingBottom: 5,
-        marginTop: 10,
+        marginTop: 15,
         paddingLeft: 5,
         flexDirection: "row",
-        height: 30,
+        height: 40,
         justifyContent: "flex-start",
         alignItems: "center",
         borderColor: 'gray',
-        borderBottomWidth: 0.2
+        borderBottomWidth: 0.2,
     }
 });
 

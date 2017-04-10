@@ -1,13 +1,9 @@
-/**
- * Created by thomas on 2017/3/10.
- */
 import React from 'react';
 import {
     View,
     WebView
 } from 'react-native';
 import BaseView from "../../../componet/BaseView";
-
 
 
 export  default class NoticeDeailView extends BaseView {
@@ -20,31 +16,29 @@ export  default class NoticeDeailView extends BaseView {
     }
 
     renderBody() {
-        let {gamesDic} = this.props.passProps
-        let typeInfo=this.state.data.msg_type;
-        let typeName="";
-        for(let key in typeInfo)
-        {
-            if(`${this.state.data.type_id}`==key)
-            {
+        // let {gamesDic} = this.props.passProps
+        let typeInfo = this.state.data.msg_type;
+        let typeName = "";
+        for (let key in typeInfo) {
+            if (`${this.state.data.type_id}` == key) {
                 typeName = typeInfo[key];
             }
         }
         // {this.state.data.msg_type[this.state.data.type_id]}
-        return (<View style={[GlobeStyle.appContentView]}>
-            <WebView source={{html:this.state.data.content}}  automaticallyAdjustContentInsets={false} />
-        </View>);
+        return (
+            <View style={[GlobeStyle.appContentView]}>
+                <WebView source={{html: this.state.data.content}} automaticallyAdjustContentInsets={false}/>
+            </View>
+        );
     }
 
     componentDidMount() {
         let {id} = this.props.passProps
-        let tempUrl=HTTP_SERVER.GET_SYSTEM_DETAIL.url;
-        HTTP_SERVER.GET_SYSTEM_DETAIL.url = HTTP_SERVER.GET_SYSTEM_DETAIL.url.replace(/#id/g, id);
+        HTTP_SERVER.GET_SYSTEM_DETAIL.url = HTTP_SERVER.GET_SYSTEM_DETAIL.formatUrl.replace(/#id/g, id);
         ActDispatch.FetchAct.fetchVoWithResult(HTTP_SERVER.GET_SYSTEM_DETAIL, (result) => {
             if (result.data) {
                 this.setState({data: result.data})
             }
         })
-        HTTP_SERVER.GET_SYSTEM_DETAIL.url=tempUrl;
     }
 }

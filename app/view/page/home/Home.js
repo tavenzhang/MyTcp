@@ -10,7 +10,8 @@ import MyBannerSwiper from "../../componet/MyBannerSwiper";
 const mapStateToProps = state => {
     return {
         bannerList: state.get("homeState").get("gameModel"),
-        gameModel:state.get("appState").get("gameModel")
+        gameModel:state.get("appState").get("gameModel"),
+        playModel:state.get("appState").get("playModel")
     }
 }
 
@@ -22,7 +23,7 @@ export default class Home extends BaseView {
     }
 
     renderBody() {
-        let {bannerList,gameModel} = this.props;
+        let {bannerList,gameModel,playModel} = this.props;
         let gameList=gameModel.gameInfoList;
         bannerList = [{
             url: `${HTTP_SERVER.Domain}/dist/i/home/home_activity_banner2.jpg`,
@@ -35,8 +36,8 @@ export default class Home extends BaseView {
         }, {url: `${HTTP_SERVER.Domain}/dist/i/home/home_activity_banner2.jpg`, name: "活动3", data: "http://www.google.com"}]
         return (
             <View style={GlobelTheme.appContentView}>
-                <MyBannerSwiper dataList={bannerList}/>
-                <GameList dataList={gameList}/>
+                <MyBannerSwiper dataList={bannerList} {...this.props}/>
+                <GameList dataList={gameList} gameModel={gameModel} playModel={playModel}/>
             </View>
         );
     }

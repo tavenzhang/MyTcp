@@ -22,17 +22,17 @@ const HTTP_SERVER = {
     GET_BET_WIN:{url:`${SERVERADDR}/mobile-projects/get-win-bet`,method:METHOD_POST,body:{page:1,pagesize:20}},
     //2017-02-22  15:47:00 投注记录
     BET_RECODE:{url:`${SERVERADDR}/mobile-projects`,method:METHOD_POST,body:{bought_at_from:"",bought_at_to:"",issue:"",serial_number:"",lottery_id:"",way_id:"",username:"",user_id:"",page:1,pagesize:20}},
-    BET_DETAIL:{url:`${SERVERADDR}/mobile-projects/#id/view`,method:METHOD_POST,body:{page:1,pagesize:20}},
+    BET_DETAIL:{url:"",formatUrl:`${SERVERADDR}/mobile-projects/#id/view`,method:METHOD_POST,body:{page:1,pagesize:20}},
     //追号记录
     CHASE_RECODE:{url:`${SERVERADDR}/mobile-traces`,method:METHOD_POST,body:{bought_at_from:"",bought_at_to:"",issue:"",serial_number:"",lottery_id:"",way_id:"",username:"",user_id:"",page:1,pagesize:20}},
     //追号详情
-    CHASE_DETAIL:{url:`${SERVERADDR}/mobile-traces/#id/view`,method:METHOD_POST,body:{}},
+    CHASE_DETAIL:{url:"",formatUrl:`${SERVERADDR}/mobile-traces/#id/view`,method:METHOD_POST,body:{}},
     //获取站内信列表
     LETTER_LIST:{url:`${SERVERADDR}/mobile-station-letters`, method:METHOD_POST,body:{}},
     LETTER_DETAIL:{url:"",formatUrl:`${SERVERADDR}/mobile-station-letters/#id/view`,method:METHOD_POST,body:{}},
     //获取系统公告
     GET_LIST_SYSTEM:{url:`${SERVERADDR}/mobile-announcements`, method:METHOD_POST,body:{}},
-    GET_SYSTEM_DETAIL:{url:`${SERVERADDR}/mobile-announcements/#id/view`, method:METHOD_POST,body:{}},
+    GET_SYSTEM_DETAIL:{url:"",formatUrl:`${SERVERADDR}/mobile-announcements/#id/view`, method:METHOD_POST,body:{}},
     Domain:`${SERVERADDR}`,
     //资金明细
     LIST_REANSACTON:{url:`${SERVERADDR}/mobile-transactions/index`,method:METHOD_POST,body:{page:1,pagesize:20}},
@@ -66,7 +66,10 @@ const HTTP_SERVER = {
     BANK_CARD_MODIFY_STEP_1:{url:"",formatUrl:`${SERVERADDR}/mobile-bank-cards/1/#id/modify-card`,method:METHOD_POST,body:{}},
     //step3提交确认银行卡信息
     BANK_CARD_MODIFY_STEP_2:{url:"",formatUrl:`${SERVERADDR}/mobile-bank-cards/2/#id/modify-card`,method:METHOD_POST,body:{bank_id:1,branch:0,province_id:0,city_id:0,account_name:"",account:"",account_confirmation:"",fund_password:""}},
-
+    //   转账信息：POST:/mobile-transfers/index/{user_id?}
+    TRANSFER_GETINFO:{url:"",formatUrl:`${SERVERADDR}/mobile-transfers/index/#id`,method:METHOD_POST,body:{}},
+    //转账提交 POST:/mobile-transfers/transfer-to-sub
+    TRANSFER_SUB_MINT:{url:`${SERVERADDR}/mobile-transfers/transfer-to-sub`,method:METHOD_POST,body:{card_number:"",card_id:"",fund_password:"",amount:0,username:""}}
 };
 global.HTTP_SERVER=HTTP_SERVER
 

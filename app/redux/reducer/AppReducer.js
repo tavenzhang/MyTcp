@@ -75,7 +75,10 @@ const appState = (state = initAppState, action) => {
                 tempList= action.httpResult.data.data;
             }
             else{
-                tempList=tempList.concat( action.httpResult.data.data);
+                if(action.httpResult.data.data)
+                {
+                    tempList=tempList.concat(action.httpResult.data.data);
+                }
             }
             TLog("ActionType.AppType.CARD_LIST_GET---",tempList)
             return state.merge({cardList:tempList});

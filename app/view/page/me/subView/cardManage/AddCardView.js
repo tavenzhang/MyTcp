@@ -5,7 +5,6 @@ import {
     TextInput,
     Alert
 } from 'react-native';
-
 import BaseView from "../../../../componet/BaseView";
 import ModalDropdown from 'react-native-modal-dropdown';
 import Button from "react-native-button";
@@ -28,7 +27,7 @@ export default class AddCardView extends BaseView {
 
     renderBody() {
         let {passProps} = this.props;
-        TLog("EditCardView-----------", passProps)
+        TLog("AddCardView-----------", passProps);
         let backList = this.state.bankCityModel ? this.state.bankCityModel.bankList : [];
         let princeList = this.state.bankCityModel ? this.state.bankCityModel.princeList : [];
         let cityList = [];
@@ -79,8 +78,7 @@ export default class AddCardView extends BaseView {
                                            return style;
                                        }}
                         >
-                            <Text
-                                style={{textAlign: "center"}}>{this.state.cityData ? this.state.cityData.name : "请选择城市"}</Text>
+                            <Text style={{textAlign: "center"}}>{this.state.cityData ? this.state.cityData.name : "请选择城市"}</Text>
                         </ModalDropdown>
                     </View>
                     <View style={{flex: 1, alignItems: "center", flexDirection: "row"}}>
@@ -150,7 +148,7 @@ export default class AddCardView extends BaseView {
                     style={{fontSize: 14, color: "white"}}
                     styleDisabled={{color: '#fff'}}
                     onPress={this.clickNext}>
-                    下一步
+                    添加
                 </Button>
             </View>
         );
@@ -219,7 +217,7 @@ export default class AddCardView extends BaseView {
                      ActDispatch.FetchAct.fetchVoWithAction(HTTP_SERVER.LIST_BANGK_CARDS, ActionType.AppType.CARD_LIST_GET);
                  }
                  else{
-                     ActDispatch.AppAct.showErrorBox(result.Msg);
+                     //ActDispatch.AppAct.showErrorBox(result.Msg);
                  }
 
             })

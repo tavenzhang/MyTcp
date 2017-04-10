@@ -21,6 +21,7 @@ let ItemNameEnum = {
     myMoney: "资金明细",
     outerMoney: "账户提现",
     inMoney: "账户充值",
+    moneyTransfer: "账户转账",
     pwdMange: "密码管理",
     cardMange: "银行卡管理",
     msgNotice: "消息通知"
@@ -34,53 +35,67 @@ const mapStateToProps = state => {
 }
 
 @connect(mapStateToProps)
-export default class MyView extends BaseView{
+export default class MyView extends BaseView {
+    static dataList1 = [{ico: "star", name: ItemNameEnum.awardFind}, {
+        ico: "file-text",
+        name: ItemNameEnum.betRecord
+    }, {ico: "file-text-o", name: ItemNameEnum.chaseRecode}];
+
+    static dataList2 = [{ico: "cny", name: ItemNameEnum.myMoney}, {ico: "meetup", name: ItemNameEnum.outerMoney}, {
+        ico: "money",
+        name: ItemNameEnum.inMoney
+    },{ico: "credit-card", name: ItemNameEnum.cardMange}];
+    static dataList2_Agent = [{ico: "cny", name: ItemNameEnum.myMoney}, {ico: "meetup", name: ItemNameEnum.outerMoney}, {
+        ico: "money",
+        name: ItemNameEnum.inMoney
+    },{
+        ico: "exchange",
+        name: ItemNameEnum.moneyTransfer
+    },{ico: "credit-card", name: ItemNameEnum.cardMange}];
+
+    static dataList3 = [{ico: "lock", name: ItemNameEnum.pwdMange}, {ico: "envelope-o", name: ItemNameEnum.msgNotice}];
+
+
     constructor(props) {
         super(props);
-        let dataList1 = [{ico: "star", name: ItemNameEnum.awardFind}, {
-            ico: "file-text",
-            name: ItemNameEnum.betRecord
-        }, {ico: "file-text-o", name: ItemNameEnum.chaseRecode}]
-        let dataList2 = [{ico: "cny", name: ItemNameEnum.myMoney}, {ico: "meetup", name: ItemNameEnum.outerMoney}, {
-            ico: "money",
-            name: ItemNameEnum.inMoney
-        }, {ico: "credit-card", name: ItemNameEnum.cardMange}]
-        let dataList3 = [{ico: "lock", name: ItemNameEnum.pwdMange}, {ico: "envelope-o", name: ItemNameEnum.msgNotice}];
-        let dataS = {"我的彩票": dataList1, "账户资金": dataList2, "个人信息": dataList3}
         this.state = {
             dataSource: new ListView.DataSource({
                 rowHasChanged: (r1, r2) => r1 !== r2,
                 sectionHeaderHasChanged: (r1, r2) => r1 !== r2
             }),
-            dataS: dataS
         };
     }
 
+
+
     getNavigationBarProps() {
-        let {userData}=this.props;
-        if(userData.isLogined) {
+        let {userData} = this.props;
+        if (userData.isLogined) {
             return {rightView: HeaderRightLoginOut};
         }
-        else{
+        else {
             return {};
         }
     }
 
-    onRightPressed(){
-        ActDispatch.FetchAct.fetchVoWithResult(HTTP_SERVER.LOGIN_OUT,(result)=>{
+    onRightPressed() {
+        ActDispatch.FetchAct.fetchVoWithResult(HTTP_SERVER.LOGIN_OUT, (result) => {
             ActDispatch.AppAct.loginOut();
         })
     }
 
     renderBody() {
-        let {userData}=this.props
-        let ds = this.state.dataSource.cloneWithRowsAndSections(this.state.dataS);
-
+        let {userData} = this.props
+        let dataS = {"我的彩票": MyView.dataList1, "账户资金": MyView.dataList2, "个人信息": MyView.dataList3};
         let infoView = null;
         if (userData.isLogined) {
+            if(userData.data.user_type==1)//1表示是代理用户 才可以转账
+            {
+                dataS = {"我的彩票": MyView.dataList1, "账户资金": MyView.dataList2_Agent, "个人信息": MyView.dataList3};
+            }
             infoView = <View style={styles.headContent2}>
-                <View style={{flexDirection: "row",height: 60}}>
-                    <View style={{justifyContent: "space-around",flex:1,paddingLeft: 10}}>
+                <View style={{flexDirection: "row", height: 60}}>
+                    <View style={{justifyContent: "space-around", flex: 1, paddingLeft: 10}}>
                         <Text><Text
                             style={styles.titleSyle}>用户名: </Text>{userData.data.username}
                         </Text>
@@ -88,35 +103,48 @@ export default class MyView extends BaseView{
                             style={styles.titleSyle}>昵称: </Text>{userData.data.nickname}
                         </Text>
                     </View>
-                    <View style={{ justifyContent: "space-around",flex:1}}>
-                        <Text style={{textAlign: "center",textAlign: "left"}}><Text
+                    <View style={{justifyContent: "space-around", flex: 1}}>
+                        <Text style={{textAlign: "center", textAlign: "left"}}><Text
                             style={styles.titleSyle}>账户总额: </Text>{parseInt(userData.data.available)}
                         </Text>
-                        <Text  style={{textAlign: "center",textAlign: "left"}}><Text
+                        <Text style={{textAlign: "center", textAlign: "left"}}><Text
                             style={styles.titleSyle}>可提金额: </Text>100
                         </Text>
                     </View>
                 </View>
-                <View style={{ flex:1,alignItems:"center",flexDirection: "row",paddingLeft: 10}}>
+                <View style={{flex: 1, alignItems: "center", flexDirection: "row", paddingLeft: 10}}>
                     <Text style={styles.titleSyle}>账户安全:</Text>
-                    <View style={{flexDirection: "row",alignItems: "center",marginLeft: 15,marginRight: 15}}>
-                        <AIcon name="id-card-o" style={{ color: GlobelTheme.gray,fontSize: 20,marginRight:5}}/>
-                        <Text style={{color:"red"}}>未绑定身份证</Text>
+                    <View style={{flexDirection: "row", alignItems: "center", marginLeft: 15, marginRight: 15}}>
+                        <AIcon name="id-card-o" style={{color: GlobelTheme.gray, fontSize: 20, marginRight: 5}}/>
+                        <Text style={{color: "red"}}>未绑定身份证</Text>
                     </View>
-                    <View style={{flexDirection: "row",alignItems: "center"}}>
-                        <AIcon name="mobile" style={{ color: GlobelTheme.gray,fontSize: 20,marginRight:5}}/>
-                        <Text style={{color:"red"}}>未绑定手机</Text>
+                    <View style={{flexDirection: "row", alignItems: "center"}}>
+                        <AIcon name="mobile" style={{color: GlobelTheme.gray, fontSize: 20, marginRight: 5}}/>
+                        <Text style={{color: "red"}}>未绑定手机</Text>
                     </View>
                 </View>
             </View>
         } else {
             infoView = <View style={styles.headContent}>
-                <Text style={{textAlign: "center",lineHeight: 20}}>您还未登录，
+                <Text style={{textAlign: "center", lineHeight: 20}}>您还未登录，
                     <Text onPress={this.clickLogin} style={{color: "red"}}>登录</Text>登陆后可查看更多信息
                 </Text>
-                <View style={[{flexDirection: "row", justifyContent: "center",width:180,flex:1,alignItems:"center"}]}>
+                <View style={[{
+                    flexDirection: "row",
+                    justifyContent: "center",
+                    width: 180,
+                    flex: 1,
+                    alignItems: "center"
+                }]}>
                     <Button
-                        containerStyle={{padding:5,paddingLeft: 20,paddingRight: 20, overflow:'hidden', borderRadius:5, backgroundColor: '#d7213c'}}
+                        containerStyle={{
+                            padding: 5,
+                            paddingLeft: 20,
+                            paddingRight: 20,
+                            overflow: 'hidden',
+                            borderRadius: 5,
+                            backgroundColor: '#d7213c'
+                        }}
                         style={{fontSize: 14, color: 'white'}}
                         styleDisabled={{color: '#fff'}}
                         onPress={this.clickLogin}>
@@ -125,8 +153,9 @@ export default class MyView extends BaseView{
                 </View>
             </View>
         }
+        let ds = this.state.dataSource.cloneWithRowsAndSections(dataS);
         return (
-            <View style={[GlobeStyle.appContentView,{backgroundColor: "rgba(230,230,230,0.5)"}]}>
+            <View style={[GlobeStyle.appContentView, {backgroundColor: "rgba(230,230,230,0.5)"}]}>
                 {infoView}
                 <ListView
                     dataSource={ds}
@@ -137,11 +166,9 @@ export default class MyView extends BaseView{
     }
 
     componentDidMount() {
-
     }
 
     componentWillUnmount() {
-
     }
 
     clickReg = () => {
@@ -153,7 +180,7 @@ export default class MyView extends BaseView{
     }
 
     itemClick = (data) => {
-        let {userData}=this.props
+        let {userData} = this.props
         if (userData.isLogined) {
             switch (data.name) {
                 case ItemNameEnum.awardFind:
@@ -172,24 +199,45 @@ export default class MyView extends BaseView{
                     NavUtil.pushToView(NavViews.InMoneyView({title: data.name}));
                     break;
                 case ItemNameEnum.outerMoney:
-                    NavUtil.pushToView(NavViews.OuterMoneyView({title: data.name}));
+                    NavUtil.pushToView(NavViews.OuterMoneyView({
+                        title: data.name,
+                        money: parseInt(userData.data.available),
+                        uid: userData.data.user_id
+                    }));
                     break;
                 case ItemNameEnum.pwdMange:
-                    NavUtil.pushToView(NavViews.ChangePwd({title: data.name}));
+                    NavUtil.pushToView(NavViews.ChangePwd({title: data.name,defaultIndex:0}));
                     break;
                 case ItemNameEnum.cardMange:
-                    //NavUtil.pushToView(NavViews.AddCardView({title:"添加银行卡"}));
-                   NavUtil.pushToView(NavViews.CardManageView({title: data.name}));
+                   if(userData.data.is_set_fund_password)
+                   {
+                       NavUtil.pushToView(NavViews.CardManageView({title: data.name}));
+                   }
+                   else{
+
+                       Alert.alert("", "请先设置资金密码", [
+                           {text: '设置密码', onPress: this.gotoFoundPwd,style:"destructive"},
+                           // {text: '取消',style:"cancel"},
+                           {text: '取消',style:"default"}
+                       ])
+                   }
                     break;
                 case ItemNameEnum.msgNotice:
                     NavUtil.pushToView(NavViews.MsgView({title: data.name}));
                     break;
+                case ItemNameEnum.moneyTransfer:
+                    NavUtil.pushToView(NavViews.MoneyTransferView({
+                        title: data.name,
+                        money: parseInt(userData.data.available),
+                        uid: userData.data.user_id
+                    }));
+                    break;
             }
         }
         else {
-            Alert.alert("", "请先登陆", [
-                {text: '登陆', onPress: this.clickLogin},
-                {text: '了解'}
+           Alert.alert("", "请先登陆", [
+                {text: '登陆', onPress: this.clickLogin,style:"destructive"},
+                {text: '取消'}
             ])
         }
     }
@@ -197,18 +245,24 @@ export default class MyView extends BaseView{
     _renderRow = (rowData, section, row) => {
         //第一行 渲染 sectionHead
         let headView = row == 0 ? <View
-                style={{height:25, borderBottomWidth: 1,borderColor:"#ddd",backgroundColor: "#ddd" ,justifyContent: "center" }}>
-                <Text style={{left:20,fontSize: 15, color: 'gray'}}>{section}</Text>
-            </View> : null;
+            style={{
+                height: 25,
+                borderBottomWidth: 1,
+                borderColor: "#ddd",
+                backgroundColor: "#ddd",
+                justifyContent: "center"
+            }}>
+            <Text style={{left: 20, fontSize: 15, color: 'gray'}}>{section}</Text>
+        </View> : null;
         return (
             <TouchableHighlight onPress={() => this.itemClick(rowData)} underlayColor='rgba(10,10,10,0.2)'>
                 <View>
                     {headView}
                     <View style={styles.row}>
                         <View>
-                            <View style={{flexDirection: "row",alignItems:"center"}}>
-                                <AIcon name={rowData.ico} style={{ color: GlobelTheme.gray,fontSize: 20, width:25}}/>
-                                <Text style={{fontSize: 14,left:20}}>{rowData.name}</Text>
+                            <View style={{flexDirection: "row", alignItems: "center"}}>
+                                <AIcon name={rowData.ico} style={{color: GlobelTheme.gray, fontSize: 20, width: 25}}/>
+                                <Text style={{fontSize: 14, left: 20}}>{rowData.name}</Text>
                             </View>
                         </View>
                         <AIcon name="angle-right" style={styles.iconNormal}/>
@@ -226,6 +280,9 @@ export default class MyView extends BaseView{
     //         </View>
     //     );
     // }
+    gotoFoundPwd=()=>{
+        NavUtil.pushToView(NavViews.ChangePwd({title:"密码管理",defaultIndex:1}));
+    }
 }
 
 const styles = StyleSheet.create({
