@@ -1,18 +1,18 @@
-
-const obj2ser = objs => {
-    let str = '';
-    for (var key in objs) {
-        if (!objs.hasOwnProperty(key)) continue;
-
-        str += key + "=" + objs[key] + "&";
-    }
-    return str.substring(0, str.length - 1);
-}
+//
+// const obj2ser = objs => {
+//     let str = '';
+//     for (var key in objs) {
+//         if (!objs.hasOwnProperty(key)) continue;
+//
+//         str += key + "=" + objs[key] + "&";
+//     }
+//     return str.substring(0, str.length - 1);
+// }
 
 
 function fetchMiddleware(extraArgument) {
     return ({dispatch, getState}) => next => action => {
-
+        let resHttp="";
         if (action.type == ActionType.FetchType.FETCH_REQUEST) {
             let requestType = action.requestType || 'POST';
             let requestData = action.requestData || {};
@@ -38,8 +38,9 @@ function fetchMiddleware(extraArgument) {
              //fetch(action.url, requestHeader).then(response =>response.json())
                 .then(res => {
                     res=res.replace(/;/g,   "");
-                  // TLog(`http<----------${action.url}:`,res);
-                    const data = JSON.parse(res);
+                   //TLog(`http<----------${action.url}:`,res);
+                    resHttp = res
+                    let data = JSON.parse(res);
                     //const data = res;
                     TLog(`http<----------${action.url}:`,data);
                     //错误，显示错误信息
@@ -74,8 +75,9 @@ function fetchMiddleware(extraArgument) {
                     next(ActionEnum.FetchAct.noticeSuccess());
                 })
                 .catch(e => {
-                    TLog(`http<-------error--- ${action.url}`, e)
                     let errorMsg = e.toString();
+                    TLog(`http<-------error--- ${action.url}`, errorMsg);
+                    TLog(`http<-------error--- ${action.url}`, resHttp);
                     next(ActionEnum.FetchAct.noticeFail());
                     if (!action.isHideError) {
                         next(ActionEnum.AppAct.showBox(errorMsg, 'error'));

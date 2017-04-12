@@ -42,7 +42,7 @@ const appState = (state = initAppState, action) => {
             action.data.isLogined=true;
             return state.merge({userData: action.data})
         case ActionType.AppType.LOG_OUT:
-            AppData.userData = {};
+            AppData.userData = null;
             AppData.isLogined = false;
             return state.merge({userData: {isLogined:false}})
         case ActionType.AppType.SHOW_INFOBOX:

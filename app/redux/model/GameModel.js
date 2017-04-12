@@ -9,7 +9,7 @@ export  default class GameModel{
         {
             this.data= data;
             for(let key in data){
-                data[key].img=`${HTTP_SERVER.Domain}/dist/i/home/home_activity_banner.jpg`;
+                data[key].img=`${SERVERADDR}/dist/i/home/home_activity_banner.jpg`;
                 this.gameInfoList.push(data[key]);
             }
         }

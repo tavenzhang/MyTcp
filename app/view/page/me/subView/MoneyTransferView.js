@@ -19,7 +19,7 @@ export default class MoneyTransferView extends BaseView {
             pwdText: "",
             agentCount:"",
             cardNum:"",
-            money:"",
+            money:0,
             dropDataList: [],
             dropSelectItem:null,
         };
@@ -85,7 +85,7 @@ export default class MoneyTransferView extends BaseView {
                             value={this.state.cardNum}
                             maxLength={20}
                             keyboardType={"numeric"}
-                            placeholder={"请输入验证银行卡卡号"}
+                            placeholder={"请输入验证银行卡完整卡号"}
                         />
                     </View>
                     <Button
@@ -118,6 +118,7 @@ export default class MoneyTransferView extends BaseView {
     }
 
     onConfirmClick=()=>{
+        const {passProps} = this.props;
         if(this.state.dropSelectItem==null)
         {
             Alert.alert("", "请选择一张验证的银行卡", []);
@@ -134,6 +135,10 @@ export default class MoneyTransferView extends BaseView {
         else  if(this.state.cardNum.length<=0){
             Alert.alert("", "请入银行卡卡号", []);
         }
+        else if(parseInt(passProps.money)<parseInt(this.state.money))
+        {
+            Alert.alert("", "转账金额不能大于账户余额", []);
+        }
         else{
             HTTP_SERVER.TRANSFER_SUB_MINT.body.fund_password=this.state.pwdText;
             HTTP_SERVER.TRANSFER_SUB_MINT.body.card_id=this.state.dropSelectItem.id;
@@ -141,11 +146,9 @@ export default class MoneyTransferView extends BaseView {
             HTTP_SERVER.TRANSFER_SUB_MINT.body.card_number=this.state.cardNum;
             ActDispatch.FetchAct.fetchVoWithResult(HTTP_SERVER.TRANSFER_SUB_MINT,(result)=>{
                 if (result.isSuccess) {
-                   // NavUtil.pushToView(NavViews.AddCardView({title: "2. 添加新银行卡",isStep2:true}));
+                    NavUtil.pop();
                 }
-                else {
-                    ActDispatch.AppAct.showErrorBox(result.Msg);
-                }
+
             })
         }
     }

@@ -33,7 +33,6 @@ export default class ChangePwd extends BaseView {
     }
 
     renderBody() {
-
         let oldPwdView = this.state.selectedTabIndex == 1 && !this.isSetFundPwd ? null : (
             <View style={styles.inputContain}>
                 <AIcon name="lock" style={styles.icoPwd}/>

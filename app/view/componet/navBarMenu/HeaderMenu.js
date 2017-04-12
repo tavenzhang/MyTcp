@@ -29,6 +29,12 @@ export class HeaderRightLoginOut extends React.Component {
     }
 }
 
+export class HeaderLeftDomain extends React.Component {
+    render() {
+        return (<View><Text style={{fontSize:14,color:"white", fontWeight:"bold"}}>切换域名</Text></View>)
+    }
+}
+
 const styles = StyleSheet.create({
     navigationBarContainer: {
         flexDirection: 'row',

@@ -4,109 +4,209 @@ import {
     Text
     , StyleSheet,
     TextInput,
-    Picker
+    Picker,
+    Alert,
+    TouchableWithoutFeedback,
+    Keyboard
 } from 'react-native';
-import {connect} from 'react-redux';
+
 import Button from 'react-native-button'
-import AIcon from 'react-native-vector-icons/FontAwesome';
 import BaseView from "../../../componet/BaseView";
+import AutoHideKeyboard from "../../../componet/AutoHideKeyBoardView";
+import AutoView from "../../../componet/AutoView";
 
-const mapStateToProps = state => {
-    return {
-       // isLoading: state.fetchState.requesting || state.appState.requesting,
-    }
-}
 
-@connect(mapStateToProps)
+//@AutoHideKeyboard
 export default class OuterMoneyView extends BaseView {
     constructor(props) {
         super(props);
         this.state = {
-            nameText: "",
+            money: "",
             pwdText: "",
-            language:""
+            pickValue: null,
+            dataInfo: null
         };
     }
 
     renderBody() {
-        TLog("OuterMoneyView--------------------",this.props.passProps);
-        return (
-            <View style={GlobeStyle.appContentView}>
-                <View style={{flex: 2, marginLeft: 30, marginRight: 30}}>
-                    <View style={{flexDirection: "row"}}>
-                        <View style={styles.trLeft}>
-                            <Text style={styles.cellMargin}>用户名:</Text>
-                        </View>
-                        <View style={styles.trRight}>
-                            <Text style={styles.cellMargin}>taven</Text>
-                        </View>
+        let contentView = null
+        let bankCountView = null;
+        if (this.state.pickValue && this.state.dataInfo) {
+            let newList = this.state.dataInfo.bank_cards.filter((data) => data.id == this.state.pickValue)
+            if (newList.length == 1) {
+                bankCountView = (     <View style={{flexDirection: "row", marginBottom: 15}}>
+                    <View style={styles.trLeft}>
+                        <Text style={styles.cellMargin}>开卡信息:</Text>
                     </View>
-                    <View style={{flexDirection: "row"}}>
-                        <View style={styles.trLeft}>
-                            <Text style={styles.cellMargin}>可提现金额:</Text>
-                        </View>
-                        <View style={styles.trRight}>
-                            <Text style={styles.cellMargin}>2222222</Text>
-                        </View>
+                    <View style={styles.trRight}>
+                        <Text
+                            style={styles.cellMargin}>{`账户名:${newList[0].account_name}  ${newList[0].province}-${newList[0].city}`}</Text>
                     </View>
-                    <View style={{flexDirection: "row", alignItems:"center"}}>
-                        <View style={styles.trLeft}>
-                            <Text style={styles.cellMargin}>收款银行卡信息:</Text>
-                        </View>
-                        <View style={styles.trRight}>
-                            <Picker
-                                mode={'dialog'}
-                                selectedValue={this.state.language}
-                                onValueChange={(lang) => this.setState({language: lang})}>
-                                <Picker.Item label="Java" value="java" />
-                                <Picker.Item label="JavaScript" value="js" />
-                                <Picker.Item label="swift" value="swift" />
-                                <Picker.Item label="swift1" value="swift1" />
-                                <Picker.Item label="swift3" value="swift3" />
-                                <Picker.Item label="swift4" value="swift4" />
-                            </Picker>
-                        </View>
+                </View>)
+            }
+        }
+
+        if (this.state.dataInfo) {
+            let limitTimes = parseInt(this.state.dataInfo.withdraw_limit_num);
+            contentView = <View style={{flex: 2, marginLeft: 30, marginRight: 30}}>
+                <View style={{flexDirection: "row"}}>
+                    <View style={styles.trLeft}>
+                        <Text style={styles.cellMargin}>用户名:</Text>
                     </View>
-                    <View style={{flexDirection: "row"}}>
-                        <View style={styles.trLeft}>
-                            <Text style={styles.cellMargin}>提现金额:</Text>
-                        </View>
-                        <View style={[styles.trRight,{alignItems:"center", flexDirection:"row"}]}>
-                            <AIcon name="lock" style={styles.icoPwd}/>
-                            <TextInput
-                                style={styles.textStyle}
-                                onChangeText={(pwdText) => this.setState({pwdText})}
-                                value={this.state.newPwd}
-                                maxLength={8}
-                                placeholder={"提现金额100起步"}
-                                secureTextEntry={true}
-                            />
-                        </View>
+                    <View style={styles.trRight}>
+                        <Text style={styles.cellMargin}>{this.state.dataInfo.accounts.username}</Text>
                     </View>
-                    <Button
-                        containerStyle={{
-                            padding: 10,
-                            margin: 10,
-                            overflow: 'hidden',
-                            borderRadius: 3,
-                            backgroundColor: '#d7213c'
-                        }}
-                        style={{fontSize: 14, color: "white"}}
-                        styleDisabled={{color: '#fff'}}
-                        onPress={this.clickReg}>
-                        下一步
-                    </Button>
                 </View>
+                <View style={{flexDirection: "row"}}>
+                    <View style={styles.trLeft}>
+                        <Text style={styles.cellMargin}>可提现次数:</Text>
+                    </View>
+                    <View style={styles.trRight}>
+                        <Text style={styles.cellMargin}>{limitTimes > 0 ? limitTimes : "无限制"}</Text>
+                    </View>
+                </View>
+                <View style={{flexDirection: "row"}}>
+                    <View style={styles.trLeft}>
+                        <Text style={styles.cellMargin}>今日已提现次数:</Text>
+                    </View>
+                    <View style={styles.trRight}>
+                        <Text style={styles.cellMargin}>{this.state.dataInfo.withdraw_num}</Text>
+                    </View>
+                </View>
+                <View style={{flexDirection: "row"}}>
+                    <View style={styles.trLeft}>
+                        <Text style={styles.cellMargin}>可提现金额:</Text>
+                    </View>
+                    <View style={styles.trRight}>
+                        <Text style={styles.cellMargin}>{parseInt(this.state.dataInfo.accounts.withdrawable)}</Text>
+                    </View>
+                </View>
+                <View style={{flexDirection: "row", alignItems: "center"}}>
+                    <View style={styles.trLeft}>
+                        <Text style={styles.cellMargin}>收款银行卡信息:</Text>
+                    </View>
+                    <View style={styles.trRight}>
+                        <Picker
+                            itemStyle={{fontSize: 13}}
+                            mode={'dropdown'}
+                            selectedValue={this.state.pickValue}
+                            onValueChange={(data) => {
+                                this.setState({pickValue: data})
+                            }}>
+                            {
+                                this.state.dataInfo.bank_cards.map((item, index) => {
+                                    let name = `${item.account}[${item.bank}]`;
+                                    return (<Picker.Item label={name} value={item.id} key={index + "item"}/>)
+                                })
+                            }
+                        </Picker>
+                    </View>
+                </View>
+                {bankCountView}
+                <View style={{flexDirection: "row"}}>
+                    <View style={styles.trLeft}>
+                        <Text style={styles.cellMargin}>提现金额:</Text>
+                    </View>
+                    <View style={[styles.trRight, {
+                        alignItems: "center",
+                        flexDirection: "row",
+                        borderBottomWidth: 0.5,
+                        borderColor: GlobelTheme.gray
+                    }]}>
+                        <TextInput
+                            style={styles.textStyle}
+                            onChangeText={(money) => this.setState({money})}
+                            value={this.state.money}
+                            maxLength={8}
+                            placeholder={`${this.state.dataInfo.min_withdraw_amount}起步,不超过${this.state.dataInfo.max_withdraw_amount}`}
+                            keyboardType={"numeric"}
+                            onSubmitEditing={Keyboard.dismiss}
+                        />
+                    </View>
+                </View>
+                <View style={{flexDirection: "row", marginVertical: 5}}>
+                    <View style={styles.trLeft}>
+                        <Text style={styles.cellMargin}>资金密码:</Text>
+                    </View>
+                    <View style={[styles.trRight, {
+                        alignItems: "center",
+                        flexDirection: "row",
+                        borderBottomWidth: 0.5,
+                        borderColor: GlobelTheme.gray
+                    }]}>
+                        <TextInput
+                            style={styles.textStyle}
+                            onChangeText={(pwdText) => this.setState({pwdText})}
+                            value={this.state.newPwd}
+                            maxLength={8}
+                            placeholder={`输入资金密码`}
+                            keyboardType={"numeric"}
+                            secureTextEntry={true}
+                        />
+                    </View>
+                </View>
+                <Button
+                    containerStyle={{
+                        padding: 10,
+                        margin: 10,
+                        overflow: 'hidden',
+                        borderRadius: 3,
+                        backgroundColor: '#d7213c'
+                    }}
+                    style={{fontSize: 14, color: "white"}}
+                    styleDisabled={{color: '#fff'}}
+                    onPress={() => this.onFirmClick()}>
+                    确认提现
+                </Button>
             </View>
+        }
+
+        return (
+            <AutoView>
+                <View style={GlobeStyle.appContentView}>
+                    {contentView}
+                </View>
+            </AutoView>
         );
     }
 
     componentDidMount() {
 
+        ActDispatch.FetchAct.fetchVoWithResult(HTTP_SERVER.MONEY_OUTER_0, (data) => {
+            if (data.isSuccess) {
+                if (data.data.bank_cards && data.data.bank_cards.length > 0) {
+                    this.setState({dataInfo: data.data, pickValue: data.data.bank_cards[0].id})
+                }
+                else {
+                    this.setState({dataInfo: data.data})
+                }
+            }
+        })
     }
 
-    componentWillUnmount() {
+    onFirmClick = () => {
+        if (!this.state.pickValue) {
+            Alert.alert("", "请先选择一张收款银行卡");
+        } else if ((parseInt(this.state.money) < parseInt(this.state.dataInfo.min_withdraw_amount)) || (parseInt(this.state.money) > parseInt(this.state.dataInfo.max_withdraw_amount))) {
+            Alert.alert("", "请输入合适的转账金额");
+            // }
+            // else if(parseInt(this.state.money)>parseInt(this.state.dataInfo.accounts.withdrawable)){
+            //     Alert.alert("","转账金额超过了可转金额,无法转账");
+        } else if (parseInt(this.state.dataInfo.withdraw_limit_num) > 0 && (parseInt(this.state.dataInfo.withdraw_limit_num) <= parseInt(this.state.dataInfo.withdraw_num))) {
+            Alert.alert("", "转账次数已经达到最大限制");
+        } else {
+            let newList = this.state.dataInfo.bank_cards.filter((data) => data.id == this.state.pickValue)
+            HTTP_SERVER.MONEY_OUTER_1.body.account = newList[0].account;
+            HTTP_SERVER.MONEY_OUTER_1.body.id = newList[0].id;
+            HTTP_SERVER.MONEY_OUTER_1.body.fund_password = this.state.pwdText;
+            HTTP_SERVER.MONEY_OUTER_1.body.amount = this.state.money;
+            ActDispatch.FetchAct.fetchVoWithResult(HTTP_SERVER.MONEY_OUTER_1, (data) => {
+                if (data.isSuccess) {
+                    NavUtil.pop();
+                }
 
+            })
+        }
     }
 }
 
@@ -119,28 +219,12 @@ const styles = StyleSheet.create({
     trRight: {
         flex: 3
     },
-    cellMargin:{
-        margin:10
+    cellMargin: {
+        margin: 5
     },
     textStyle: {
-        width: 150,
+        width: 180,
         left: 10,
-        fontSize: 14
+        fontSize: 14,
     },
-    icoPwd: {
-        color: GlobelTheme.gray,
-        fontSize: 20,
-    },
-    inputContain: {
-        paddingBottom: 5,
-        marginBottom: 10,
-        marginTop: 10,
-        paddingLeft: 5,
-        flexDirection: "row",
-        height: 30,
-        justifyContent: "flex-start",
-        alignItems: "center",
-        borderColor: 'gray',
-        borderBottomWidth: 0.2
-    }
 });

@@ -88,7 +88,8 @@ const GlobalKey = "global";
 
 const EnumStroeKeys={
     USRTNAME:"userName",
-    PASS_PWD:"password"
+    PASS_PWD:"password",
+    DO_MAIN:"DO_MAIN"
 }
 global.EnumStroeKeys=EnumStroeKeys;
 
@@ -110,9 +111,9 @@ global.EnumStroeKeys=EnumStroeKeys;
     }
 
     static setItem(key: string, value: string, callback = null) {
-        AsyncStorage.setItem(key, value).then((data) => {
+        AsyncStorage.setItem(key, value).then(() => {
             if (callback) {
-                callback(data);
+                callback();
             }
         }).catch(err => {
                 TLog(err.message);

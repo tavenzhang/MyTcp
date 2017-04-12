@@ -66,8 +66,6 @@ export default class MyView extends BaseView {
         };
     }
 
-
-
     getNavigationBarProps() {
         let {userData} = this.props;
         if (userData.isLogined) {
@@ -202,7 +200,8 @@ export default class MyView extends BaseView {
                     NavUtil.pushToView(NavViews.OuterMoneyView({
                         title: data.name,
                         money: parseInt(userData.data.available),
-                        uid: userData.data.user_id
+                        uid: userData.data.user_id,
+                        name:userData.data.username
                     }));
                     break;
                 case ItemNameEnum.pwdMange:

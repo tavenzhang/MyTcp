@@ -44,7 +44,7 @@ export default class GuidView extends React.Component {
     toApp=()=>{
         this.timer = setTimeout(() => {
             NavUtil.resetToView(NavViews.TabbarView());
-        }, 3000)
+        }, 2000)
 
     }
 }

@@ -6,13 +6,13 @@ export const FetchAct = {
         isHideHint,
         callback,
         isText,
-        url,
+        url:`${SERVERADDR}${url}`,
         requestData,
         requestType
     }),
     fetchVoWithResult:(dataVo,callback = null,isHideHint = false, isHideError = false, isText=false)=>({
             type: ActionType.FetchType.FETCH_REQUEST,
-            url:dataVo.url,
+            url:`${SERVERADDR}${dataVo.url}`,
             requestType:dataVo.method ? dataVo.method:"GET",
             requestData:dataVo.body,
             isHideError,
@@ -23,7 +23,7 @@ export const FetchAct = {
     ),
     fetchVoWithAction:(dataVo,endAction,callback = null,isHideHint = false, isHideError = false, isText=false)=>({
             type: ActionType.FetchType.FETCH_REQUEST,
-            url:dataVo.url,
+            url:`${SERVERADDR}${dataVo.url}`,
             requestType:dataVo.method ? dataVo.method:"GET",
             requestData:dataVo.body,
             isHideError,
