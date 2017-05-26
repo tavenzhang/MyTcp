@@ -4,7 +4,6 @@ import {
     Text, StyleSheet,
     TouchableHighlight,
     TouchableOpacity,
-    InteractionManager
 } from 'react-native';
 import {connect} from 'react-redux';
 import AIcon from 'react-native-vector-icons/FontAwesome';
@@ -30,9 +29,9 @@ export default class BetRecordView extends BaseView {
     constructor(props) {
         super(props);
         let now = new Date();
-        let lastWeekTime = DateUtil.formatRecodData(new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000));
-        let lastMonth = DateUtil.formatRecodData(new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000));
-        let lastTowMonth = DateUtil.formatRecodData(new Date(now.getTime() - 60 * 24 * 60 * 60 * 1000));
+        let lastWeekTime = G_DateUtil.formatRecodData(new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000));
+        let lastMonth = G_DateUtil.formatRecodData(new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000));
+        let lastTowMonth = G_DateUtil.formatRecodData(new Date(now.getTime() - 60 * 24 * 60 * 60 * 1000));
         this.state = {
             curGame: null,
             curPlay: null,
@@ -66,33 +65,33 @@ export default class BetRecordView extends BaseView {
 
         let gameStyle = this.state.curClickType == ListType.GameList ? {
             borderBottomWidth: 1,
-            borderBottomColor: GlobelTheme.primary
+            borderBottomColor: G_Theme.primary
         } : null;
         let playStyle = this.state.curClickType == ListType.PlayList ? {
             borderBottomWidth: 1,
-            borderBottomColor: GlobelTheme.primary
+            borderBottomColor: G_Theme.primary
         } : null;
         let timeStyle = this.state.curClickType == ListType.TimeList ? {
             borderBottomWidth: 1,
-            borderBottomColor: GlobelTheme.primary
+            borderBottomColor: G_Theme.primary
         } : null;
         return (
-            <View style={GlobeStyle.appContentView}>
+            <View style={G_Style.appContentView}>
                 <View
                     style={{
                         flexDirection: "row",
                         height: 35,
-                        borderBottomColor: GlobelTheme.gray, borderBottomWidth:1
+                        borderBottomColor: G_Theme.gray, borderBottomWidth:1
                     }}>
                     <TouchableOpacity style={[styles.touchTabButton, gameStyle]}
                                         onPress={() => this.onPressMenu(ListType.GameList)}
                     >
                         <View style={{flexDirection: "row"}}>
                             <Text
-                                style={{color: !gameView ? GlobelTheme.black : GlobelTheme.primary}}>{gameBtnName}</Text>
-                            <AIcon name={EnumFontNames.list_arrow_desc}
+                                style={{color: !gameView ? G_Theme.black : G_Theme.primary}}>{gameBtnName}</Text>
+                            <AIcon name={G_EnumFontNames.list_arrow_desc}
                                    style={{
-                                       color: !gameView ? GlobelTheme.black : GlobelTheme.primary,
+                                       color: !gameView ? G_Theme.black : G_Theme.primary,
                                        fontSize: 15,
                                        marginLeft: 5,
                                        top: -3
@@ -104,10 +103,10 @@ export default class BetRecordView extends BaseView {
                     >
                         <View style={{flexDirection: "row", alignItems: "center"}}>
                             <Text
-                                style={{color: !playView ? GlobelTheme.black : GlobelTheme.primary}}>{playBtnName}</Text>
-                            <AIcon name={EnumFontNames.list_arrow_desc}
+                                style={{color: !playView ? G_Theme.black : G_Theme.primary}}>{playBtnName}</Text>
+                            <AIcon name={G_EnumFontNames.list_arrow_desc}
                                    style={{
-                                       color: !playView ? GlobelTheme.black : GlobelTheme.primary,
+                                       color: !playView ? G_Theme.black : G_Theme.primary,
                                        fontSize: 15,
                                        marginLeft: 5,
                                        top: -3
@@ -119,10 +118,10 @@ export default class BetRecordView extends BaseView {
                     >
                         <View style={{flexDirection: "row"}}>
                             <Text
-                                style={{color: !timeView ? GlobelTheme.black : GlobelTheme.primary}}>{timeBtnName}</Text>
-                            <AIcon name={EnumFontNames.list_arrow_desc}
+                                style={{color: !timeView ? G_Theme.black : G_Theme.primary}}>{timeBtnName}</Text>
+                            <AIcon name={G_EnumFontNames.list_arrow_desc}
                                    style={{
-                                       color: !timeView ? GlobelTheme.black : GlobelTheme.primary,
+                                       color: !timeView ? G_Theme.black : G_Theme.primary,
                                        fontSize: 15,
                                        marginLeft: 5,
                                        top: -3
@@ -130,22 +129,22 @@ export default class BetRecordView extends BaseView {
                         </View>
                     </TouchableOpacity>
                 </View>
+                <View style={{flex: 1, backgroundColor: "yellow"}}>
+                    <BetRecordListView dataList={this.state.dataList} loadMore={this.loadMore} gameModel={gameModel}/>
+                </View>
                 <View style={{position: "absolute", zIndex: 6, top: 35}}>
                     {gameView}
                     {playView}
                     {timeView}
-                </View>
-                <View style={{flex: 1, backgroundColor: "yellow"}}>
-                    <BetRecordListView dataList={this.state.dataList} loadMore={this.loadMore} gameModel={gameModel}/>
                 </View>
             </View>
         );
     }
 
     componentDidMount() {
-        InteractionManager.runAfterInteractions(() => {
+        G_RunAfterInteractions(()=>{
             this.loadMore(null, 1);
-        });
+        })
     }
 
     onPressMenu = (btnType) => {
@@ -163,22 +162,22 @@ export default class BetRecordView extends BaseView {
                 <View
                     style={{
                         flexDirection: "row",
-                        width: GlobelTheme.screenWidth,
+                        width: G_Theme.windowWidth,
                         flexWrap: "wrap",
                         backgroundColor: "#ddd",
                         alignItems: "center"
                     }}>
                     {
                         data.map((item, i) => {
-                            let selectColor = GlobelTheme.gray;
+                            let selectColor = G_Theme.grayDeep;
                             if (btnName == item.name) {
-                                selectColor = GlobelTheme.primary;
+                                selectColor = G_Theme.primary;
                             }
                             return (<TouchableHighlight key={"menuView" + i}
                                                         style={{
                                                             paddingHorizontal: 10,
                                                             paddingVertical: 6,
-                                                            width: GlobelTheme.screenWidth / 3,
+                                                            width: G_Theme.windowWidth / 3,
                                                             height: 35
                                                         }}
                                                         underlayColor='rgba(0,0,0,0)'
@@ -227,7 +226,7 @@ export default class BetRecordView extends BaseView {
 
     loadMore = (callBack, forcePage = 0) => {
         HTTP_SERVER.BET_RECODE.body.bought_at_from = this.state.curTime ? this.state.curTime.date : "";
-        HTTP_SERVER.BET_RECODE.body.bought_at_to = DateUtil.formatRecodData(new Date());
+        HTTP_SERVER.BET_RECODE.body.bought_at_to = G_DateUtil.formatRecodData(new Date());
         HTTP_SERVER.BET_RECODE.body.lottery_id = this.state.curGame ? this.state.curGame.id : "";
         HTTP_SERVER.BET_RECODE.body.way_id = this.state.curPlay ? this.state.curPlay.id : "";
         if (forcePage > 0) {

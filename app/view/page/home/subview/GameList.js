@@ -1,19 +1,25 @@
-/**
- * Created by zhangxinhua on 16/12/13.
- */
-import React from 'react';
+import React, {PropTypes}from 'react';
 import {
     View,
      StyleSheet,
 } from 'react-native';
 
 import Swiper from 'react-native-swiper';
+import GameDetail from './GameDetail';
 
-import GameView from './GameView';
+let hlist=G_Theme.windowHeight-G_Theme.bannerHeight-G_Theme.TabBarH-G_Theme.navigatorHeadH
+
 export  default class GameList extends React.Component {
 
+    static propTypes={
+        dataList:PropTypes.array,
+        gameModel:PropTypes.any,
+        playModel:PropTypes.any,
+        userData:PropTypes.any
+    }
+
     render() {
-        let {dataList,gameModel,playModel} = this.props;
+        let {dataList,gameModel,playModel,userData} = this.props;
         let newList = []
         let listView = null;
          //每9个为一页 分页处理
@@ -31,28 +37,25 @@ export  default class GameList extends React.Component {
         }
         if (newList.length > 0) {
             listView = <Swiper
-                height={468}
+                ref=""
+                height={hlist}
                 loop={true}
                 dot={<View style={styles.customDot}/>}
                 activeDot={<View style={styles.customActiveDot}/>}
                 showsPagination={true}
-                paginationStyle={{
-                    bottom: 20
-                }}
-                contentContainerStyle={styles.swiperDemo}
-                style={{backgroundColor: '#eee'}}
-                title="taven"
+                pagingEnabled={true}
+                paginationStyle={{ bottom: 10}}
             >
                 {newList.map((item, i) => {
                     return (
-                        <GameView key={i + 100} dataList={item} gameModel={gameModel} playModel={playModel}/>
+                        <GameDetail key={`game${i}detail`} dataList={item} userData={userData} gameModel={gameModel} playModel={playModel}/>
                     )
                 })}
             </Swiper>
         }
 
         return (
-            <View style={GlobeStyle.appContentView}>
+            <View style={[G_Style.appContentView]}>
                 {listView}
             </View>
         )
@@ -60,11 +63,6 @@ export  default class GameList extends React.Component {
 }
 
 const styles = StyleSheet.create({
-    swiperDemo: {
-        backgroundColor: '#eee',
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
     customDot: {
         backgroundColor: '#ccc',
         height: 6,

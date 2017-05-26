@@ -24,23 +24,23 @@ export default class BaseListView extends React.Component {
         this.shouldComponentUpdate = shouldComponentUpdate.bind(this);
     }
 
-    shouldComponentUpdate() {
-
-    }
+    // shouldComponentUpdate() {
+    //
+    // }
 
     render() {
         let dataList=this.props.dataList;
         dataList = dataList ? dataList:[];
         let ds = this.state.dataSource.cloneWithRows(dataList);
         return (
-            <View style={GlobeStyle.appContentView}>
+            <View style={G_Style.appContentView}>
                 <ListView
                     dataSource={ds}
                     renderRow={this.props.renderRow}
                     onEndReached={this._onFootFlush}
-                    onEndReachedThreshold={-10}
+                    onEndReachedThreshold={20}
                     renderFooter={this._renderFooter}
-                    onScroll={this._onScroll}
+                   // onScroll={this._onScroll}
                     enableEmptySections={true}
                     pageSize={15}
                     initialListSize={10}
@@ -56,11 +56,11 @@ export default class BaseListView extends React.Component {
             </View>
         );
     }
-    // _renderRow = (rowData) => {
+    // _renderRow = (rowData,section, row) => {
     //
     // }
     // componentWillUpdate() {
-    //     LayoutAnimation.configureNext(LayoutAnimationHelp.defaultSpring);
+    //     LayoutAnimation.configureNext(G_LayoutAnimationHelp.defaultSpring);
     // }
 
     componentDidMount() {
@@ -69,10 +69,10 @@ export default class BaseListView extends React.Component {
 
     _onFootFlush = () => {
        // TLog("_onFootFlush---data---------", this.state.canLoadMore);
-        if(oldLength==this.props.dataList.length)
-        {
-            return;
-        }
+       //  if(oldLength==this.props.dataList.length)
+       //  {
+       //      return;
+       //  }
         if(this.props.dataList.length >= 15) {
             oldLength= this.props.dataList.length;
           //  TLog("this.state.canLoadMore----", this.state.canLoadMore)
@@ -103,16 +103,16 @@ export default class BaseListView extends React.Component {
         }
     }
 
-    _onScroll = (event: Object) => {
-        // TLog("_onScroll-----event",event.nativeEvent);
-        // if(event.nativeEvent.layoutMeasurement.height>(event.nativeEvent.contentSize.height+50))
-        // {
-        //
-        // }
-        // else{
-        //     if (!canLoadMore) canLoadMore = true;
-        // }
-    }
+    // _onScroll = (event: Object) => {
+    //     // TLog("_onScroll-----event",event.nativeEvent);
+    //     // if(event.nativeEvent.layoutMeasurement.height>(event.nativeEvent.contentSize.height+50))
+    //     // {
+    //     //
+    //     // }
+    //     // else{
+    //     //     if (!canLoadMore) canLoadMore = true;
+    //     // }
+    // }
 
     _renderFooter = () => {
         //if (!canLoadMore) {

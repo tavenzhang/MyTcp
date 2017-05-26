@@ -32,7 +32,7 @@ export default class OuterMoneyView extends BaseView {
             if (newList.length == 1) {
                 bankCountView = (     <View style={{flexDirection: "row", marginBottom: 15}}>
                     <View style={styles.trLeft}>
-                        <Text style={styles.cellMargin}>开卡信息:</Text>
+                        <Text style={styles.textLeft}>开卡信息:</Text>
                     </View>
                     <View style={styles.trRight}>
                         <Text
@@ -47,7 +47,7 @@ export default class OuterMoneyView extends BaseView {
             contentView = <View style={{flex: 2, marginLeft: 30, marginRight: 30}}>
                 <View style={{flexDirection: "row"}}>
                     <View style={styles.trLeft}>
-                        <Text style={styles.cellMargin}>用户名:</Text>
+                        <Text style={styles.textLeft}>用户名:</Text>
                     </View>
                     <View style={styles.trRight}>
                         <Text style={styles.cellMargin}>{this.state.dataInfo.accounts.username}</Text>
@@ -55,7 +55,7 @@ export default class OuterMoneyView extends BaseView {
                 </View>
                 <View style={{flexDirection: "row"}}>
                     <View style={styles.trLeft}>
-                        <Text style={styles.cellMargin}>可提现次数:</Text>
+                        <Text style={styles.textLeft}>可提现次数:</Text>
                     </View>
                     <View style={styles.trRight}>
                         <Text style={styles.cellMargin}>{limitTimes > 0 ? limitTimes : "无限制"}</Text>
@@ -63,7 +63,7 @@ export default class OuterMoneyView extends BaseView {
                 </View>
                 <View style={{flexDirection: "row"}}>
                     <View style={styles.trLeft}>
-                        <Text style={styles.cellMargin}>今日已提现次数:</Text>
+                        <Text style={styles.textLeft}>今日已提现次数:</Text>
                     </View>
                     <View style={styles.trRight}>
                         <Text style={styles.cellMargin}>{this.state.dataInfo.withdraw_num}</Text>
@@ -71,7 +71,7 @@ export default class OuterMoneyView extends BaseView {
                 </View>
                 <View style={{flexDirection: "row"}}>
                     <View style={styles.trLeft}>
-                        <Text style={styles.cellMargin}>可提现金额:</Text>
+                        <Text style={styles.textLeft}>可提现金额:</Text>
                     </View>
                     <View style={styles.trRight}>
                         <Text style={styles.cellMargin}>{parseInt(this.state.dataInfo.accounts.withdrawable)}</Text>
@@ -79,7 +79,7 @@ export default class OuterMoneyView extends BaseView {
                 </View>
                 <View style={{flexDirection: "row", alignItems: "center"}}>
                     <View style={styles.trLeft}>
-                        <Text style={styles.cellMargin}>收款银行卡信息:</Text>
+                        <Text style={styles.textLeft}>收款银行卡信息:</Text>
                     </View>
                     <View style={styles.trRight}>
                         <Picker
@@ -101,13 +101,13 @@ export default class OuterMoneyView extends BaseView {
                 {bankCountView}
                 <View style={{flexDirection: "row"}}>
                     <View style={styles.trLeft}>
-                        <Text style={styles.cellMargin}>提现金额:</Text>
+                        <Text style={styles.textLeft}>提现金额:</Text>
                     </View>
                     <View style={[styles.trRight, {
                         alignItems: "center",
                         flexDirection: "row",
                         borderBottomWidth: 0.5,
-                        borderColor: GlobelTheme.gray
+                        borderColor: G_Theme.gray
                     }]}>
                         <TextInput
                             style={styles.textStyle}
@@ -122,21 +122,20 @@ export default class OuterMoneyView extends BaseView {
                 </View>
                 <View style={{flexDirection: "row", marginVertical: 5}}>
                     <View style={styles.trLeft}>
-                        <Text style={styles.cellMargin}>资金密码:</Text>
+                        <Text style={styles.textLeft}>资金密码:</Text>
                     </View>
                     <View style={[styles.trRight, {
                         alignItems: "center",
                         flexDirection: "row",
                         borderBottomWidth: 0.5,
-                        borderColor: GlobelTheme.gray
+                        borderColor: G_Theme.gray
                     }]}>
                         <TextInput
                             style={styles.textStyle}
                             onChangeText={(pwdText) => this.setState({pwdText})}
                             value={this.state.newPwd}
-                            maxLength={8}
+                            maxLength={10}
                             placeholder={`输入资金密码`}
-                            keyboardType={"numeric"}
                             secureTextEntry={true}
                         />
                     </View>
@@ -159,7 +158,7 @@ export default class OuterMoneyView extends BaseView {
 
         return (
             <AutoHideKeyBoardView>
-                <View style={GlobeStyle.appContentView}>
+                <View style={G_Style.appContentView}>
                     {contentView}
                 </View>
             </AutoHideKeyBoardView>
@@ -167,29 +166,38 @@ export default class OuterMoneyView extends BaseView {
     }
 
     componentDidMount() {
-        ActDispatch.FetchAct.fetchVoWithResult(HTTP_SERVER.MONEY_OUTER_0, (data) => {
-            if (data.isSuccess) {
-                if (data.data.bank_cards && data.data.bank_cards.length > 0) {
-                    this.setState({dataInfo: data.data, pickValue: data.data.bank_cards[0].id})
+        G_RunAfterInteractions(()=>{
+            ActDispatch.FetchAct.fetchVoWithResult(HTTP_SERVER.MONEY_OUTER_0, (data) => {
+                if (data.isSuccess) {
+                    if (data.data.bank_cards && data.data.bank_cards.length > 0) {
+                        this.setState({dataInfo: data.data, pickValue: data.data.bank_cards[0].id})
+                    }
+                    else {
+                        this.setState({dataInfo: data.data});
+                    }
                 }
-                else {
-                    this.setState({dataInfo: data.data})
-                }
-            }
+            })
         })
     }
 
     onFirmClick = () => {
+        TLog("this.state.mone--"+parseInt(this.state.money),this.state.dataInfo.min_withdraw_amount)
         if (!this.state.pickValue) {
             Alert.alert("", "请先选择一张收款银行卡");
-        } else if ((parseInt(this.state.money) < parseInt(this.state.dataInfo.min_withdraw_amount)) || (parseInt(this.state.money) > parseInt(this.state.dataInfo.max_withdraw_amount))) {
-            Alert.alert("", "请输入合适的转账金额");
+        }else if (this.state.money.length<=0){
+            Alert.alert("", "请输入有效的提现金额");
+        }
+        else if ((parseInt(this.state.money) < parseInt(this.state.dataInfo.min_withdraw_amount)) || (parseInt(this.state.money) > parseInt(this.state.dataInfo.max_withdraw_amount))) {
+            Alert.alert("", "提现金额,不能少于"+this.state.dataInfo.min_withdraw_amount);
             // }
             // else if(parseInt(this.state.money)>parseInt(this.state.dataInfo.accounts.withdrawable)){
             //     Alert.alert("","转账金额超过了可转金额,无法转账");
         } else if (parseInt(this.state.dataInfo.withdraw_limit_num) > 0 && (parseInt(this.state.dataInfo.withdraw_limit_num) <= parseInt(this.state.dataInfo.withdraw_num))) {
             Alert.alert("", "转账次数已经达到最大限制");
-        } else {
+        }else if (this.state.pwdText.length<=0){
+            Alert.alert("", "请输入有效的资金密码");
+        }
+        else {
             let newList = this.state.dataInfo.bank_cards.filter((data) => data.id == this.state.pickValue)
             HTTP_SERVER.MONEY_OUTER_1.body.account = newList[0].account;
             HTTP_SERVER.MONEY_OUTER_1.body.id = newList[0].id;
@@ -197,7 +205,7 @@ export default class OuterMoneyView extends BaseView {
             HTTP_SERVER.MONEY_OUTER_1.body.amount = this.state.money;
             ActDispatch.FetchAct.fetchVoWithResult(HTTP_SERVER.MONEY_OUTER_1, (data) => {
                 if (data.isSuccess) {
-                    NavUtil.pop();
+                    G_NavUtil.pop();
                 }
 
             })
@@ -215,11 +223,17 @@ const styles = StyleSheet.create({
         flex: 3
     },
     cellMargin: {
-        margin: 5
+        margin: 5,
+
     },
     textStyle: {
         width: 180,
         left: 10,
         fontSize: 14,
+        height:40
     },
+    textLeft:{
+        color:G_Theme.grayDeep,
+        margin: 5,
+    }
 });

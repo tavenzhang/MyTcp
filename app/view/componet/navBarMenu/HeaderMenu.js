@@ -8,16 +8,16 @@ import AIcon from 'react-native-vector-icons/FontAwesome';
 
 export class HeaderPlusRightMenu extends React.Component {
     render() {
-        return (<AIcon color="white" size={23} name={EnumFontNames.plus}/>)
+        return (<AIcon color="white" size={23} name={G_EnumFontNames.plus}/>)
     }
 }
 
-export class HeaderSD11Choose5 extends React.Component {
+export class HeaderMenuTitleView extends React.Component {
     render() {
         return (
                  <View style={[{flexDirection:"row"}]}>
                     <Text key={'title'} style={styles.title}>{this.props.title}</Text>
-                    <AIcon color="white" style={{marginLeft:5}} size={16} name={EnumFontNames.list_arrow_desc}/>
+                    <AIcon color="white" style={{marginLeft:5}} size={16} name={G_EnumFontNames.list_arrow_desc}/>
                 </View>
         )
     }
@@ -31,14 +31,20 @@ export class HeaderRightLoginOut extends React.Component {
 
 export class HeaderLeftDomain extends React.Component {
     render() {
-        return (<View><Text style={{fontSize:14,color:"white", fontWeight:"bold"}}>切换域名</Text></View>)
+        return (<View><Text style={{fontSize:14,color:"white", fontWeight:"bold"}}>设置</Text></View>)
+    }
+}
+
+export class GAME_DERAIL extends React.Component {
+    render() {
+        return  <AIcon name={G_EnumFontNames.bars} style={styles.barRightIcon} />
     }
 }
 
 const styles = StyleSheet.create({
     navigationBarContainer: {
         flexDirection: 'row',
-        height: GlobelTheme.NavigatorHeadH,
+        height: G_Theme.navigatorHeadH,
         alignItems: 'center',
         borderBottomColor: '#ccc',
         borderBottomWidth: 0.5,
@@ -46,8 +52,8 @@ const styles = StyleSheet.create({
     },
     titleContain: {
         position: 'absolute',
-        width: GlobelTheme.screenWidth,
-        height: GlobelTheme.NavigatorHeadH,
+        width: G_Theme.windowWidth,
+        height: G_Theme.navigatorHeadH,
         justifyContent: 'center',
         alignItems: 'center',
     },
@@ -74,6 +80,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
 
     },
+    barRightIcon: {
+        color: '#fff',
+        fontSize: 20
+    }
 })
 
 

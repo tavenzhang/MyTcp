@@ -3,6 +3,7 @@ import {
     View,
     Text, StyleSheet,
     TouchableHighlight,
+    TouchableOpacity
 } from 'react-native';
 import {connect} from 'react-redux';
 import AIcon from 'react-native-vector-icons/FontAwesome';
@@ -26,9 +27,9 @@ export default class ChaseRecordView extends BaseView {
     constructor(props) {
         super(props);
         let now = new Date();
-        let lastWeekTime = DateUtil.formatRecodData(new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000));
-        let lastMonth = DateUtil.formatRecodData(new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000));
-        let lastTowMonth = DateUtil.formatRecodData(new Date(now.getTime() - 60 * 24 * 60 * 60 * 1000));
+        let lastWeekTime = G_DateUtil.formatRecodData(new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000));
+        let lastMonth = G_DateUtil.formatRecodData(new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000));
+        let lastTowMonth = G_DateUtil.formatRecodData(new Date(now.getTime() - 60 * 24 * 60 * 60 * 1000));
         this.state = {
             curGame: null,
             curPlay: null,
@@ -63,84 +64,86 @@ export default class ChaseRecordView extends BaseView {
 
         let gameStyle = this.state.curClickType == ListType.GameList ? {
             borderBottomWidth: 1,
-            borderBottomColor: GlobelTheme.primary
+            borderBottomColor: G_Theme.primary
         } : null;
         let playStyle = this.state.curClickType == ListType.PlayList ? {
             borderBottomWidth: 1,
-            borderBottomColor: GlobelTheme.primary
+            borderBottomColor: G_Theme.primary
         } : null;
         let timeStyle = this.state.curClickType == ListType.TimeList ? {
             borderBottomWidth: 1,
-            borderBottomColor: GlobelTheme.primary
+            borderBottomColor: G_Theme.primary
         } : null;
         return (
-            <View style={GlobeStyle.appContentView}>
+            <View style={G_Style.appContentView}>
                 <View
                     style={{
                         flexDirection: "row",
                         height: 35,
-                        borderBottomColor: GlobelTheme.gray, borderBottomWidth:1
+                        borderBottomColor: G_Theme.gray, borderBottomWidth:1
                     }}>
-                    <TouchableHighlight style={[styles.touchTabButton, gameStyle]}
+                    <TouchableOpacity style={[styles.touchTabButton, gameStyle]}
                                         onPress={() => this.onPressMenu(ListType.GameList)}
                     >
                         <View style={{flexDirection: "row"}}>
                             <Text
-                                style={{color: !gameView ? GlobelTheme.black : GlobelTheme.primary}}>{gameBtnName}</Text>
-                            <AIcon name={EnumFontNames.list_arrow_desc}
+                                style={{color: !gameView ? G_Theme.black : G_Theme.primary}}>{gameBtnName}</Text>
+                            <AIcon name={G_EnumFontNames.list_arrow_desc}
                                    style={{
-                                       color: !gameView ? GlobelTheme.black : GlobelTheme.primary,
+                                       color: !gameView ? G_Theme.black : G_Theme.primary,
                                        fontSize: 15,
                                        marginLeft: 5,
                                        top: -3
                                    }}/>
                         </View>
-                    </TouchableHighlight>
-                    <TouchableHighlight style={[styles.touchTabButton, playStyle]}
+                    </TouchableOpacity>
+                    <TouchableOpacity style={[styles.touchTabButton, playStyle]}
                                         onPress={() => this.onPressMenu(ListType.PlayList)}
                     >
                         <View style={{flexDirection: "row", alignItems: "center"}}>
                             <Text
-                                style={{color: !playView ? GlobelTheme.black : GlobelTheme.primary}}>{playBtnName}</Text>
-                            <AIcon name={EnumFontNames.list_arrow_desc}
+                                style={{color: !playView ? G_Theme.black : G_Theme.primary}}>{playBtnName}</Text>
+                            <AIcon name={G_EnumFontNames.list_arrow_desc}
                                    style={{
-                                       color: !playView ? GlobelTheme.black : GlobelTheme.primary,
+                                       color: !playView ? G_Theme.black : G_Theme.primary,
                                        fontSize: 15,
                                        marginLeft: 5,
                                        top: -3
                                    }}/>
                         </View>
-                    </TouchableHighlight>
+                    </TouchableOpacity>
                     <TouchableHighlight style={[styles.touchTabButton, timeStyle]}
                                         onPress={() => this.onPressMenu(ListType.TimeList)}
                     >
                         <View style={{flexDirection: "row"}}>
                             <Text
-                                style={{color: !tiemView ? GlobelTheme.black : GlobelTheme.primary}}>{timeBtnName}</Text>
-                            <AIcon name={EnumFontNames.list_arrow_desc}
+                                style={{color: !tiemView ? G_Theme.black : G_Theme.primary}}>{timeBtnName}</Text>
+                            <AIcon name={G_EnumFontNames.list_arrow_desc}
                                    style={{
-                                       color: !tiemView ? GlobelTheme.black : GlobelTheme.primary,
+                                       color: !tiemView ? G_Theme.black : G_Theme.primary,
                                        fontSize: 15,
                                        marginLeft: 5,
                                        top: -3
                                    }}/>
                         </View>
                     </TouchableHighlight>
+                </View>
+                <View style={{flex: 1, backgroundColor: "yellow"}}>
+                    <ChaseRecodListView dataList={this.state.dataList} loadMore={this.loadMore} {...this.props}/>
                 </View>
                 <View style={{position: "absolute", zIndex: 6, top: 35}}>
                     {gameView}
                     {playView}
                     {tiemView}
                 </View>
-                <View style={{flex: 1, backgroundColor: "yellow"}}>
-                    <ChaseRecodListView dataList={this.state.dataList} loadMore={this.loadMore} {...this.props}/>
-                </View>
             </View>
         );
     }
 
     componentDidMount() {
-        this.loadMore(null, 1);
+        G_RunAfterInteractions(()=>{
+            this.loadMore(null, 1);
+        })
     }
 
     onPressMenu = (btnType) => {
@@ -158,22 +161,22 @@ export default class ChaseRecordView extends BaseView {
                 <View
                     style={{
                         flexDirection: "row",
-                        width: GlobelTheme.screenWidth,
+                        width: G_Theme.windowWidth,
                         flexWrap: "wrap",
                         backgroundColor: "#ddd",
                         alignItems: "center"
                     }}>
                     {
                         data.map((item, i) => {
-                            let selectColor = GlobelTheme.gray;
+                            let selectColor = G_Theme.gray;
                             if (btnName == item.name) {
-                                selectColor = GlobelTheme.primary;
+                                selectColor = G_Theme.primary;
                             }
                             return (<TouchableHighlight key={"menuView" + i}
                                                         style={{
                                                             paddingHorizontal: 10,
                                                             paddingVertical: 6,
-                                                            width: GlobelTheme.screenWidth / 3,
+                                                            width: G_Theme.windowWidth / 3,
                                                             height: 35
                                                         }}
                                                         underlayColor='rgba(0,0,0,0)'
@@ -224,7 +227,7 @@ export default class ChaseRecordView extends BaseView {
 
     loadMore = (callBack, forcePage = 0) => {
         HTTP_SERVER.CHASE_RECODE.body.bought_at_from = this.state.curTime ? this.state.curTime.date : "";
-        HTTP_SERVER.CHASE_RECODE.body.bought_at_to = DateUtil.formatRecodData(new Date());
+        HTTP_SERVER.CHASE_RECODE.body.bought_at_to = G_DateUtil.formatRecodData(new Date());
         HTTP_SERVER.CHASE_RECODE.body.lottery_id = this.state.curGame ? this.state.curGame.id : "";
         HTTP_SERVER.CHASE_RECODE.body.way_id = this.state.curPlay ? this.state.curPlay.id : "";
         if (forcePage > 0) {
@@ -236,13 +239,15 @@ export default class ChaseRecordView extends BaseView {
         }
 
         HTTP_SERVER.CHASE_RECODE.body.pagesize = 20;
-        ActDispatch.FetchAct.fetchVoWithResult(HTTP_SERVER.CHASE_RECODE, (result) => {
-            if (callBack) {
-                callBack()
-            }
-            let arr =this.state.dataList.concat(result.data.data);
-            this.setState({dataList: arr});
-        }, false);
+        G_RunAfterInteractions(()=>{
+            ActDispatch.FetchAct.fetchVoWithResult(HTTP_SERVER.CHASE_RECODE, (result) => {
+                if (callBack) {
+                    callBack()
+                }
+                let arr =this.state.dataList.concat(result.data.data);
+                this.setState({dataList: arr});
+            }, false);
+        })
     }
 }
 

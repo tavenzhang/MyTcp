@@ -9,26 +9,25 @@ export  default class GameModel{
         {
             this.data= data;
             for(let key in data){
-                data[key].img=`${SERVERADDR}/dist/i/home/home_activity_banner.jpg`;
+                data[key].img=`${G_SERVERADDR}/dist/i/home/home_activity_banner.jpg`;
                 this.gameInfoList.push(data[key]);
             }
         }
     }
 
-    getGameInfoById(id)
-    {
-        return this.data[`${id}`];
-    }
+
 
     getGameNameById(id)
     {
-        if(this.data[`${id}`])
-        {
-            return this.data[`${id}`].name;
+        let reultName=""
+        for (let item of this.gameInfoList) {
+            if(item.id == parseInt(id))
+            {
+                reultName=item.name;
+                break;
+            }
         }
-        else{
-            return ""
-        }
+        return reultName;
     }
 
 }

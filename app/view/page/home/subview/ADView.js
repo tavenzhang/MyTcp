@@ -1,6 +1,4 @@
-/**
- * Created by zhangxinhua on 16/12/11.
- */
+
 import React from 'react';
 import {
     View,
@@ -10,18 +8,16 @@ import {
 
 import {connect} from 'react-redux';
 
-import Loading from "../../../componet/Loading";
+//import Loading from "../../../componet/Loading";
 import BaseView from "../../../componet/BaseView";
 
-const mapStateToProps = state => {
-    return {
-        isLoading: state.fetchState.requesting || state.appState.requesting,
-    }
-}
-
-
-
-@connect(mapStateToProps)
+// const mapStateToProps = state => {
+//     return {
+//        // isLoading: state.fetchState.requesting || state.appState.requesting,
+//     }
+// }
+//
+// @connect(mapStateToProps)
 export default class ADView extends BaseView {
 
     getNavigationBarProps(){
@@ -31,20 +27,19 @@ export default class ADView extends BaseView {
     renderBody() {
         const {passProps, isLoading} = this.props;
         return (
-            <View style={GlobeStyle.appContentView}>
+            <View style={G_Style.appContentView}>
                 <View style={{flex:1}}>
                     <WebView style={styles.webview_style}
                              source={{uri:passProps.data}}
-                             //startInLoadingState={true}
+                             startInLoadingState={true}
                              domStorageEnabled={true}
                              javaScriptEnabled={true}
-                             onLoadStart={ActDispatch.AppAct.showLoading}
+                             onLoadStart={()=>ActDispatch.AppAct.showLoading()}
                              onLoad={ActDispatch.AppAct.hideLoading}
                              onError={ActDispatch.AppAct.hideLoading}
                     >
                     </WebView>
                 </View>
-                { isLoading ? <Loading /> : null}
             </View>
         );
     }
@@ -60,17 +55,17 @@ export default class ADView extends BaseView {
 
 const styles = StyleSheet.create({
     textStyle: {
-        color: GlobelTheme.gray,
+        color: G_Theme.gray,
     },
     selectedTextStyle: {
-        color: GlobelTheme.primary,
+        color: G_Theme.primary,
     },
     iconPress: {
-        color: GlobelTheme.primary,
+        color: G_Theme.primary,
         fontSize: 25
     },
     iconNormal: {
-        color: GlobelTheme.gray,
+        color: G_Theme.gray,
         fontSize: 25
     },
     webview_style: {

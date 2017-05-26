@@ -4,21 +4,11 @@ import {
     Text
     , StyleSheet,
     TouchableHighlight
-} from 'react-native';
-
-import {connect} from 'react-redux';
+} from 'react-native'
 import AIcon from 'react-native-vector-icons/FontAwesome';
-;
 import BaseView from "../../componet/BaseView";
 import MsgListView from "../../componet/BaseListView";
 
-const mapStateToProps = state => {
-    return {
-        isLoading: state.get("fetchState").get("requesting") || state.get("appState").get("requesting"),
-    }
-}
-
-@connect(mapStateToProps)
 export default class Notice extends BaseView {
     constructor(props) {
         super(props);
@@ -29,7 +19,7 @@ export default class Notice extends BaseView {
 
     renderBody() {
         return (
-            <View style={GlobeStyle.appContentView}>
+            <View style={G_Style.appContentView}>
                 <MsgListView dataList={this.state.dataList} loadMore={this.props.loadMore} renderRow={this._renderRow}/>
             </View>
         );
@@ -37,17 +27,18 @@ export default class Notice extends BaseView {
 
     componentDidMount() {
         if (this.state.dataList.length <= 0) {
-            ActDispatch.FetchAct.fetchVoWithResult(HTTP_SERVER.GET_LIST_SYSTEM, (result) => {
-                if (result.data.data) {
-                    let arr = this.state.dataList.concat(result.data.data);
-                    this.setState({dataList: arr});
-                }
-            });
+            G_RunAfterInteractions(()=>{
+                ActDispatch.FetchAct.fetchVoWithResult(HTTP_SERVER.GET_LIST_SYSTEM, (result) => {
+                    if (result.data.data) {
+                        let arr = this.state.dataList.concat(result.data.data);
+                        this.setState({dataList: arr});
+                    }
+                });
+            })
         }
     }
 
     _renderRow = (data) => {
-       // let dataName = DateUitil.formatItemDateString(data.created_at);
         return (
             <View>
                 <TouchableHighlight onPress={() => this.itemClick(data)} underlayColor='rgba(10,10,10,0.2)'>
@@ -55,11 +46,8 @@ export default class Notice extends BaseView {
                         <View style={[styles.itemContentStyle, {flex: 3, alignItems:"center"}]}>
                             <Text style={styles.textHeadStyle}>{data.title}</Text>
                         </View>
-                        {/*<View style={styles.itemContentStyle}>*/}
-                          {/**/}
-                        {/*</View>*/}
                         <View style={styles.itemContentStyle}>
-                            <AIcon name={"angle-right"}
+                            <AIcon name={G_EnumFontNames.angleRight}
                                    style={{fontSize: 25, alignSelf: "center", color: "gray"}}/>
                         </View>
                     </View>
@@ -67,9 +55,8 @@ export default class Notice extends BaseView {
             </View>
         );
     }
-
     itemClick = (data) => {
-        NavUtil.pushToView(NavViews.NoticeDeailView({...data, title: data.title}));
+        G_NavUtil.pushToView(G_NavViews.NoticeDeailView({...data, title: data.title}));
     }
 }
 
@@ -80,13 +67,11 @@ const styles = StyleSheet.create({
         borderRightWidth: 1,
         justifyContent: "center",
         textAlign: "center"
-        // borderWidth: 1
     },
     itemContentStyle: {
         flex: 1,
         alignItems: "center",
         justifyContent: "center"
-        // borderWidth: 1
     },
     textHeadStyle: {
         fontSize: 14,

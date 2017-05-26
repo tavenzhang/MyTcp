@@ -9,7 +9,6 @@ const initAppState = fromJS({
     fail: false,
     success: true,
     userData: {isLogined:false},
-    isLogined: false,
     infoBox: {
         show: false, //是否显示
         msg: "",//显示内容
@@ -20,8 +19,10 @@ const initAppState = fromJS({
     playModel: new PlayModel(),
     typesModel:new MobileTypes(),
     bankCityModel:new BankCityModel(),
-    cardList:[]
+    cardList:[],
+    moneyBalance:0
 })
+
 const appState = (state = initAppState, action) => {
     switch (action.type) {
         case ActionType.AppType.SHOW_LOADING :
@@ -36,15 +37,17 @@ const appState = (state = initAppState, action) => {
                 fail: false,
                 success: true
             });
+        case ActionType.AppType.MONEY_ACCOUNT__CHANGE:
+            return state.merge({moneyBalance:Number(action.httpResult.available)});
         case ActionType.AppType.LOGIN_RESULT:
             AppData.userData = action.data;
             AppData.isLogined = true;
             action.data.isLogined=true;
-            return state.merge({userData: action.data})
+            return state.merge({userData: action.data,moneyBalance:Number(action.data.data.available)});
         case ActionType.AppType.LOG_OUT:
             AppData.userData = null;
             AppData.isLogined = false;
-            return state.merge({userData: {isLogined:false}})
+            return state.merge({userData: {isLogined:false},moneyBalance:0});
         case ActionType.AppType.SHOW_INFOBOX:
             return state.merge({infoBox: {
                     show: true,
@@ -61,9 +64,9 @@ const appState = (state = initAppState, action) => {
                 }
             })
         case ActionType.AppType.GAMELIST_RESULT:
-            return state.merge({gameModel: new GameModel(action.httpResult)});
+            return state.merge({gameModel: new GameModel(action.httpResult.data)});
         case ActionType.AppType.PLAY_LIST_RESULT:
-            return state.merge({playModel: new PlayModel(action.httpResult)});
+            return state.merge({playModel: new PlayModel(action.httpResult.data)});
         case ActionType.AppType.MOBILE_TYPES_RESULT:
             return state.merge({typesModel: new MobileTypes(action.httpResult)});
         case ActionType.AppType.BANG_CITY_INFO:
@@ -80,8 +83,12 @@ const appState = (state = initAppState, action) => {
                     tempList=tempList.concat(action.httpResult.data.data);
                 }
             }
-            TLog("ActionType.AppType.CARD_LIST_GET---",tempList)
+           // TLog("ActionType.AppType.CARD_LIST_GET---",tempList)
             return state.merge({cardList:tempList});
+        case ActionType.AppType.APP_BACK_RESET:
+            AppData.userData = null;
+            AppData.isLogined = false;
+            return state.merge(initAppState);
         default:
             return state;
     }

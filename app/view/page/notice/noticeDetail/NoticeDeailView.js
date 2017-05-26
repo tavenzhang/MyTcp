@@ -16,7 +16,6 @@ export  default class NoticeDeailView extends BaseView {
     }
 
     renderBody() {
-        // let {gamesDic} = this.props.passProps
         let typeInfo = this.state.data.msg_type;
         let typeName = "";
         for (let key in typeInfo) {
@@ -24,9 +23,8 @@ export  default class NoticeDeailView extends BaseView {
                 typeName = typeInfo[key];
             }
         }
-        // {this.state.data.msg_type[this.state.data.type_id]}
         return (
-            <View style={[GlobeStyle.appContentView]}>
+            <View style={[G_Style.appContentView]}>
                 <WebView source={{html: this.state.data.content}} automaticallyAdjustContentInsets={false}/>
             </View>
         );
@@ -35,10 +33,12 @@ export  default class NoticeDeailView extends BaseView {
     componentDidMount() {
         let {id} = this.props.passProps
         HTTP_SERVER.GET_SYSTEM_DETAIL.url = HTTP_SERVER.GET_SYSTEM_DETAIL.formatUrl.replace(/#id/g, id);
-        ActDispatch.FetchAct.fetchVoWithResult(HTTP_SERVER.GET_SYSTEM_DETAIL, (result) => {
-            if (result.data) {
-                this.setState({data: result.data})
-            }
+        G_RunAfterInteractions(()=>{
+            ActDispatch.FetchAct.fetchVoWithResult(HTTP_SERVER.GET_SYSTEM_DETAIL, (result) => {
+                if (result.data) {
+                    this.setState({data: result.data})
+                }
+            })
         })
     }
 }

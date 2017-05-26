@@ -3,7 +3,8 @@ import {
     View,
     Text, StyleSheet,
     TouchableHighlight,
-    LayoutAnimation
+    LayoutAnimation,
+    InteractionManager
 } from 'react-native';
 
 import MyListView from "../../../../componet/BaseListView";
@@ -18,7 +19,7 @@ export default class MoneyChangeHistoryView extends React.Component {
 
     render() {
         return (
-            <View style={GlobeStyle.appContentView}>
+            <View style={G_Style.appContentView}>
                 <View style={styles.headRow}>
                     <View style={[styles.itemHeadStyle,{flex:1}]}>
                         <Text style={styles.textHeadStyle}>日期</Text>
@@ -41,24 +42,33 @@ export default class MoneyChangeHistoryView extends React.Component {
         );
     }
 
-    componentWillUpdate() {
-        LayoutAnimation.configureNext(LayoutAnimationHelp.springNoDelete);
-    }
+    // componentWillUpdate() {
+    //     LayoutAnimation.configureNext(G_LayoutAnimationHelp.springNoDelete);
+    // }
 
     componentDidMount() {
         this.onMount=true;
         let {httpService} = this.props
         httpService.body.page = 1;
         httpService.body.pagesize = 15;
-        ActDispatch.FetchAct.fetchVoWithResult(httpService, (result) => {
-            if (result.data.data) {
-                if(this.onMount)
-                {
+        G_RunAfterInteractions(()=>{
+            ActDispatch.FetchAct.fetchVoWithResult(httpService, (result) => {
+                if (result.data.data) {
                     this.setState({dataList: result.data.data});
                 }
-
-            }
+            })
         })
+        // this.timeId=setTimeout(()=>{
+        //     InteractionManager.runAfterInteractions(() => {
+        //         ActDispatch.FetchAct.fetchVoWithResult(httpService, (result) => {
+        //             if (result.data.data) {
+        //                 this.setState({dataList: result.data.data});
+        //             }
+        //         })
+        //     });
+        //
+        // },1000)
+
     }
 
 
@@ -87,12 +97,11 @@ export default class MoneyChangeHistoryView extends React.Component {
     _renderRow = (rowData,section) => {
         let {gameModel,playModel,typesModel}=this.props;
         let gameName= gameModel.getGameNameById(rowData.lottery_id);
-         let dateStr=   DateUtil.formatSimpleItemDateString(rowData.created_at);
+         let dateStr=   G_DateUtil.formatSimpleItemDateString(rowData.created_at);
          let playName = playModel.getWayNameById(rowData.way_id);
          let money= rowData.is_income ? `+${ parseInt(rowData.amount)}`:`-${ parseInt(rowData.amount)}`
 
         return (
-            <View>
                 <TouchableHighlight onPress={() => this.itemClick(rowData)} underlayColor='rgba(10,10,10,0.2)'>
                     <View style={styles.row}>
                         <View style={[styles.itemContentStyle,{flex:1}]}>
@@ -107,14 +116,13 @@ export default class MoneyChangeHistoryView extends React.Component {
                         </View>
                         <View style={[styles.itemContentStyle,{flex:2}]}>
                             <Text style={styles.textItemStyle}>{gameName}</Text>
-                            <Text style={{fontSize:12,color:GlobelTheme.gray, marginTop:5}} >{playName}</Text>
+                            <Text style={{fontSize:12,color:G_Theme.grayDeep, marginTop:5}} >{playName}</Text>
                         </View>
                         <View style={[styles.itemContentStyle,{flex:2}]}>
                             <Text style={styles.textItemStyle}>{parseInt(rowData.available)}</Text>
                         </View>
                     </View>
                 </TouchableHighlight>
-            </View>
         );
     }
 
@@ -128,10 +136,7 @@ export default class MoneyChangeHistoryView extends React.Component {
 const styles = StyleSheet.create({
     itemHeadStyle: {
         alignItems: "center",
-        // borderRightWidth: 0.2,
-        // borderLeftWidth: 0.2,
         justifyContent: "center"
-        // borderWidth: 1
     },
     itemContentStyle: {
         flex: 1,
@@ -157,7 +162,7 @@ const styles = StyleSheet.create({
     },
     row: {
         flexDirection: 'row',
-        height: 50,
+        height: 45,
         borderBottomWidth:0.5,
         borderColor: "gray",
     },

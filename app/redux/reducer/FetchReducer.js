@@ -1,11 +1,9 @@
-import {ActionType} from "../action/ActionType";
 import {fromJS} from 'immutable';
 const initFetchState = fromJS({
     requesting : false,
     fail: false,
     success: true
 })
-
 
 const fetchState = (state = initFetchState, action) => {
     switch (action.type){

@@ -1,6 +1,4 @@
-import { NativeModules,Platform } from 'react-native';
-let IOSLog=NativeModules.IOSLog;
-
+import {InteractionManager} from 'react-native';
 
 Date.prototype.Format = function (fmt) { //author: meizz
     var o = {
@@ -20,6 +18,11 @@ Date.prototype.Format = function (fmt) { //author: meizz
 
 
 const DateUtil={
+
+    formatSecondDate:(secondNum:Number)=>{
+        let data= new Date(secondNum)
+        return data.Format("mm:ss");
+    },
     //2017-02-22  15:47:00
     formatRecodData:(date:Date)=>{
         return date.Format("yyyy-MM-dd hh:mm:ss");
@@ -55,8 +58,7 @@ const DateUtil={
     }
 }
 
-global.DateUtil = DateUtil;
-
+global.G_DateUtil = DateUtil;
 
 const StringUtil={
     //2017-02-22  15:47:00
@@ -67,28 +69,79 @@ const StringUtil={
          return tempStr;
     },
 }
-global.StringUtil=StringUtil;
+global.G_StringUtil=StringUtil;
+
+
+runAfterInteractions=(func)=>{
+    if(func)
+    {
+        InteractionManager.runAfterInteractions(()=>{
+            if(func)
+            {
+                func();
+            }
+        })
+    }
+
+}
+global.G_RunAfterInteractions=runAfterInteractions
+
+
+
+
+
+// Number.prototype.toFixed =function(len)
+// {
+//     var tempNum = 0;
+//     var s,temp;
+//     var s1 = this + "";
+//     var start = s1.indexOf(".");
+//
+//     //截取小数点后,0之后的数字，判断是否大于5，如果大于5这入为1
+//     if(s1.substr(start+len+1,1)>=5)
+//     {
+//         tempNum=1;
+//     }
+//
+//     //计算10的len次方,把原数字扩大它要保留的小数位数的倍数
+//     var temp = Math.pow(10,len);
+//     //求最接近this * temp的最小数字
+//     //floor() 方法执行的是向下取整计算，它返回的是小于或等于函数参数，并且与之最接近的整数
+//     s = Math.floor(this * temp) + tempNum;
+//     return s/temp;
+//
+// }
 
 /**
- * 打印
+ * 金额格式化
  */
-export const TLog = (name = null, obj = []) => {
-    //if( process.env.NODE_ENV == 'development') {//开发环境
-    //	return console.TLog(name,obj)
-     if(Platform.OS === 'ios')
-     {
-         IOSLog.logClass("myLog",name+" \n"+ JSON.stringify(obj));
-     }
-     else{
-        obj ? console.log(name, obj) : console.log(name);
+export const moneyFormat = (numold, s) => {
+    let num = Number(numold),
+        re = /(-?\d+)(\d{3})/,
+        n= s ? s : 2;
+
+    if (Number.prototype.toFixed) {
+        num = (num).toFixed(n)
+    } else {
+        let j = 1,b = 1;
+        while (j >= n) {
+            b = b * 10;
+            j++;
+        }
+        num = Math.round(num * b) / b;
     }
-};
+    num = '' + num;
+    let arr = num.split('.')
+    while (re.test(arr[0])) {
+        arr[0] = arr[0].replace(re, "$1,$2")
+    }
+    if (!!arr[1]) {
+        num = arr[0] + '.' + arr[1];
+    }
+    return num
+}
 
-global.TLog = TLog;
-
-
-
-
+global.G_moneyFormat = moneyFormat;
 
 /**
  * 判断对象是否是空

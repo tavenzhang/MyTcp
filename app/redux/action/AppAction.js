@@ -1,4 +1,3 @@
-import {ActionType } from "./ActionType";
 
 const action = (type, payload = {}) => ({
     type,
@@ -34,4 +33,7 @@ export const AppAct={
         msg,
         style,
     }),
+    app_data_reset:()=>({
+        type: ActionType.AppType.APP_BACK_RESET,
+    })
 }

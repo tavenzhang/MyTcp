@@ -6,9 +6,7 @@ import {
 } from 'react-native';
 import NavigationBar from './NavigationBar';
 
-import {shouldComponentUpdate } from 'react-immutable-render-mixin';
-
-
+import {shouldComponentUpdate} from 'react-immutable-render-mixin';
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -34,14 +32,20 @@ export default class BaseView extends Component {
         };
     }
 
+    componentWillMount() {
+
+    }
+
     renderNavigationBar() {
         let navigationBarProps = this.getNavigationBarProps();
         if(navigationBarProps != null)
         {
-            Object.assign(this.props.passProps,navigationBarProps);
+            //{...data, gameModel: gameModel, playModel: playModel}
+            //Object.assign(this.props.passProps,navigationBarProps);
             return (
                 <NavigationBar
                     {...this.props.passProps}
+                    {...navigationBarProps}
                     onLeftPressed={this.onLeftPressed}
                     onRightPressed={this.onRightPressed}
                     onHeadPressed={this.onHeadPressed}
@@ -53,6 +57,10 @@ export default class BaseView extends Component {
         }
     }
 
+    componentWillUpdate() {
+        LayoutAnimation.configureNext(G_LayoutAnimationHelp.springNoDelete);
+    }
+
     render() {
         return (
             <View style={[styles.container, this.props.style]}>
@@ -62,17 +70,12 @@ export default class BaseView extends Component {
         );
     }
 
-    componentWillUpdate() {
-        LayoutAnimation.configureNext(LayoutAnimationHelp.springNoDelete);
-    }
-
-
     renderBody() {
 
     }
 
     onLeftPressed() {
-         NavUtil.pop();
+         G_NavUtil.pop();
     }
 
     onRightPressed() {

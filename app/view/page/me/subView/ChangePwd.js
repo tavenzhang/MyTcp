@@ -43,11 +43,12 @@ export default class ChangePwd extends BaseView {
                     placeholder={this.state.selectedTabIndex ? "原资金密码" : "原登陆密码"}
                     secureTextEntry={true}
                     autoFocus={true}
+                    underlineColorAndroid={'transparent'}
                 />
             </View>)
 
         return (
-            <View style={GlobeStyle.appView}>
+            <View style={G_Style.appView}>
                 <SegmentedControlTab
                     values={['登陆密码', '资金密码']}
                     onTabPress={this.onTabChange}
@@ -56,7 +57,7 @@ export default class ChangePwd extends BaseView {
                     selectedIndex={this.state.selectedTabIndex}
                     activeTabStyle={{backgroundColor: "#a52a2a"}}
                 />
-                <View style={{marginLeft: 40, marginRight: 40, top: GlobelTheme.screenHeight / 9}}>
+                <View style={{marginLeft: 40, marginRight: 40, top: G_Theme.windowHeight / 9}}>
                     {oldPwdView}
                     <View style={styles.inputContain}>
                         <AIcon name="lock" style={styles.icoPwd}/>
@@ -67,6 +68,7 @@ export default class ChangePwd extends BaseView {
                             maxLength={9}
                             placeholder={this.state.selectedTabIndex ? "新资金密码" : "新登陆密码"}
                             secureTextEntry={true}
+                            underlineColorAndroid={'transparent'}
                         />
                     </View>
                     <View style={styles.inputContain}>
@@ -78,6 +80,7 @@ export default class ChangePwd extends BaseView {
                             maxLength={9}
                             placeholder={"确认密码"}
                             secureTextEntry={true}
+                            underlineColorAndroid={'transparent'}
                         />
                     </View>
                     <Button
@@ -99,13 +102,6 @@ export default class ChangePwd extends BaseView {
         );
     }
 
-    componentDidMount() {
-
-    }
-
-    componentWillUnmount() {
-
-    }
 
     onTabChange = (index) => {
         this.setState({
@@ -141,7 +137,7 @@ export default class ChangePwd extends BaseView {
                     ActDispatch.AppAct.showErrorBox(data.Msg);
                     if(data.isSuccess)
                     {
-                        NavUtil.pop();
+                        G_NavUtil.pop();
                     }
                 }, false)
             }
@@ -155,7 +151,7 @@ export default class ChangePwd extends BaseView {
                         ActDispatch.AppAct.showErrorBox(data.Msg);
                         if(data.isSuccess)
                         {
-                            NavUtil.pop();
+                            G_NavUtil.pop();
                         }
                     }, false)
                 }
@@ -167,7 +163,7 @@ export default class ChangePwd extends BaseView {
                         ActDispatch.AppAct.showErrorBox(data.Msg);
                         if(data.isSuccess)
                         {
-                            NavUtil.pop();
+                            G_NavUtil.pop();
                         }
                     }, false)
 
@@ -185,14 +181,15 @@ const styles = StyleSheet.create({
     textStyle: {
         width: 150,
         left: 10,
-        fontSize: 14
+        fontSize: 16,
+        height:40
     },
     iconUser: {
-        color: GlobelTheme.gray,
+        color: G_Theme.gray,
         fontSize: 18,
     },
     icoPwd: {
-        color: GlobelTheme.gray,
+        color: G_Theme.gray,
         fontSize: 20,
     },
     inputContain: {
@@ -205,6 +202,6 @@ const styles = StyleSheet.create({
         justifyContent: "flex-start",
         alignItems: "center",
         borderColor: 'gray',
-        borderBottomWidth: 0.2
+        borderBottomWidth: 0.5
     }
 });

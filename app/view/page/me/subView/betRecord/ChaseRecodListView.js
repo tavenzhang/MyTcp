@@ -16,7 +16,7 @@ export default class ChaseRecodListView extends React.Component {
     render() {
         let ds = this.props.dataList;
         return (
-            <View style={GlobeStyle.appContentView}>
+            <View style={G_Style.appContentView}>
                 <BetListView dataList={ds} loadMore={this.props.loadMore} renderRow={this._renderRow}/>
             </View>
         )
@@ -51,7 +51,7 @@ export default class ChaseRecodListView extends React.Component {
     }
 
     itemClick = (data) => {
-        NavUtil.pushToView(NavViews.ChaseDeatilView({...data,title:"追号详情",...this.props}));
+        G_NavUtil.pushToView(G_NavViews.ChaseDeatilView({...data,title:"追号详情",...this.props}));
     }
 }
 

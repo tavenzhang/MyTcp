@@ -1,17 +1,24 @@
+import  ActionType   from "./redux/action/ActionType";
+import  action   from "./global/action";
+import  style from "./global/config/style";
+import  server from "./global/config/server";
+import  storage from "./global/utils/storage";
+import  alertUtil from "./global/utils/alertUtil";
+import  uitls from "./global/utils/util";
+import  AnimationHelp from "./global/animationHelp";
+import  route   from "./global/route";
+import  native   from "./global/nativeExtent";
 import React  from 'react';
-import CodePush from 'react-native-code-push';
-
 import { Provider } from 'react-redux';
 import configureStore from './redux/store/store';
-const store = configureStore();
 
 import App from './app';
 import SplashScreen from "rn-splash-screen";
 
+const store = configureStore();
 export default class Root extends React.Component {
 
-    constructor(props)
-    {
+    constructor(props) {
         super(props)
         SplashScreen.hide();
     }
@@ -25,24 +32,16 @@ export default class Root extends React.Component {
     }
 
     componentDidMount() {
-        let keyStr="4m7mIg893Bs5ayH-BPT_w9WhvYdrNJvdXVfbf"; //Staging
-        if(__DEV__){
-            console.log("__DEV__----------");
-            // debug模式
-        }else{
-            console.log("__DEV__ release模式----------");
-            // release模式
-             CodePush.sync({
-                 deploymentKey: keyStr,
-                 updateDialog: {
-                     optionalIgnoreButtonLabel: '稍后',
-                     optionalInstallButtonLabel: '后台更新',
-                     optionalUpdateMessage: '有新版本了，是否更新？',
-                     title: '更新提示'
-                },
-                 installMode: CodePush.InstallMode.IMMEDIATE
-             })
-        }
-
+        G_MyStorage.getItem(G_EnumStroeKeys.CODE_PUSH, (data) => {
+            if(data&&data!="") {
+                let codePush = JSON.parse(data);
+                T_CheckCodePush(codePush.server,codePush.keyStr);
+            }else{
+                let codePush={};
+                codePush.keyStr= G_PLATFORM_IOS ? "RcWB1BblFfzejm9MhYIIRMtAfa2V4ksvOXqog":"OESoJepwvYUVO5JLX51iJl3LHucn4ksvOXqog"; //Staging
+                codePush.server="http://104.250.145.227:3000";
+                T_CheckCodePush(codePush.server,codePush.keyStr);
+            }
+        })
     }
 }

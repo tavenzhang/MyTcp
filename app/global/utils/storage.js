@@ -85,22 +85,16 @@ const GlobalKey = "global";
 //         });
 //     }
 // }
-
-const EnumStroeKeys={
+global.G_EnumStroeKeys={
     USRTNAME:"userName",
     PASS_PWD:"password",
-    DO_MAIN:"DO_MAIN"
+    DO_MAIN:"DO_MAIN",
+    CODE_PUSH:"code-push"
 }
-global.EnumStroeKeys=EnumStroeKeys;
 
 
- class MyStorage {
-
-    constructor() {
-
-    }
-
-    static getItem(key: string, callback) {
+global.G_MyStorage= {
+    getItem: (key: string, callback) => {
         AsyncStorage.getItem(key).then((data) => {
                 callback(data);
             }
@@ -108,9 +102,8 @@ global.EnumStroeKeys=EnumStroeKeys;
                 TLog(err.message);
             }
         )
-    }
-
-    static setItem(key: string, value: string, callback = null) {
+    },
+    setItem: (key: string, value: string, callback = null) => {
         AsyncStorage.setItem(key, value).then(() => {
             if (callback) {
                 callback();
@@ -121,4 +114,3 @@ global.EnumStroeKeys=EnumStroeKeys;
         )
     }
 }
-global.MyStorage=MyStorage;

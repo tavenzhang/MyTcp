@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{PropTypes} from 'react';
 import {
     StyleSheet,
     View,
@@ -7,11 +7,18 @@ import {
 } from 'react-native';
 
 import Swiper from 'react-native-swiper';
+import {home_game} from "../../assets/index";
+
 
 export default class MyBannerSwiper extends React.Component {
 
+    static propTypes={
+        dataList:PropTypes.array
+    }
+
     render() {
         const {dataList}= this.props
+
         return (
             <Swiper
                 height={100}
@@ -21,7 +28,7 @@ export default class MyBannerSwiper extends React.Component {
                 activeDot={<View style={styles.customActiveDot} />}
                 showsPagination={false}
                 paginationStyle={{
-                        bottom: 10
+                        bottom: 5
                     }}
             >
                 { dataList ? dataList.map((banner,i) => {
@@ -29,9 +36,14 @@ export default class MyBannerSwiper extends React.Component {
                         <TouchableOpacity key={i} activeOpacity={0.75} onPress={()=>{
                             this.bannerClick(banner);
                         }}>
+                            {/*<Image*/}
+                                {/*style={styles.bannerImage}*/}
+                                {/*source={{uri: banner.url}}*/}
+                                {/*key={i}*/}
+                            {/*/>*/}
                             <Image
                                 style={styles.bannerImage}
-                                source={{uri: banner.url}}
+                                source={home_game}
                                 key={i}
                             />
                         </TouchableOpacity>
@@ -42,7 +54,8 @@ export default class MyBannerSwiper extends React.Component {
     }
 
     bannerClick=(data)=> {
-        NavUtil.pushToView(NavViews.ADView(data));
+        TLog("bannerClick,----data==",data)
+        G_NavUtil.pushToView(G_NavViews.ADView(data));
     }
 }
 
@@ -51,8 +64,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#77cc32',
     },
     bannerImage: {
-        height: 100,
-        width: GlobelTheme.screenWidth,
+        height:G_Theme.bannerHeight,
+        width: G_Theme.windowWidth,
     },
 
     customDot: {

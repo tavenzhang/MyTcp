@@ -8,7 +8,7 @@ import TabNavigator from 'react-native-tab-navigator';
 import AIcon from 'react-native-vector-icons/FontAwesome';
 import Home from "./home/Home";
 import MyView from "./me/MyView";
-import Notice from "./award/GameResultView";
+import Notice from "./award/GameResultList";
 import Discover from "./notice/Notice";
 
 const tabBarItems = [
@@ -29,7 +29,7 @@ export default class TabbarView extends React.Component {
 
     render() {
         return (
-            <View style={GlobeStyle.appView}>
+            <View style={G_Style.appView}>
                 <TabNavigator tabBarStyle={{backgroundColor: "#171719"}}>
                     {
                         tabBarItems.map((item, i) => {
@@ -44,7 +44,7 @@ export default class TabbarView extends React.Component {
                                     renderIcon={() => <AIcon name={item.icon} style={styles.iconNormal}/>}
                                     renderSelectedIcon={() => <AIcon name={item.icon} style={styles.iconPress}/>}
                                     onPress={() => this.setState({selectedTab: item.title})}>
-                                    <Component {...this.props}  passProps={{title:item.title}}/>
+                                    <Component {...this.props} passProps={{title: item.title}}/>
                                 </TabNavigator.Item>
                             )
                         })
@@ -52,34 +52,22 @@ export default class TabbarView extends React.Component {
                 </TabNavigator>
             </View>);
     }
-
-    componentDidMount() {
-
-    }
-
-    componentWillUnmount() {
-        // this.timer && clearTimeout(this.timer);
-    }
 }
 
 
 const styles = StyleSheet.create({
     textStyle: {
-        color: GlobelTheme.gray,
+        color: G_Theme.gray,
     },
     selectedTextStyle: {
-        color: GlobelTheme.selectColor,
+        color: G_Theme.selectColor,
     },
     iconPress: {
-        color: GlobelTheme.selectColor,
+        color: G_Theme.selectColor,
         fontSize: 25
     },
     iconNormal: {
-        color: GlobelTheme.gray,
+        color: G_Theme.gray,
         fontSize: 25
     },
-    tabItem: {
-        backgroundColor: '#f00'
-    }
-
 });

@@ -9,7 +9,6 @@ import {
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 export const Header_Arrow = "angle-left";
-const top_title = Platform.OS === 'ios' ? 10 : 0
 
 export default class NavigationBar extends React.Component {
 
@@ -66,7 +65,7 @@ export default class NavigationBar extends React.Component {
                     style={styles.titleContain}
                     onPress={this.props.onHeadPressed}
                 >
-                    <Text key={'title'} style={styles.title} numberOfLines={2}>{this.props.title}</Text>
+                    <Text key={'title'} style={styles.title} numberOfLines={2}>{this.props.title || this.props.name}</Text>
                 </TouchableOpacity>
             )
         }
@@ -99,7 +98,7 @@ export default class NavigationBar extends React.Component {
 const styles = StyleSheet.create({
     navigationBarContainer: {
         flexDirection: 'row',
-        height: GlobelTheme.NavigatorHeadH,
+        height: G_Theme.navigatorHeadH,
         alignItems: 'center',
         borderBottomColor: '#ccc',
         borderBottomWidth: 0.5,
@@ -107,7 +106,7 @@ const styles = StyleSheet.create({
     },
     subView:{
         flex: 1,
-        paddingTop:15
+        marginTop:G_Theme.StatusBarH
     },
     titleContain: {
         flex: 1,
@@ -137,7 +136,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'flex-end',
         alignItems: 'center',
-        flex: 1,
         right:15
 
     },

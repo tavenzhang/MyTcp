@@ -5,7 +5,6 @@ import {
     , StyleSheet,
     ListView,
     TouchableHighlight,
-    Alert
 } from 'react-native';
 
 import {connect} from 'react-redux';
@@ -31,6 +30,7 @@ let ItemNameEnum = {
 const mapStateToProps = state => {
     return {
         userData: state.get("appState").get("userData").toJS(),
+        moneyBalance:state.get("appState").get("moneyBalance"),
     }
 }
 
@@ -83,7 +83,7 @@ export default class MyView extends BaseView {
     }
 
     renderBody() {
-        let {userData} = this.props
+        let {userData,moneyBalance} = this.props
         let dataS = {"我的彩票": MyView.dataList1, "账户资金": MyView.dataList2, "个人信息": MyView.dataList3};
         let infoView = null;
         if (userData.isLogined) {
@@ -102,22 +102,22 @@ export default class MyView extends BaseView {
                         </Text>
                     </View>
                     <View style={{justifyContent: "space-around", flex: 1}}>
-                        <Text style={{textAlign: "center", textAlign: "left"}}><Text
-                            style={styles.titleSyle}>账户总额: </Text>{parseInt(userData.data.available)}
+                        <Text style={{textAlign: "center"}}><Text
+                            style={styles.titleSyle}>账户总额: </Text>{parseInt(moneyBalance)}
                         </Text>
-                        <Text style={{textAlign: "center", textAlign: "left"}}><Text
-                            style={styles.titleSyle}>可提金额: </Text>100
+                        <Text style={{textAlign: "center"}}><Text
+                            style={styles.titleSyle}>资金密码: </Text>{userData.data.is_set_fund_password ? "已设置":"未设置"}
                         </Text>
                     </View>
                 </View>
                 <View style={{flex: 1, alignItems: "center", flexDirection: "row", paddingLeft: 10}}>
                     <Text style={styles.titleSyle}>账户安全:</Text>
                     <View style={{flexDirection: "row", alignItems: "center", marginLeft: 15, marginRight: 15}}>
-                        <AIcon name="id-card-o" style={{color: GlobelTheme.gray, fontSize: 20, marginRight: 5}}/>
+                        <AIcon name="id-card-o" style={{color: G_Theme.black, fontSize: 20, marginRight: 5}}/>
                         <Text style={{color: "red"}}>未绑定身份证</Text>
                     </View>
                     <View style={{flexDirection: "row", alignItems: "center"}}>
-                        <AIcon name="mobile" style={{color: GlobelTheme.gray, fontSize: 20, marginRight: 5}}/>
+                        <AIcon name="mobile" style={{color: G_Theme.black, fontSize: 20, marginRight: 5}}/>
                         <Text style={{color: "red"}}>未绑定手机</Text>
                     </View>
                 </View>
@@ -153,7 +153,7 @@ export default class MyView extends BaseView {
         }
         let ds = this.state.dataSource.cloneWithRowsAndSections(dataS);
         return (
-            <View style={[GlobeStyle.appContentView, {backgroundColor: "rgba(230,230,230,0.5)"}]}>
+            <View style={[G_Style.appContentView, {backgroundColor: "rgba(230,230,230,0.5)"}]}>
                 {infoView}
                 <ListView
                     dataSource={ds}
@@ -170,11 +170,11 @@ export default class MyView extends BaseView {
     }
 
     clickReg = () => {
-        NavUtil.pushToView(NavViews.RegView({title: "注册"}));
+        G_NavUtil.pushToView(G_NavViews.RegView({title: "注册"}));
     }
 
     clickLogin = () => {
-        NavUtil.pushToView(NavViews.LoginView({title: "登陆"}));
+        G_NavUtil.pushToView(G_NavViews.LoginView({title: "登陆"}));
     }
 
     itemClick = (data) => {
@@ -182,22 +182,22 @@ export default class MyView extends BaseView {
         if (userData.isLogined) {
             switch (data.name) {
                 case ItemNameEnum.awardFind:
-                    NavUtil.pushToView(NavViews.AwardRecord({title: data.name}))
+                    G_NavUtil.pushToView(G_NavViews.AwardRecord({title: data.name}))
                     break;
                 case ItemNameEnum.betRecord:
-                    NavUtil.pushToView(NavViews.BetRecord({title: data.name}));
+                    G_NavUtil.pushToView(G_NavViews.BetRecord({title: data.name}));
                     break;
                 case ItemNameEnum.chaseRecode:
-                    NavUtil.pushToView(NavViews.ChaseRecord({title: data.name}));
+                    G_NavUtil.pushToView(G_NavViews.ChaseRecord({title: data.name}));
                     break;
                 case ItemNameEnum.myMoney:
-                    NavUtil.pushToView(NavViews.MyMoneyView({title: data.name}));
+                    G_NavUtil.pushToView(G_NavViews.MyMoneyView({title: data.name}));
                     break;
                 case ItemNameEnum.inMoney:
-                    NavUtil.pushToView(NavViews.InMoneyView({title: data.name}));
+                    G_NavUtil.pushToView(G_NavViews.InMoneyView({title: data.name}));
                     break;
                 case ItemNameEnum.outerMoney:
-                    NavUtil.pushToView(NavViews.OuterMoneyView({
+                    G_NavUtil.pushToView(G_NavViews.OuterMoneyView({
                         title: data.name,
                         money: parseInt(userData.data.available),
                         uid: userData.data.user_id,
@@ -205,12 +205,12 @@ export default class MyView extends BaseView {
                     }));
                     break;
                 case ItemNameEnum.pwdMange:
-                    NavUtil.pushToView(NavViews.ChangePwd({title: data.name,defaultIndex:0}));
+                    G_NavUtil.pushToView(G_NavViews.ChangePwd({title: data.name,defaultIndex:0}));
                     break;
                 case ItemNameEnum.cardMange:
                    if(userData.data.is_set_fund_password)
                    {
-                       NavUtil.pushToView(NavViews.CardManageView({title: data.name}));
+                       G_NavUtil.pushToView(G_NavViews.CardManageView({title: data.name}));
                    }
                    else{
 
@@ -222,10 +222,10 @@ export default class MyView extends BaseView {
                    }
                     break;
                 case ItemNameEnum.msgNotice:
-                    NavUtil.pushToView(NavViews.MsgView({title: data.name}));
+                    G_NavUtil.pushToView(G_NavViews.MsgView({title: data.name}));
                     break;
                 case ItemNameEnum.moneyTransfer:
-                    NavUtil.pushToView(NavViews.MoneyTransferView({
+                    G_NavUtil.pushToView(G_NavViews.MoneyTransferView({
                         title: data.name,
                         money: parseInt(userData.data.available),
                         uid: userData.data.user_id
@@ -234,7 +234,7 @@ export default class MyView extends BaseView {
             }
         }
         else {
-           Alert.alert("", "请先登陆", [
+            G_AlertUtil.showWithDestructive("", "请先登陆", [
                 {text: '登陆', onPress: this.clickLogin,style:"destructive"},
                 {text: '取消'}
             ])
@@ -245,7 +245,7 @@ export default class MyView extends BaseView {
         //第一行 渲染 sectionHead
         let headView = row == 0 ? <View
             style={{
-                height: 25,
+                height: 30,
                 borderBottomWidth: 1,
                 borderColor: "#ddd",
                 backgroundColor: "#ddd",
@@ -258,13 +258,11 @@ export default class MyView extends BaseView {
                 <View>
                     {headView}
                     <View style={styles.row}>
-                        <View>
                             <View style={{flexDirection: "row", alignItems: "center"}}>
-                                <AIcon name={rowData.ico} style={{color: GlobelTheme.gray, fontSize: 20, width: 25}}/>
+                                <AIcon name={rowData.ico} style={{color: G_Theme.grayDeep, fontSize: 20, width: 25}}/>
                                 <Text style={{fontSize: 14, left: 20}}>{rowData.name}</Text>
                             </View>
-                        </View>
-                        <AIcon name="angle-right" style={styles.iconNormal}/>
+                        <AIcon name={G_EnumFontNames.angleRight} style={styles.iconNormal}/>
                     </View>
                 </View>
             </TouchableHighlight>
@@ -280,7 +278,7 @@ export default class MyView extends BaseView {
     //     );
     // }
     gotoFoundPwd=()=>{
-        NavUtil.pushToView(NavViews.ChangePwd({title:"密码管理",defaultIndex:1}));
+        G_NavUtil.pushToView(G_NavViews.ChangePwd({title:"密码管理",defaultIndex:1}));
     }
 }
 
@@ -314,17 +312,17 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
     },
     textStyle: {
-        color: GlobelTheme.gray,
+        color: G_Theme.gray,
     },
     selectedTextStyle: {
-        color: GlobelTheme.primary,
+        color: G_Theme.primary,
     },
     iconPress: {
-        color: GlobelTheme.primary,
+        color: G_Theme.primary,
         fontSize: 25
     },
     iconNormal: {
-        color: GlobelTheme.gray,
+        color: G_Theme.gray,
         fontSize: 25,
         right: 20
     },
@@ -332,7 +330,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: "space-between",
         alignItems: "center",
-        height: 40,
+        height: 38,
         borderBottomColor: "#ddd",
         borderBottomWidth: 1,
         marginLeft: 15

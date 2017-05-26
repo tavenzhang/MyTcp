@@ -5,14 +5,10 @@ import {
     StatusBar,
     Platform,
     BackAndroid,
+    UIManager,
+    ToastAndroid
 } from 'react-native';
-import  style from "./global/config/style";
-import  server from "./global/config/server";
-import  storage from "./global/utils/storage";
-import  uitls from "./global/utils/util";
-import  AnimationHelp from "./global/animationHelp";
-import  route   from "./global/route";
-import  action   from "./global/action";
+
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import Loading from "./view/componet/Loading";
@@ -20,32 +16,37 @@ import ToastBox from "./view/componet/InfoBox/ToastBox";
 import GuidView from "./view/page/GuidView";
 
 
-
 //定义全局Dispatch 方便使用
 const mapDispatchToProps = (dispatch) => {
-    ActDispatch.AppAct=bindActionCreators(ActDispatch.AppAct,dispatch);
-    ActDispatch.FetchAct=bindActionCreators(ActDispatch.FetchAct,dispatch);
-    ActDispatch.HomeAct=bindActionCreators(ActDispatch.HomeAct,dispatch);
-    ActDispatch.NoticeAct=bindActionCreators(ActDispatch.NoticeAct,dispatch);
+    if(!G_InitRegistApp)
+    {   ActDispatch.AppAct=bindActionCreators(ActDispatch.AppAct,dispatch);
+        ActDispatch.FetchAct=bindActionCreators(ActDispatch.FetchAct,dispatch);
+        ActDispatch.HomeAct=bindActionCreators(ActDispatch.HomeAct,dispatch);
+        ActDispatch.NoticeAct=bindActionCreators(ActDispatch.NoticeAct,dispatch);
+        ActDispatch.GameAct=bindActionCreators(ActDispatch.GameAct,dispatch);
+        G_InitRegistApp  = true;
+    }
     return {}
 }
 
 const mapStateToProps = state => {
     return {
-        //isLoading: state.get("fetchState").get("requesting") || state.appState.requesting,
         isLoading: state.get("fetchState").get("requesting"),
         infoBox: state.get("appState").get("infoBox").toJS()
     }
 }
 
-
 @connect(mapStateToProps, mapDispatchToProps)
-export default  class App extends React.Component {
+export default class App extends React.Component {
 
     //节点渲染以后
     componentWillMount() {
         if (Platform.OS === 'android') {
             BackAndroid.addEventListener('hardwareBackPress', this.onBackAndroid);
+        }
+        //andorid setLayoutAnimatio 必须加入
+        if (Platform.OS === 'android') {
+            UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
         }
     }
 
@@ -89,7 +90,7 @@ export default  class App extends React.Component {
             return sceneAnimation;
         }
         //默认
-        return Navigator.SceneConfigs.FloatFromLeft
+        return Navigator.SceneConfigs.FloatFromLeft;
     }
 
     renderScene = (route, navigator) => {
@@ -109,10 +110,11 @@ export default  class App extends React.Component {
         }
         let now = new Date().getTime();
         if (now - this.lastClickTime < 2500) {//2.5秒内点击后退键两次推出应用程序
+            ActDispatch.AppAct.app_data_reset();
             return false;//控制权交给原生
         }
         this.lastClickTime = now;
-        ActDispatch.AppAct.showBox("再按一次退出");
+        ToastAndroid.show("再按一次退出",ToastAndroid.SHORT);
         return true;
     }
 }

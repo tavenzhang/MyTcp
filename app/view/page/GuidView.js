@@ -19,7 +19,7 @@ export default class GuidView extends React.Component {
         return (
             <Animated.View style={{flex: 1,opacity:this.state.fadeInOpacity}}>
                 <Image
-                    style={{flex: 1, width: GlobelTheme.screenWidth.width, height:GlobelTheme.screenHeight.height}}
+                    style={{flex: 1, width: G_Theme.windowWidth, height:G_Theme.windowHeight}}
                     source={startImg}
                 />
             </Animated.View>
@@ -32,9 +32,9 @@ export default class GuidView extends React.Component {
             duration:1000,
             easing:Easing.linear()
         }).start(this.toApp());
-        NetInfo.isConnected.fetch().done((isConnected) => {
-            console.log('First, is ' + (isConnected ? 'online' : 'offline'));
-        })
+        // NetInfo.isConnected.fetch().done((isConnected) => {
+        //     console.log('First, is ' + (isConnected ? 'online' : 'offline'));
+        // })
     }
 
     componentWillUnmount() {
@@ -43,7 +43,7 @@ export default class GuidView extends React.Component {
 
     toApp=()=>{
         this.timer = setTimeout(() => {
-            NavUtil.resetToView(NavViews.TabbarView());
+            G_NavUtil.resetToView(G_NavViews.TabbarView());
         }, 2000)
 
     }

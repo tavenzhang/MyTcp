@@ -3,12 +3,14 @@ import {
     View,
     Text, StyleSheet,
     TouchableHighlight,
-    LayoutAnimation
+    LayoutAnimation,
+    InteractionManager
 } from 'react-native';
 
 import {connect} from 'react-redux';
 import BaseView from "../../../componet/BaseView";
 import AwardListView from "../../../componet/BaseListView";
+
 
 const mapStateToProps = state => {
     return {
@@ -27,7 +29,7 @@ export default class AwardRecordView extends BaseView {
 
     renderBody() {
         return (
-            <View style={GlobeStyle.appContentView}>
+            <View style={G_Style.appContentView}>
                 <View style={styles.row}>
                     <View style={styles.itemHeadStyle}>
                         <Text style={styles.textHeadStyle}>游戏</Text>
@@ -48,18 +50,20 @@ export default class AwardRecordView extends BaseView {
     }
 
     componentWillUpdate() {
-        LayoutAnimation.configureNext(LayoutAnimationHelp.springNoDelete);
+        LayoutAnimation.configureNext(G_LayoutAnimationHelp.springNoDelete);
     }
 
     componentDidMount() {
         HTTP_SERVER.GET_BET_WIN.body.page = 1;
         HTTP_SERVER.GET_BET_WIN.body.pagesize = 15;
-       ActDispatch.FetchAct.fetchVoWithResult(HTTP_SERVER.GET_BET_WIN, (result) => {
-           TLog("rowData------------------------------------",result.data);
-            if (result.data.data) {
-                this.setState({dataList: result.data.data});
-            }
-        })
+        InteractionManager.runAfterInteractions(() => {
+            ActDispatch.FetchAct.fetchVoWithResult(HTTP_SERVER.GET_BET_WIN, (result) => {
+                TLog("rowData------------------------------------",result.data);
+                if (result.data.data) {
+                    this.setState({dataList: result.data.data});
+                }
+            })
+        });
     }
 
     _loadMore = (callFinishBack) => {

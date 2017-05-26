@@ -13,45 +13,47 @@ import CardManageView from "../view/page/me/subView/CardManageView";
 import MsgView from "../view/page/me/subView/MailView";
 import TabbarView from "../view/page/TabbarView";
 import LoginView from "../view/page/me/subView/LoginView";
-import Fast3Notice from "../view/page/award/subView/Fast3Notice";
+import SSC_History from "../view/page/award/subView/SSC_History";
 import ADView from "../view/page/home/subview/ADView";
 import AddCardView from "../view/page/me/subView/cardManage/AddCardView";
 import BetDetailView from "../view/page/me/subView/betRecord/BetDetailView";
 import ChaseDeatilView from "../view/page/me/subView/betRecord/ChaseDeatilView";
 import MessageDetail from "../view/page/me/subView/message/MessageDetail";
 import NoticeDeailView from "../view/page/notice/noticeDetail/NoticeDeailView";
-import SD11Choose5 from "../view/page/home/subview/games/SD11Choose5";
+import LotteryOrders from "../view/page/home/subview/games/LotteryOrders";
 import DelCardView from "../view/page/me/subView/cardManage/DelCardView";
 import EditCardView from "../view/page/me/subView/cardManage/EditCardView";
 import AddValidView from "../view/page/me/subView/cardManage/AddValidView";
 import EditCardAddView from "../view/page/me/subView/cardManage/EditCardAddView";
 import MoneyTransferView from "../view/page/me/subView/MoneyTransferView";
+import L115View from "../view/page/home/subview/games/L115/L115View";
+import SSCView from "../view/page/home/subview/games/SSC/SSCView";
+import D3View from "../view/page/home/subview/games/D3/D3View";
+import K3View from "../view/page/home/subview/games/K3/K3View";
+import G_11_5_History from "../view/page/award/subView/G_11_5_History";
+import TrendView from "../view/page/home/subview/trend/TrendView";
 
 
 // PushFromLeft
 // FloatFromRight
 // FloatFromLeft
-// FloatFromBottom
-// FloatFromBottomAndroid
-// FadeAndroid
-// HorizontalSwipeJump
-// HorizontalSwipeJumpFromRight
 // VerticalUpSwipeJump
 // VerticalDownSwipeJump
 global.Navgator = null;
 
-let navigator;
 //  sceneAnimation: Navigator.SceneConfigs.FloatFromBottom
 //跳转页面集中控制 方便管理 和自定义动画
 
-let NavViews = {
+global.G_NavViews = {
     ADView: (data) => ({"component": ADView, "passProps": data}),
     //tab页面
-    TabbarView: () => ({component: TabbarView}),
+    TabbarView: () => ({"component": TabbarView}),
     //登陆
-    LoginView: (data) => ({"component": LoginView, "passProps": data}),
-    //快3游戏通知
-    Fast3Notice: (data) => ({"component": Fast3Notice, "passProps": data}),
+    LoginView: (data={}) => ({"component": LoginView, "passProps": data}),
+    //ssc 游戏详情
+    SSC_History: (data) => ({"component": SSC_History, "passProps": data}),
+    //11-5 游戏详情
+    G_11_5_History: (data) => ({"component": G_11_5_History, "passProps": data}),
     //个人中心页面
     AwardRecord: (data) => ({"name": "AwardRecordView", "component": AwardRecord, "passProps": data}),
     BetRecord: (data) => ({"name": "BetRecordView", "component": BetRecord, "passProps": data}),
@@ -62,8 +64,16 @@ let NavViews = {
     ChangePwd: (data) => ({"name": "ChangePwd", "component": ChangePwd, "passProps": data}),
     CardManageView: (data) => ({"name": "CardManageView", "component": CardManageView, "passProps": data}),
     MsgView: (data) => ({"name": "MailView", "component": MsgView, "passProps": data}),
-    //游戏玩法
-    SD11Choose5: (data) => ({"component": SD11Choose5, "passProps": data}),
+    //游戏11选5玩法
+    L115View: (data) => ({"component": L115View, "passProps": data}),
+    //福彩3d玩法
+    D3View: (data) => ({"component": D3View, "passProps": data}),
+    //快3玩法
+    K3View: (data) => ({"component": K3View, "passProps": data}),
+    //游戏重启时时彩玩法
+    SSCView: (data) => ({"component": SSCView, "passProps": data}),
+    //号码篮
+    LotteryOrders: (data) => ({"component": LotteryOrders, "passProps": data}),
     //添加银行卡
     AddCardView: (data) => ({"component": AddCardView, "passProps": data}),
     //add step one
@@ -78,50 +88,47 @@ let NavViews = {
     MessageDetail: (data) => ({"component": MessageDetail, "passProps": data}),
     NoticeDeailView: (data) => ({"component": NoticeDeailView, "passProps": data}),
 
-    MoneyTransferView:(data) => ({"component": MoneyTransferView, "passProps": data})
-
-
+    MoneyTransferView:(data) => ({"component": MoneyTransferView, "passProps": data}),
+    TrendView: (data) => ({"component": TrendView, "passProps": data}),
 }
 
 
-global.NavViews = NavViews;
-
-
-const NavUtil = {
+global.G_NavUtil  = {
     pushToView: (data) => {
-        InteractionManager.runAfterInteractions(() => {
-            Navgator.push(data);
-        });
+        Navgator.push(data);
+        // InteractionManager.runAfterInteractions(() => {
+        //     Navgator.push(data);
+        // });
     },
     replace: (data) => {
-        InteractionManager.runAfterInteractions(() => {
-            Navgator.replace(data);
-        });
+        Navgator.replace(data);
+        // InteractionManager.runAfterInteractions(() => {
+        //
+        // });
     },
     resetToView: (data) => {
-        InteractionManager.runAfterInteractions(() => {
-            Navgator.resetTo(data);
-        });
+        Navgator.resetTo(data);
+        // InteractionManager.runAfterInteractions(() => {
+        //
+        // });
     },
     pop: () => {
-        InteractionManager.runAfterInteractions(() => {
-            Navgator.pop()
-        });
+        Navgator.pop()
+        // InteractionManager.runAfterInteractions(() => {
+        //     Navgator.pop()
+        // });
 
     },
     popN: (n = 1) => {
-        InteractionManager.runAfterInteractions(() => {
-            Navgator.popN(n)
-        });
+        Navgator.popN(n)
     },
-     popToRoute:(data) => {
-            InteractionManager.runAfterInteractions(() => {
-                Navgator.popToRoute(data);
-            });
+    popToRoute:(data) => {
+        Navgator.popToRoute(data);
         }
     }
-    global.NavUtil = NavUtil
 
+
+global.G_InitRegistApp = false;
 
 
 
