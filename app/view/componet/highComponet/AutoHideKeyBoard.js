@@ -6,12 +6,13 @@ import {
 } from 'react-native';
 
 
-export default class AutoView extends React.Component {
-
+export default AutoHideKeyBoard=(WrappedComponent) => class AutoHideKeyboard extends React.Component {
     render() {
         return (
             <TouchableWithoutFeedback style={{flex:1}} onPress={Keyboard.dismiss}>
-                {this.props.children}
+                <View style={{flex:1}}>
+                    <WrappedComponent {...this.props}/>
+                </View>
             </TouchableWithoutFeedback>
         )
     }

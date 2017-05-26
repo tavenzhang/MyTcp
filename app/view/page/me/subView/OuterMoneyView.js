@@ -6,17 +6,13 @@ import {
     TextInput,
     Picker,
     Alert,
-    TouchableWithoutFeedback,
     Keyboard
 } from 'react-native';
 
 import Button from 'react-native-button'
 import BaseView from "../../../componet/BaseView";
-import AutoHideKeyboard from "../../../componet/AutoHideKeyBoardView";
-import AutoView from "../../../componet/AutoView";
+import AutoHideKeyBoardView from "../../../componet/AutoHideKeyBoardView";
 
-
-//@AutoHideKeyboard
 export default class OuterMoneyView extends BaseView {
     constructor(props) {
         super(props);
@@ -162,16 +158,15 @@ export default class OuterMoneyView extends BaseView {
         }
 
         return (
-            <AutoView>
+            <AutoHideKeyBoardView>
                 <View style={GlobeStyle.appContentView}>
                     {contentView}
                 </View>
-            </AutoView>
+            </AutoHideKeyBoardView>
         );
     }
 
     componentDidMount() {
-
         ActDispatch.FetchAct.fetchVoWithResult(HTTP_SERVER.MONEY_OUTER_0, (data) => {
             if (data.isSuccess) {
                 if (data.data.bank_cards && data.data.bank_cards.length > 0) {
