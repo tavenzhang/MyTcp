@@ -26,9 +26,7 @@ export default class MoneyInView extends BaseView {
         super(props)
         this.state = {
             selectedTabIndex: 0,
-            switchValue:false,
-            groupDate:null,
-            linkGroupDate:null,
+            platList:[],
         };
     }
 
@@ -46,7 +44,7 @@ export default class MoneyInView extends BaseView {
     renderBody() {
         return (<View>
             <MySegmentedControlTab selectedTabIndex={this.state.selectedTabIndex} valueList={['第三方充值','银行卡充值']} onTabChange={this.onTabChange}/>
-            {this.state.selectedTabIndex ? <ThirdInView/>:<BankInView/> }
+            {this.state.selectedTabIndex ? <BankInView/>:<ThirdInView platList={this.state.platList}/> }
         </View>)
     }
 
@@ -56,16 +54,12 @@ export default class MoneyInView extends BaseView {
 
     componentDidMount() {
         G_RunAfterInteractions(() => {
-            // ActDispatch.FetchAct.fetchVoWithResult(HTTP_SERVER.AgentUserGetInfo, (data) => {
-            //     this.setState({groupDate: data.data})
-            // }, false);
-            // ActDispatch.FetchAct.fetchVoWithResult(HTTP_SERVER.AgentPrizeGroup, (data) => {
-            //     this.setState({linkGroupDate: data.data})
-            // }, false);
+            ActDispatch.FetchAct.fetchVoWithResult(HTTP_SERVER.MoneyBankPlatList, (data) => {
+                    this.setState({platList:data.data})
+            }, false);
+            ActDispatch.FetchAct.fetchVoWithResult(HTTP_SERVER.MoneyBankList, (data) => {
+
+            }, false);
         })
     }
-
 }
-const styles = StyleSheet.create({
-
-});
