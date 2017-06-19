@@ -22,7 +22,7 @@ export default class Loading extends React.Component {
                     <ActivityIndicator color="white"/>
                     <Text style={styles.loadingTitle}>loading……</Text>
                 </View>:null
-            ):(<MyModalView visible={visible} hideModal={this.onFindConfirm}>
+            ):(<MyModalView visible={visible} hideModal={this.onFindConfirm} >
                 <View style={{flex: 1, justifyContent: "center", backgroundColor: "rgba(50, 50, 50,0.2)"}}>
                     <View style={styles.loading}>
                         <ActivityIndicator color="white"/>

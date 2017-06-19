@@ -5,6 +5,7 @@ import android.app.Application;
 import com.elvishew.xlog.LogLevel;
 import com.elvishew.xlog.XLog;
 import com.facebook.react.ReactApplication;
+import com.RNFetchBlob.RNFetchBlobPackage;
 import com.jadsonlourenco.RNShakeEvent.RNShakeEventPackage;
 import com.reactnativecomponent.splashscreen.RCTSplashScreenPackage;
 import cn.jpush.reactnativejpush.JPushPackage;
@@ -45,6 +46,7 @@ public class MainApplication extends Application implements ReactApplication {
             myCodePush = new CodePush("OESoJepwvYUVO5JLX51iJl3LHucn4ksvOXqog", MainApplication.this, BuildConfig.DEBUG, "http://104.250.145.227:3000");
             return Arrays.<ReactPackage>asList(
                     new MainReactPackage(),
+            new RNFetchBlobPackage(),
             new RNShakeEventPackage(),
                     new RCTSplashScreenPackage(),
                     new JPushPackage(SHUTDOWN_TOAST, SHUTDOWN_LOG),

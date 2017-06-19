@@ -58,6 +58,7 @@ export default class Home extends BaseView {
     }
 
     componentDidMount() {
+
         G_MyStorage.getItem(G_EnumStroeKeys.DO_MAIN, (data) => {
             if(data&&data!="")
             {

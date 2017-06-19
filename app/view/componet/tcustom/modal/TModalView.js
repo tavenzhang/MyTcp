@@ -24,8 +24,9 @@ export default class MyModalView extends Component {
                 animationType={"fade"}
                 transparent={true}
                 visible={visible}
-                onRequestClose={hideModal}
+                onRequestClose={hideModal ? hideModal:()=>{}}
                 hardwareAccelerated={true}
+
             >
                 <TouchableWithoutFeedback onPress={hideModal}>
                     {this.props.children}
