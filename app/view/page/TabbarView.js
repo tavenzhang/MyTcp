@@ -52,6 +52,10 @@ export default class TabbarView extends React.Component {
                 </TabNavigator>
             </View>);
     }
+
+    componentDidMount() {
+        G_ToastShow("22222");
+    }
 }
 
 const styles = StyleSheet.create({

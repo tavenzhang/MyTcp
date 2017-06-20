@@ -11,7 +11,7 @@ import {RadioButtons} from 'react-native-radio-buttons'
 import {TTextInput} from "../../../../componet/tcustom/textInput/TTextInput";
 import {TButton} from "../../../../componet/tcustom/button/TButton";
 import RNFetchBlob from 'react-native-fetch-blob'
-import {startImg} from "../../../../../assets/index";
+import AIcon from 'react-native-vector-icons/FontAwesome';
 
 export default class ThirdInView extends React.Component {
 
@@ -30,8 +30,7 @@ export default class ThirdInView extends React.Component {
             imgBase64: null
         }
         this.baseFomat = "data:image/png;base64,#content"
-        //this.baseFomat = "data:image/jpeg;base64,#content"
-        this.defaultSelect=false;
+        this.defaultSelect = false;
     }
 
     renderPlatItem = (item, selected, onSelect, index) => {
@@ -39,7 +38,7 @@ export default class ThirdInView extends React.Component {
         return (
             <TouchableWithoutFeedback onPress={onSelect} key={index}>
                 <View>
-                    <Text style={[style,{marginHorizontal: 5}]}>{item.third_party_name}</Text>
+                    <Text style={[style, {marginHorizontal: 5}]}>{item.third_party_name}</Text>
                 </View>
             </TouchableWithoutFeedback>
         );
@@ -49,7 +48,13 @@ export default class ThirdInView extends React.Component {
         let style = selected ? {fontWeight: 'bold', color: "red"} : {};
         return (
             <TouchableWithoutFeedback onPress={onSelect} key={index}>
-                <View>
+                <View style={{flexDirection: "row", alignItems: "center"}}>
+                    <View style={{marginHorizontal: 2, width: 30}}>
+                        {selected ? <AIcon name="money" style={{
+                            color: "red",
+                            fontSize: 20,
+                        }}/> : null}
+                    </View>
                     <Text style={[style, {marginVertical: 5, fontWeight: "bold"}]}>{item.name}</Text>
                 </View>
             </TouchableWithoutFeedback>
@@ -57,7 +62,7 @@ export default class ThirdInView extends React.Component {
     }
 
     renderContainer = (optionNodes) => {
-        return <View style={{flexDirection:"row", flexWrap:"wrap"}}>{optionNodes}</View>;
+        return <View style={{flexDirection: "row", flexWrap: "wrap"}}>{optionNodes}</View>;
     }
 
     onSelcetPlatChange = (selectedOption) => {
@@ -67,12 +72,10 @@ export default class ThirdInView extends React.Component {
     }
 
 
-    componentWillUpdate(nextProps, nextState)
-    {
+    componentWillUpdate(nextProps, nextState) {
         let {platList} = nextProps;
-        if(!this.defaultSelect&&(platList.length>0))
-        {
-             this.onSetSecectPlatFrom(platList)
+        if (!this.defaultSelect && (platList.length > 0)) {
+            this.onSetSecectPlatFrom(platList)
         }
     }
 
@@ -80,7 +83,7 @@ export default class ThirdInView extends React.Component {
         //[{"id":4,"third_party_name":"beepay01","third_party_type_name":"beepay","merchant_id":2,"fee_percent":"0.0000","fee_min":0,"fee_max":0,"fee_switch":0,"method_type":"beeepay"}]
         let {platList} = this.props;
 
-        return ( platList.length>0 ?
+        return ( platList.length > 0 ?
             <View style={{margin: 20}}>
                 <View style={{flexDirection: "row"}}>
                     <Text style={{marginRight: 20}}>平台列表:</Text>
@@ -111,8 +114,9 @@ export default class ThirdInView extends React.Component {
                                 placeholder={"充值金额"} keyboardType={"numeric"}/>
 
                 </View>
-                <View style={{ alignItems: "center", justifyContent: "center", marginVertical: 20}}>
-                    <TButton containerStyle={{width: 200}} disable={this.state.textMoney==""} btnName={"下一步"} onPress={this.onNextStep}/>
+                <View style={{alignItems: "center", justifyContent: "center", marginVertical: 20}}>
+                    <TButton containerStyle={{width: 200}} disable={this.state.textMoney == ""} btnName={"下一步"}
+                             onPress={this.onNextStep}/>
                 </View>
                 <View style={{width: 150, height: 200, alignSelf: "center"}}>
                     <Image
@@ -124,13 +128,13 @@ export default class ThirdInView extends React.Component {
     }
 
     componentDidMount() {
-        let {platList} =this.props
-        if (!this.state.selectedOption&&platList.length>0) {
-           this.onSetSecectPlatFrom(platList)
+        let {platList} = this.props
+        if (!this.state.selectedOption && platList.length > 0) {
+            this.onSetSecectPlatFrom(platList)
         }
     }
 
-    onSetSecectPlatFrom=(platList)=>{
+    onSetSecectPlatFrom = (platList) => {
         this.defaultSelect = true
         if (!this.state.selectedOption) {
             this.onSelcetPlatChange(platList[0]);
@@ -166,70 +170,74 @@ export default class ThirdInView extends React.Component {
             HTTP_SERVER.MoneyBankPlatAdd.body.platform_id = this.state.selectedOption.id;
             HTTP_SERVER.MoneyBankPlatAdd.body.bank_id = "";
             ActDispatch.FetchAct.fetchVoWithResult(HTTP_SERVER.MoneyBankPlatAdd, (data) => {
-                let result = this.baseFomat.replace("#content", data.data.qr);
-                //TLog("result------------", this.state.paySelectItem);
-                this.setState({imgBase64: result});
-                if(G_PLATFORM_IOS)
-                {
-                    this.onSaveCameraRoll(result)
-                }
-                else{
+                if (data.isSuccess) {
+                    let result = this.baseFomat.replace("#content", data.data.qr);
+                    //TLog("result------------", this.state.paySelectItem);
+                    this.setState({imgBase64: result});
+                    if (G_PLATFORM_IOS) {
+                        this.onSaveCameraRoll(result)
+                    }
+                    else {
 
-                    let PATH_TO_FILE = RNFetchBlob.fs.dirs.PictureDir+"/myPay.png";
-                   // TLog("RNFetchBlob--start",PATH_TO_FILE)
-                    RNFetchBlob.fs.writeFile(
-                        PATH_TO_FILE,
-                        data.data.qr,
-                        "base64"
-                    ).then(res=>{
-                        TLog("save--suceess",res);
-                        this.onSaveCameraRoll(PATH_TO_FILE);
-                    }).catch((err)=>{
-                            TLog("save--err"+err)
+                        let PATH_TO_FILE = RNFetchBlob.fs.dirs.PictureDir + "/myPay.png";
+                        // TLog("RNFetchBlob--start",PATH_TO_FILE)
+                        RNFetchBlob.fs.writeFile(
+                            PATH_TO_FILE,
+                            data.data.qr,
+                            "base64"
+                        ).then(res => {
+                            this.onSaveCameraRoll(PATH_TO_FILE);
+                        }).catch((err) => {
+                            TLog("save--err" + err)
                         })
-                   //  RNFetchBlob.fs.writeStream(
-                    //     PATH_TO_FILE,
-                    //     // encoding, should be one of `base64`, `utf8`, `ascii`
-                    //     "utf8",
-                    //     // should data append to existing content ?
-                    //     true)
-                    //     .then((ofstream) => {
-                    //         ofstream.write(result)
-                    //         ofstream.close();
-                    //         TLog("save--suceess",PATH_TO_FILE)
-                    //     }).catch((err)=>{
-                    //     TLog("save--err"+err,err)
-                    // })
+                    }
+                } else {
+                    //  ActDispatch.AppAct.showBox(data.Msg);
                 }
-
-              //  this.setState({imgBase64: result});
-            })
+            }, false, true)
         })
 
     }
 
-    onSaveCameraRoll=(data)=>{
-        CameraRoll.saveToCameraRoll(data,"photo").then((reuslt)=>{
-              TLog("onSaveCameraRoll--address----",reuslt);
-                if(this.state.paySelectItem.name.indexOf("支付宝")>-1)
-                {
-                    G_AlertUtil.showWithDestructive("二维码订单成功保存到相册", '请尽快使用支付宝扫一扫支付！',[
-                        {text: '前往支付宝', onPress:()=>  {G_Link.openUrl('alipay://',"请先安装支付包app")
+    onSaveCameraRoll = (data) => {
+        CameraRoll.saveToCameraRoll(data, "photo").then((reuslt) => {
+                TLog("onSaveCameraRoll--address----", reuslt);
+                if (this.state.paySelectItem.name.indexOf("支付宝") > -1) {
+                    G_AlertUtil.showWithDestructive("二维码订单成功保存到相册", '请尽快使用支付宝扫一扫支付！', [
+                        {
+                            text: '前往支付宝', onPress: () => {
+                            G_Link.openUrl('alipay://', "请先安装支付包app")
                             G_NavUtil.pop();
-                        }},
-                        {text: '取消',}
+                            this.setState({imgBase64: null});
+                        }
+                        },
+                        {
+                            text: '取消', onPress: () => {
+                            this.setState({imgBase64: null});
+                        }
+                        }
                     ]);
 
                 }
-                else{
-                    G_AlertUtil.showWithDestructive("二维码订单成功保存到相册", '请尽快使用微信扫描支付！',[
-                        {text: '前往微信', onPress:()=>  {G_Link.openUrl('weixin://',"请先安装微信app")
-                            G_NavUtil.pop();}},
-                        {text: '取消',}
+                else {
+                    G_AlertUtil.showWithDestructive("二维码订单成功保存到相册", '请尽快使用微信扫描支付！', [
+                        {
+                            text: '前往微信', onPress: () => {
+                            G_Link.openUrl('weixin://', "请先安装微信app")
+                            G_NavUtil.pop();
+                            this.setState({imgBase64: null});
+                        }
+                        },
+                        {
+                            text: '取消', onPress: () => {
+                            this.setState({imgBase64: null});
+                        }
+                        }
                     ]);
                 }
             }
         ).catch(function (error) {
             G_AlertUtil.show("", '保存失败！\n' + error);
         })
-    }}
+    }
+}

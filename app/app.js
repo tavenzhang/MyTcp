@@ -59,6 +59,7 @@ export default class App extends React.Component {
     }
 
     componentDidMount() {
+
         SplashScreen.close({
             animationType: SplashScreen.animationType.scale,
             duration: 850,
@@ -84,13 +85,19 @@ export default class App extends React.Component {
                     renderScene={this.renderScene}
                 />
 
+
+                {/*<ToastBox*/}
+                    {/*msg={infoBox.msg}*/}
+                    {/*style={infoBox.style}*/}
+                    {/*onClose={() =>ActDispatch.AppAct.hideBox()}*/}
+                {/*/>*/}
+                {/*{infoBox.show ? <ToastBox*/}
+                {/*msg={infoBox.msg}*/}
+                {/*style={infoBox.style}*/}
+                {/*onClose={() =>ActDispatch.AppAct.hideBox()}*/}
+                {/*/>*/}
+                {/*: null}*/}
                 <Loading visible={isLoading} isModal={isModal} />
-                {infoBox.show ? <ToastBox
-                msg={infoBox.msg}
-                style={infoBox.style}
-                onClose={() =>ActDispatch.AppAct.hideBox()}
-                />
-                : null}
             </View>
         )
     }

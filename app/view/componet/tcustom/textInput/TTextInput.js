@@ -18,13 +18,15 @@ export class TTextInput extends React.Component {
         keyboardType:PropTypes.string,
         secureTextEntry:PropTypes.bool,
         autoFocus:PropTypes.bool,
+        onfocus:PropTypes.func
     }
 
     render() {
-        const {placeholder, style, autoFocus, viewStyle,secureTextEntry,onChangeText,multiline,keyboardType,value} = this.props;
+        const {placeholder, onfocus,style, autoFocus, viewStyle,secureTextEntry,onChangeText,multiline,keyboardType,value} = this.props;
         return (
             <View style={viewStyle}>
                 <TextInput
+                    onfocus={onfocus}
                     style={[styles.textStyle,style]}
                     onChangeText={onChangeText}
                     value={value}

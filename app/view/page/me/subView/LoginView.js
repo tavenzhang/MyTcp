@@ -79,7 +79,7 @@ export default class LoginView extends BaseView {
                 } else {
                     ActDispatch.AppAct.showBox(data.Msg);
                 }
-            },false,true)
+            },false,false)
         }
     }
 }
