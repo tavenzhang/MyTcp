@@ -1,4 +1,6 @@
 #! /bin/bash
 npm install
-cd andorid
+react-native link
+
+cd android
 fastlane release
