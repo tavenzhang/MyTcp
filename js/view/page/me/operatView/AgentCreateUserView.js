@@ -80,7 +80,6 @@ export default class AgentCreateUserView extends BaseView {
             }, false);
         })
     }
-
 }
 const styles = StyleSheet.create({
     textStyle: {

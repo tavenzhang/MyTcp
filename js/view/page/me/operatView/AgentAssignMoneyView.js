@@ -1,15 +1,13 @@
 import React from 'react';
 import {
     View,
-    Text, StyleSheet,
-    TouchableHighlight,
-    LayoutAnimation,
+    Text,
+    StyleSheet,
     ListView
 } from 'react-native';
 
 import {connect} from 'react-redux';
 import BaseView from "../../../componet/BaseView";
-import AwardListView from "../../../componet/BaseListView";
 import Button from "react-native-button";
 
 const mapStateToProps = state => {
@@ -27,8 +25,7 @@ export default class AgentAssignMoneyView extends BaseView {
             dataList:[],
             dataSource: new ListView.DataSource({
                 rowHasChanged: (r1, r2) => r1 !== r2,
-
-            },
+                },
             ),
         }
     }
@@ -47,7 +44,6 @@ export default class AgentAssignMoneyView extends BaseView {
 
     componentDidMount() {
         G_RunAfterInteractions(()=>{
-            //this.props.userData.data.username;
             HTTP_SERVER.AgentAssinList.body.username = "";
             ActDispatch.FetchAct.fetchVoWithResult(HTTP_SERVER.AgentAssinList,(data)=>{
                 let dataList=[];
@@ -88,8 +84,8 @@ export default class AgentAssignMoneyView extends BaseView {
     clickDetailBtn = (data) => {
         G_NavUtil.pushToView(G_NavViews.AssignDetilView(data));
     }
-
 }
+
 const styles = StyleSheet.create({
     headView: {
         padding: 10,

@@ -6,15 +6,21 @@ import {
     TextInput,
     Alert
 } from 'react-native';
-import DropListComponet from "../../../componet/DropListComponet";
+import TDropListComponet from "../../../componet/TDropListComponet";
 
-import Button from 'react-native-button'
 import BaseView from "../../../componet/BaseView";
 import AutoHideKeyBoardView from "../../../componet/AutoHideKeyBoardView";
+import {TTextInput} from "../../../componet/tcustom/textInput/TTextInput";
+import {TButton} from "../../../componet/tcustom/button/TButton";
 
 export default class MoneyTransferView extends BaseView {
     constructor(props) {
         super(props);
+        let agentName="";
+        if(this.props.passProps&&this.props.passProps.username)
+        {
+            agentName=this.props.passProps.username;
+        }
         this.state = {
             pwdText: "",
             agentCount: "",
@@ -24,11 +30,9 @@ export default class MoneyTransferView extends BaseView {
             dropSelectItem: null,
         };
     }
-componentWillMount(){
-    const {passProps} = this.props;
-    this.setState({agentCount:passProps.username});
 
-}
+
+
     renderBody() {
         const {passProps} = this.props;
         return (
@@ -40,76 +44,56 @@ componentWillMount(){
                         </View>
                         <View style={styles.inputContain}>
                             <Text>收款账号:</Text>
-                            <TextInput
+                            <TTextInput
                                 style={styles.textStyle}
                                 onChangeText={(agentCount) => this.setState({agentCount})}
                                 value={this.state.agentCount}
                                 placeholder={"直属下级(代理或玩家)"}
-                                keyboardType={"default"}
-                                autoCapitalize={"none"}
-                                underlineColorAndroid={'transparent'}
-
                             />
                         </View>
                         <View style={styles.inputContain}>
                             <Text>转账金额:</Text>
-                            <TextInput
+                            <TTextInput
                                 style={styles.textStyle}
                                 onChangeText={(money) => this.setState({money})}
                                 value={this.state.money}
                                 maxLength={20}
-                                placeholder={"转账金额"}
-                                keyboardType={"numeric"}
-                                underlineColorAndroid={'transparent'}
+                                placeholder={"(不能大于账号余额)"}
                             />
                         </View>
                         <View style={styles.inputContain}>
                             <Text>资金密码:</Text>
-                            <TextInput
+                            <TTextInput
                                 style={styles.textStyle}
                                 onChangeText={(pwdText) => this.setState({pwdText})}
                                 value={this.state.pwdText}
                                 maxLength={8}
                                 placeholder={"资金密码"}
                                 secureTextEntry={true}
-                                underlineColorAndroid={'transparent'}
                             />
                         </View>
                         <View style={styles.inputContain}>
                             <Text>安全验证:</Text>
-                            <DropListComponet
+                            <TDropListComponet
                                 itemName={this.state.dropSelectItem ? this.state.dropSelectItem.name : "请选择转账银行卡"}
                                 dataList={this.state.dropDataList}
                                 onSelect={(idx, value) => {
-                                    TLog("DropListComponet----select--", value);
                                     this.setState({dropSelectItem: value});
                                 }}/>
 
                         </View>
                         <View style={styles.inputContain}>
-                            <TextInput
-                                style={styles.textStyle}
-                                onChangeText={(cardNum) => this.setState({cardNum})}
-                                value={this.state.cardNum}
-                                maxLength={20}
-                                keyboardType={"numeric"}
-                                placeholder={"请输入验证银行卡完整卡号"}
-                                underlineColorAndroid={'transparent'}
+                            <TTextInput style={styles.textStyle} onChangeText={(cardNum) => this.setState({cardNum})}
+                                        value={this.state.cardNum} keyboardType={"numeric"} maxLength={20}
+                                        placeholder={"请输入验证银行卡完整卡号"}
                             />
                         </View>
-                        <Button
-                            containerStyle={{
-                                padding: 5,
-                                margin: 10,
-                                overflow: 'hidden',
-                                borderRadius: 3,
-                                backgroundColor: '#d7213c'
-                            }}
-                            style={{fontSize: 14, color: "white"}}
-                            styleDisabled={{color: '#fff'}}
-                            onPress={this.onConfirmClick}>
-                            确认转账
-                        </Button>
+                        <TButton btnName={"确认转账"} containerStyle={{
+                            padding: 5,
+                            margin: 10,
+                        }} onPress={this.onConfirmClick}
+                        />
+
                     </View>
                 </View>
             </AutoHideKeyBoardView>
@@ -117,7 +101,7 @@ componentWillMount(){
     }
 
     componentDidMount() {
-        G_RunAfterInteractions(()=>{
+        G_RunAfterInteractions(() => {
             HTTP_SERVER.TRANSFER_GETINFO.url = HTTP_SERVER.TRANSFER_GETINFO.formatUrl.replace("#id", this.props.passProps.uid);
             ActDispatch.FetchAct.fetchVoWithResult(HTTP_SERVER.TRANSFER_GETINFO, (result) => {
                 let dataList = result.data.aBankCards.map((item) => {
@@ -129,6 +113,28 @@ componentWillMount(){
         })
     }
 
+  //   onDataValid =()=>{
+  //     let reuslt=true;
+  //     const {passProps} = this.props;
+  //     if (this.state.dropSelectItem == null) {
+  //         reuslt=false;
+  //     } else if (this.state.agentCount.length <= 0) {
+  //         reuslt=false;
+  //     }
+  //     else if (this.state.money.length <= 0) {
+  //         reuslt=false;
+  //     }
+  //     else if (this.state.pwdText.length <= 0) {
+  //         reuslt=false;
+  //     }
+  //     else if (this.state.cardNum.length <= 0) {
+  //         reuslt=false;
+  //     }
+  //     else if (parseInt(passProps.money) < parseInt(this.state.money)) {
+  //         reuslt=false;
+  //     }
+  //     return reuslt;
+  // }
     onConfirmClick = () => {
         const {passProps} = this.props;
         if (this.state.dropSelectItem == null) {
@@ -151,15 +157,15 @@ componentWillMount(){
         else {
             HTTP_SERVER.TRANSFER_SUB_MINT.body.fund_password = this.state.pwdText;
             HTTP_SERVER.TRANSFER_SUB_MINT.body.card_id = this.state.dropSelectItem.id;
-            HTTP_SERVER.TRANSFER_SUB_MINT.body.amount = this.state.agentCount;
+            HTTP_SERVER.TRANSFER_SUB_MINT.body.username = this.state.agentCount;
             HTTP_SERVER.TRANSFER_SUB_MINT.body.card_number = this.state.cardNum;
+            HTTP_SERVER.TRANSFER_SUB_MINT.body.amount = this.state.money
             ActDispatch.FetchAct.fetchVoWithResult(HTTP_SERVER.TRANSFER_SUB_MINT, (result) => {
                 if (result.isSuccess) {
                     G_NavUtil.pop();
                 }
-
             })
-        }
+       }
     }
 }
 
@@ -168,8 +174,6 @@ const styles = StyleSheet.create({
     textStyle: {
         width: 150,
         left: 10,
-        fontSize: 14,
-        height:G_Theme.textInpuntH
     },
     iconUser: {
         color: G_Theme.gray,

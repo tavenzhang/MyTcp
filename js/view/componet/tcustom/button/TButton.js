@@ -50,7 +50,7 @@ export class TButton extends React.Component {
         return (
             <Button containerStyle={[{
                 backgroundColor: disable ? "gray":`#d7213c`, borderRadius: 5,
-                paddingVertical: 5,paddingHorizontal: 5, alignItems:"center"
+                paddingVertical: 8,paddingHorizontal: 5, alignItems:"center"
             },containerStyle]}  disabled={disable}  style={[{fontSize: 14, color: "white", textAlign:"center"},textStyle]} styleDisabled={[{backgroundColor:"gray", color:"white"},disabledStyle]} onPress={onPress}>
                 {btnName}
             </Button>)

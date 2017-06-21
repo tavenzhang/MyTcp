@@ -40,8 +40,6 @@ export default class BaseView extends Component {
         let navigationBarProps = this.getNavigationBarProps();
         if(navigationBarProps != null)
         {
-            //{...data, gameModel: gameModel, playModel: playModel}
-            //Object.assign(this.props.passProps,navigationBarProps);
             return (
                 <NavigationBar
                     {...this.props.passProps}

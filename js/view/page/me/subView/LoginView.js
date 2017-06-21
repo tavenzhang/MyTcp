@@ -28,9 +28,8 @@ export default class LoginView extends BaseView {
         });
     }
 
-    getNavigationBarProps()
-    {
-        return {title:"登陆"};
+    getNavigationBarProps() {
+        return {title:"登录"};
     }
 
     renderBody() {
@@ -53,7 +52,7 @@ export default class LoginView extends BaseView {
                                        value={this.state.pwdText}
                                        onChangeText={(pwdText) => this.setState({pwdText})}/>
                     </View>
-                    <TButton containerStyle={{padding:5,margin: 20}} btnName={"登陆"} onPress={this.clickLogin}/>
+                    <TButton containerStyle={{padding:5,margin: 20}} btnName={"登录"} onPress={this.clickLogin}/>
                 </View>
             </View>
         );
@@ -79,7 +78,7 @@ export default class LoginView extends BaseView {
                 } else {
                     ActDispatch.AppAct.showBox(data.Msg);
                 }
-            },false,false)
+            },false,true)
         }
     }
 }

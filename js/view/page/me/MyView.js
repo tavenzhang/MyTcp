@@ -122,36 +122,31 @@ export default class MyView extends BaseView {
                     "个人信息": MyView.dataListPerson
                 };
             }
-            infoView = <View style={[styles.headContent, {padding: 0}]}>
-                <View style={{flexDirection: "row", height: 60}}>
-                    <View style={{justifyContent: "space-around", flex: 1, paddingLeft: 10}}>
+            infoView = <View style={[styles.headContent]}>
+                    <View style={styles.rowSp}>
                         <Text><Text
                             style={styles.titleSyle}>用户名: </Text>{userData.data.username}
                         </Text>
-                        <Text ><Text
+                        <Text><Text
                             style={styles.titleSyle}>昵称: </Text>{userData.data.nickname}
                         </Text>
                     </View>
-                    <View style={{justifyContent: "space-around", flex: 1}}>
-                        <Text style={{textAlign: "center"}}><Text
+                    <View style={styles.rowSp}>
+                        <Text><Text
                             style={styles.titleSyle}>账户总额: </Text>{parseInt(moneyBalance)}
                         </Text>
                         <Text style={{textAlign: "center"}}><Text
                             style={styles.titleSyle}>资金密码: </Text>{userData.data.is_set_fund_password ? "已设置" : "未设置"}
                         </Text>
                     </View>
-                </View>
-                <View style={{flex: 1, alignItems: "center", flexDirection: "row", paddingLeft: 10}}>
-                    <Text style={styles.titleSyle}>账户安全:</Text>
-                    <View style={{flexDirection: "row", alignItems: "center", marginLeft: 15, marginRight: 15}}>
-                        <AIcon name="id-card-o" style={{color: G_Theme.black, fontSize: 20, marginRight: 5}}/>
-                        <Text style={{color: "red"}}>未绑定身份证</Text>
+                    <View style={styles.rowSp}>
+                        <Text><Text
+                            style={styles.titleSyle}>用户类型: </Text>{userData.data.user_type>0 ? "代理":"玩家"}
+                        </Text>
+                        <Text><Text
+                            style={styles.titleSyle}>未读消息: </Text>{userData.data.unread_msg_count}
+                        </Text>
                     </View>
-                    <View style={{flexDirection: "row", alignItems: "center"}}>
-                        <AIcon name="mobile" style={{color: G_Theme.black, fontSize: 20, marginRight: 5}}/>
-                        <Text style={{color: "red"}}>未绑定手机</Text>
-                    </View>
-                </View>
             </View>
         } else {
             infoView = <View style={styles.headContent}>
@@ -189,29 +184,31 @@ export default class MyView extends BaseView {
 const styles = StyleSheet.create({
     headContent: {
         margin: 10,
-        padding: 20,
-        paddingBottom: 10,
-        height: 100,
+        height: 80,
         borderRadius: 10,
         borderColor: "#aaa",
         borderWidth: 1,
-        alignItems: "center",
-        justifyContent: "flex-start",
         shadowColor: "gray",
         elevation: 2,
+        justifyContent: "center",
         shadowOffset: {width: 2, height: 2},
         shadowOpacity: 0.6
+    },
+    rowSp:{
+        flexDirection: "row",
+        justifyContent: "space-around",
+        alignItems: "center",
+        flex: 1
     },
     titleSyle: {
         fontWeight: "bold",
     },
     button: {
+        width: 150,
         padding: 5,
-        paddingLeft: 20,
-        paddingRight: 20,
         marginTop: 10,
-        overflow: 'hidden',
         borderRadius: 5,
-        backgroundColor: '#d7213c'
+        backgroundColor: '#d7213c',
+        alignSelf:"center"
     }
 });

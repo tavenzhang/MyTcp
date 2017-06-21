@@ -54,7 +54,6 @@ export default class TabbarView extends React.Component {
     }
 
     componentDidMount() {
-        //G_ToastShow("22222");
     }
 }
 

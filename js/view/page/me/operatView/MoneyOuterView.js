@@ -12,6 +12,7 @@ import {
 import Button from 'react-native-button'
 import BaseView from "../../../componet/BaseView";
 import AutoHideKeyBoardView from "../../../componet/AutoHideKeyBoardView";
+import {TButton} from "../../../componet/tcustom/button/TButton";
 
 export default class MoneyOuterView extends BaseView {
     constructor(props) {
@@ -30,7 +31,7 @@ export default class MoneyOuterView extends BaseView {
         if (this.state.pickValue && this.state.dataInfo) {
             let newList = this.state.dataInfo.bank_cards.filter((data) => data.id == this.state.pickValue)
             if (newList.length == 1) {
-                bankCountView = (     <View style={{flexDirection: "row", marginBottom: 15}}>
+                bankCountView = (<View style={{flexDirection: "row", marginBottom: 15}}>
                     <View style={styles.trLeft}>
                         <Text style={styles.textLeft}>开卡信息:</Text>
                     </View>
@@ -135,24 +136,15 @@ export default class MoneyOuterView extends BaseView {
                             onChangeText={(pwdText) => this.setState({pwdText})}
                             value={this.state.newPwd}
                             maxLength={10}
-                            placeholder={`输入资金密码`}
+                            placeholder={`资金密码`}
                             secureTextEntry={true}
                         />
                     </View>
                 </View>
-                <Button
-                    containerStyle={{
-                        padding: 10,
-                        margin: 10,
-                        overflow: 'hidden',
-                        borderRadius: 3,
-                        backgroundColor: '#d7213c'
-                    }}
-                    style={{fontSize: 14, color: "white"}}
-                    styleDisabled={{color: '#fff'}}
-                    onPress={() => this.onFirmClick()}>
-                    确认提现
-                </Button>
+                <TButton btnName={"确认提现"} onPress={this.onFirmClick} containerStyle={{
+                    padding: 20,
+                    margin: 30,
+                }}/>
             </View>
         }
 
@@ -180,22 +172,41 @@ export default class MoneyOuterView extends BaseView {
         })
     }
 
+    // checkValid=()=>{
+    //     let result=true;
+    //     if (!this.state.pickValue) {
+    //         result=false
+    //     }else if (this.state.money.length<=0){
+    //         result=false
+    //     }
+    //     else if ((parseInt(this.state.money) < parseInt(this.state.dataInfo.min_withdraw_amount)) || (parseInt(this.state.money) > parseInt(this.state.dataInfo.max_withdraw_amount))) {
+    //         result=false
+    //     }
+    //     else if(parseInt(this.state.money)>parseInt(this.state.dataInfo.accounts.withdrawable)){
+    //         result=false
+    //     }else if (this.state.pwdText.length<=0){
+    //         result=false
+    //     }
+    //      return result;
+    // }
+
     onFirmClick = () => {
         TLog("this.state.mone--"+parseInt(this.state.money),this.state.dataInfo.min_withdraw_amount)
         if (!this.state.pickValue) {
-            Alert.alert("", "请先选择一张收款银行卡");
+            G_AlertUtil.show("", "请先选择一张收款银行卡");
         }else if (this.state.money.length<=0){
-            Alert.alert("", "请输入有效的提现金额");
+            G_AlertUtil.show("", "请输入有效的提现金额");
         }
         else if ((parseInt(this.state.money) < parseInt(this.state.dataInfo.min_withdraw_amount)) || (parseInt(this.state.money) > parseInt(this.state.dataInfo.max_withdraw_amount))) {
-            Alert.alert("", "提现金额,不能少于"+this.state.dataInfo.min_withdraw_amount);
-            // }
-            // else if(parseInt(this.state.money)>parseInt(this.state.dataInfo.accounts.withdrawable)){
-            //     Alert.alert("","转账金额超过了可转金额,无法转账");
-        } else if (parseInt(this.state.dataInfo.withdraw_limit_num) > 0 && (parseInt(this.state.dataInfo.withdraw_limit_num) <= parseInt(this.state.dataInfo.withdraw_num))) {
-            Alert.alert("", "转账次数已经达到最大限制");
+            G_AlertUtil.show("", "提现金额,不能少于"+this.state.dataInfo.min_withdraw_amount);
+        }
+         else if(parseInt(this.state.money)>parseInt(this.state.dataInfo.accounts.withdrawable)){
+            Alert.alert("","提现金额超过了提现金额,无法转账");
+        }
+        else if (parseInt(this.state.dataInfo.withdraw_limit_num) > 0 && (parseInt(this.state.dataInfo.withdraw_limit_num) <= parseInt(this.state.dataInfo.withdraw_num))) {
+            G_AlertUtil.show("", "转账次数已经达到最大限制");
         }else if (this.state.pwdText.length<=0){
-            Alert.alert("", "请输入有效的资金密码");
+            G_AlertUtil.show("", "请输入有效的资金密码");
         }
         else {
             let newList = this.state.dataInfo.bank_cards.filter((data) => data.id == this.state.pickValue)
@@ -207,9 +218,8 @@ export default class MoneyOuterView extends BaseView {
                 if (data.isSuccess) {
                     G_NavUtil.pop();
                 }
-
             })
-        }
+       }
     }
 }
 

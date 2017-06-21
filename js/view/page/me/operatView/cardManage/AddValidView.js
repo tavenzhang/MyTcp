@@ -8,6 +8,8 @@ import {
 import BaseView from "../../../../componet/BaseView";
 import Button from "react-native-button";
 import ModalDropdown from 'react-native-modal-dropdown';
+import TDropListComponet from "../../../../componet/TDropListComponet";
+import {TTextInput} from "../../../../componet/tcustom/textInput/TTextInput";
 
 export default class AddValidView extends BaseView {
     constructor(props) {
@@ -25,41 +27,40 @@ export default class AddValidView extends BaseView {
         TLog("ValidCardView-----------", passProps);
         return (
             <View style={G_Style.appContentView}>
-                <View style={{height: G_Theme.windowHeight / 3, backgroundColor: "white", paddingLeft: 10}}>
-                    <View style={{flex: 1, alignItems: "center", flexDirection: "row"}}>
-                        <View style={{width: G_Theme.windowWidth * 1 / 3, alignItems: "flex-end"}}>
+                <View style={{backgroundColor: "white", justifyContent:"center", alignItems:"center"}}>
+                    <View style={styles.rowSp}>
+                        <View style={styles.leftView}>
                             <Text>开户银行: </Text>
                         </View>
-                        <ModalDropdown style={styles.dropdown_1}
-                                       options={passProps.cardList}
-                                       renderRow={this.rendCardRow}
-                                       onSelect={(idx, value) => {
+                        <TDropListComponet
+                            style={{flex:2,marginRight:20}}
+                             itemName={this.state.cardData ? this.state.cardData.accountEny : "请选择转账银行卡"}
+                                       dataList={passProps.cardList}
+                                        rendDropRow={this.rendCardRow}
+                                        onSelect={(idx, value) => {
                                            this.setState({cardData: value});
                                        }}
-                        >
-                            <Text style={{textAlign: "center"}}>{this.state.cardData ? this.state.cardData.accountEny : "请选择验证卡"}</Text>
-                        </ModalDropdown>
+                        />
                     </View>
 
-                    <View style={{flex: 1, alignItems: "center", flexDirection: "row"}}>
-                        <View style={{width: G_Theme.windowWidth * 1 / 3, alignItems: "flex-end"}}>
+                    <View style={styles.rowSp}>
+                        <View style={styles.leftView}>
                             <Text>开户人姓名: </Text>
                         </View>
-                        <TextInput
-                            style={styles.cardInput}
-                            autoCapitalize="none"
+                        <TTextInput
+                            viewStyle={styles.cardInput}
                             placeholder={"请输入旧的银行卡开户人姓名"}
                             autoFocus={true}
                             onChangeText={(countName) => this.setState({countName: countName})}
                             value={this.state.countName}
                         />
                     </View>
-                    <View style={{flex: 1, alignItems: "center", flexDirection: "row"}}>
-                        <View style={{width: G_Theme.windowWidth * 1 / 3, alignItems: "flex-end"}}>
+                    <View style={styles.rowSp}>
+                        <View style={styles.leftView}>
                             <Text >银行账号: </Text>
                         </View>
-                        <TextInput
-                            style={styles.cardInput}
+                        <TTextInput
+                            viewStyle={styles.cardInput}
                             autoCapitalize="none"
                             placeholder={"请输入旧的银行卡卡号"}
                             autoFocus={true}
@@ -68,13 +69,12 @@ export default class AddValidView extends BaseView {
                             keyboardType={'numeric'}
                         />
                     </View>
-                    <View style={{flex: 1, alignItems: "center", flexDirection: "row"}}>
-                        <View style={{width: G_Theme.windowWidth * 1 / 3, alignItems: "flex-end"}}>
+                    <View style={styles.rowSp}>
+                        <View style={styles.leftView}>
                             <Text>资金密码: </Text>
                         </View>
-                        <TextInput
-                            style={styles.cardInput}
-                            autoCapitalize="none"
+                        <TTextInput
+                            viewStyle ={styles.cardInput}
                             placeholder={"输入您的资金密码"}
                             autoFocus={true}
                             onChangeText={(password) => this.setState({password: password})}
@@ -87,7 +87,7 @@ export default class AddValidView extends BaseView {
                 <Button
                     containerStyle={{
                         padding: 8,
-                        margin: 10,
+                        margin: 30,
                         overflow: 'hidden',
                         borderRadius: 3,
                         backgroundColor: '#d7213c'
@@ -101,7 +101,7 @@ export default class AddValidView extends BaseView {
         );
     }
 
-    rendCardRow = (rowData, rowID, highlighted) => {
+    rendCardRow = (rowData) => {
         return (<View style={{
             margin: 10,
             flex: 1,
@@ -152,21 +152,24 @@ export default class AddValidView extends BaseView {
 
 
 const styles = StyleSheet.create({
-    touchTabButton: {
-        flex: 1, alignItems: "center", justifyContent: "center",
+    rowSp:{
+        paddingVertical: 10,
+        flexDirection: "row",
+        alignItems: "center",
+        borderColor: 'gray',
+        justifyContent:"center",
+        marginHorizontal:20
+
+    },
+    leftView:{
+        alignItems: "flex-end",
+        flex:1
     },
     cardInput: {
-        width: G_Theme.windowWidth * 2 / 3,
-        marginLeft: 20,
-        fontSize: 14,
-        flex: 2,
+        borderBottomWidth: 0.2,
+        flex:2,
+        paddingLeft:10,
     },
-    dropdown_1: {
-        flex: 1,
-        top: 0,
-        left: 8,
-        borderColor: "gray",
-        borderWidth: StyleSheet.hairlineWidth,
-    }
+
 
 });

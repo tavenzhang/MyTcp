@@ -29,7 +29,6 @@ export default class PersonMailView extends BaseView {
 
 
     componentDidMount() {
-
         G_RunAfterInteractions(()=>{
             if(this.state.dataList.length<=0)
             {

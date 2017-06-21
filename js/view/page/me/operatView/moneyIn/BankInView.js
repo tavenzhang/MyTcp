@@ -1,4 +1,4 @@
-import React from 'react';
+import React ,{PropTypes} from 'react';
 import {
     View,
     StyleSheet,
@@ -8,8 +8,12 @@ import {
 
 
 export default class BankInView extends React.Component {
-
+    static propTypes = {
+        visible:PropTypes.bool,
+        platList: PropTypes.any
+    }
     render(){
-        return (<View/>)
+        let {visible} =this.props;
+        return (visible ? <View/>:null)
     }
 }

@@ -54,6 +54,7 @@ const appState = (state = initAppState, action) => {
             return state.merge({
                 infoBox: {
                     show: false,
+                    isError: action.isError,
                     msg: '',
                     style: ''
                 }

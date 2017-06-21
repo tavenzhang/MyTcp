@@ -44,7 +44,8 @@ export default class MoneyInView extends BaseView {
     renderBody() {
         return (<View>
             <MySegmentedControlTab selectedTabIndex={this.state.selectedTabIndex} valueList={['第三方充值','银行卡充值']} onTabChange={this.onTabChange}/>
-            {this.state.selectedTabIndex ? <BankInView/>:<ThirdInView platList={this.state.platList}/> }
+            <ThirdInView platList={this.state.platList} visible={this.state.selectedTabIndex==0}/>
+           <BankInView  visible={this.state.selectedTabIndex==1}/>
         </View>)
     }
 

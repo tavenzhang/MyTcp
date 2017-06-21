@@ -1,4 +1,4 @@
-import React from 'react';
+import React ,{PropTypes} from 'react';
 import {
     StyleSheet,
     View,
@@ -7,7 +7,13 @@ import {
 
 import ModalDropdown from 'react-native-modal-dropdown';
 
-export default class DropListComponet extends React.Component {
+export default class TDropListComponet extends React.Component {
+    static propTypes={
+        itemName:PropTypes.string,
+        dataList:PropTypes.array,
+        rendDropRow:PropTypes.func,
+        style:PropTypes.object
+    }
 
     constructor(props)
     {
@@ -15,15 +21,16 @@ export default class DropListComponet extends React.Component {
     }
 
     render() {
+        let {itemName,dataList,rendDropRow,style}=this.props
         return (
-            <ModalDropdown style={styles.dropdown}
-                           options={this.props.dataList}
-                           renderRow={this.rendDropRow}
+            <ModalDropdown style={[styles.dropdown,style]}
+                           options={dataList}
+                           renderRow={rendDropRow ? rendDropRow:this.rendDropRow}
                            onSelect={(idx, value) => {
                                this.props.onSelect(idx, value);
                            }}
             >
-                <Text style={{textAlign: "center"}}> {this.props.itemName}</Text>
+                <Text style={{textAlign: "center"}}> {itemName}</Text>
             </ModalDropdown>
         )
     }
@@ -43,9 +50,9 @@ export default class DropListComponet extends React.Component {
 const styles = StyleSheet.create({
     dropdown: {
         flex: 1,
-        top: 0,
-        left: 8,
+        marginLeft: 5,
         borderColor: "gray",
+        paddingVertical: 2,
         borderWidth: StyleSheet.hairlineWidth,
     }
 })

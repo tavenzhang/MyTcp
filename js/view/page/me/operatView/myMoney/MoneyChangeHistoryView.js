@@ -42,10 +42,6 @@ export default class MoneyChangeHistoryView extends React.Component {
         );
     }
 
-    // componentWillUpdate() {
-    //     LayoutAnimation.configureNext(G_LayoutAnimationHelp.springNoDelete);
-    // }
-
     componentDidMount() {
         this.onMount=true;
         let {httpService} = this.props
@@ -58,17 +54,6 @@ export default class MoneyChangeHistoryView extends React.Component {
                 }
             })
         })
-        // this.timeId=setTimeout(()=>{
-        //     InteractionManager.runAfterInteractions(() => {
-        //         ActDispatch.FetchAct.fetchVoWithResult(httpService, (result) => {
-        //             if (result.data.data) {
-        //                 this.setState({dataList: result.data.data});
-        //             }
-        //         })
-        //     });
-        //
-        // },1000)
-
     }
 
 

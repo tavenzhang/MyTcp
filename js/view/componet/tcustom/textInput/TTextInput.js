@@ -18,11 +18,12 @@ export class TTextInput extends React.Component {
         keyboardType:PropTypes.string,
         secureTextEntry:PropTypes.bool,
         autoFocus:PropTypes.bool,
-        onfocus:PropTypes.func
+        onfocus:PropTypes.func,
+        maxLength:PropTypes.number
     }
 
     render() {
-        const {placeholder, onfocus,style, autoFocus, viewStyle,secureTextEntry,onChangeText,multiline,keyboardType,value} = this.props;
+        const {placeholder, maxLength,onfocus,style, autoFocus, viewStyle,secureTextEntry,onChangeText,multiline,keyboardType,value} = this.props;
         return (
             <View style={viewStyle}>
                 <TextInput
@@ -30,6 +31,7 @@ export class TTextInput extends React.Component {
                     style={[styles.textStyle,style]}
                     onChangeText={onChangeText}
                     value={value}
+                    maxLength={maxLength ? maxLength:200}
                     placeholder={placeholder}
                     multiline={multiline ? multiline : false}
                     autoFocus={autoFocus ? autoFocus :false}

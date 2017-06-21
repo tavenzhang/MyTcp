@@ -27,6 +27,7 @@ export const AppAct={
     }),
     hideBox: data => ({
         type: ActionType.AppType.HIDE_INFOBOX,
+        isError:false
     }),
     showErrorBox: (msg, isError=true) => ({
         type: ActionType.AppType.SHOW_INFOBOX,

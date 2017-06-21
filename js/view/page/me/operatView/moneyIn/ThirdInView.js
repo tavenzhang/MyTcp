@@ -15,8 +15,8 @@ import AIcon from 'react-native-vector-icons/FontAwesome';
 
 export default class ThirdInView extends React.Component {
 
-
     static propTypes = {
+        visible:PropTypes.bool,
         platList: PropTypes.any
     }
 
@@ -71,7 +71,6 @@ export default class ThirdInView extends React.Component {
         })
     }
 
-
     componentWillUpdate(nextProps, nextState) {
         let {platList} = nextProps;
         if (!this.defaultSelect && (platList.length > 0)) {
@@ -80,9 +79,8 @@ export default class ThirdInView extends React.Component {
     }
 
     render() {
-        //[{"id":4,"third_party_name":"beepay01","third_party_type_name":"beepay","merchant_id":2,"fee_percent":"0.0000","fee_min":0,"fee_max":0,"fee_switch":0,"method_type":"beeepay"}]
-        let {platList} = this.props;
-        return ( platList.length > 0 ?
+        let {platList,visible} = this.props;
+        return ( visible ?
             <View style={{margin: 20}}>
                 <View style={{flexDirection: "row"}}>
                     <Text style={{marginRight: 20}}>平台列表:</Text>
@@ -98,8 +96,7 @@ export default class ThirdInView extends React.Component {
                     <RadioButtons
                         options={this.state.pay_typeList}
                         onSelection={(paySelectItem) => {
-                            this.setState({paySelectItem}, () => {
-                            })
+                            this.setState({paySelectItem})
                         }}
                         selectedOption={this.state.paySelectItem}
                         renderOption={ this.renderTypeItem }/>
@@ -113,25 +110,20 @@ export default class ThirdInView extends React.Component {
                                 placeholder={"充值金额"} keyboardType={"numeric"}/>
 
                 </View>
-                <View style={{alignItems: "center", justifyContent: "center", marginVertical: 20}}>
+                <View style={{alignItems: "center", justifyContent: "center", marginVertical: 50}}>
                     <TButton containerStyle={{width: 200}} disable={this.state.textMoney == ""} btnName={"下一步"}
                              onPress={this.onNextStep}/>
                 </View>
                 <View style={{width: 150, height: 200, alignSelf: "center"}}>
-                    {this.state.imgBase64 ?<Image
+                    {this.state.imgBase64 ? <Image
                         style={{flex: 1}}
                         source={{uri: this.state.imgBase64}}
-                    />:null}
+                    /> : null}
                 </View>
             </View> : null);
     }
 
-    componentDidMount() {
-        let {platList} = this.props
-        if (!this.state.selectedOption && platList.length > 0) {
-            this.onSetSecectPlatFrom(platList)
-        }
-    }
+
 
     onSetSecectPlatFrom = (platList) => {
         this.defaultSelect = true
@@ -154,7 +146,6 @@ export default class ThirdInView extends React.Component {
                     {
                         pay_typeList.push(item);
                     }
-
                 }
                 this.setState({pay_typeList: pay_typeList, paySelectItem: pay_typeList[0]})
             }, true)
@@ -190,8 +181,6 @@ export default class ThirdInView extends React.Component {
                             TLog("save--err" + err)
                         })
                     }
-                } else {
-                    //  ActDispatch.AppAct.showBox(data.Msg);
                 }
             }, false, false)
         })
@@ -200,7 +189,7 @@ export default class ThirdInView extends React.Component {
 
     onSaveCameraRoll = (data) => {
         CameraRoll.saveToCameraRoll(data, "photo").then((reuslt) => {
-            TLog("CameraRoll.saveToCameraRoll------",reuslt)
+                TLog("CameraRoll.saveToCameraRoll------", reuslt)
                 if (this.state.paySelectItem.name.indexOf("支付宝") > -1) {
                     G_AlertUtil.showWithDestructive("二维码订单成功保存到相册", '请尽快使用支付宝 扫一扫 相册支付！', [
                         {
