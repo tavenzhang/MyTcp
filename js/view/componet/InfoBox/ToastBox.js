@@ -28,7 +28,6 @@ export default class ToastBoxView extends Component {
     }
 
     componentDidMount() {
-        TLog("ToastBoxView componentDidMount----")
         this.time = setTimeout(this.hideView, G_PLATFORM_IOS ? 3000:4000)
     }
 
@@ -37,7 +36,6 @@ export default class ToastBoxView extends Component {
     }
 
     hideView = () => {
-        TLog("ToastBoxView hideView-----")
       ActDispatch.AppAct.hideBox()
     }
 }

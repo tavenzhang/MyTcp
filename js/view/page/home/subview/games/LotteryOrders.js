@@ -99,11 +99,12 @@ export default class LotteryOrders extends BaseView {
             if(data.isSuccess) {
                 //清空购彩篮
                 ActDispatch.GameAct.delOrder();
+                HttpUtil.flushMoneyBalance();
                 //返回选球页
                 setTimeout(() => G_NavUtil.pop() , 1500);
 
             }
-        })
+        },false,true)
     }
 
     renderBody() {
@@ -124,7 +125,7 @@ export default class LotteryOrders extends BaseView {
 
                     <Button
                         btnName="机选5注"
-                        onPress={()=>{}}
+                        onPress={()=> me.selectBallAuto(5)}
                         leftIcon="plus-circle"
                         />
 
@@ -196,6 +197,14 @@ export default class LotteryOrders extends BaseView {
         );
     }
 
+    selectBallAuto=(num=1)=> {
+        G_AlertUtil.show("","随机投注暂未开启！" )
+        for(let i=0;i<=num;i++)
+        {
+
+        }
+    }
+
     componentDidMount() {
 
     }
@@ -244,7 +253,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         justifyContent: 'space-between',
         shadowColor:G_Theme.gray,
-        shadowOffset:{h:5,w:0},
+        shadowOffset:{height:5,with:0},
         shadowRadius:3,
         shadowOpacity:0.6,
     }

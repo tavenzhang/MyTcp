@@ -38,7 +38,8 @@ const appState = (state = initAppState, action) => {
                 success: true
             });
         case ActionType.AppType.MONEY_ACCOUNT__CHANGE:
-            return state.merge({moneyBalance:Number(action.httpResult.available)});
+            TLog("ActionType.AppType.MONEY_ACCOUNT__CHANGE----",action.httpResult.data)
+            return state.merge({moneyBalance:parseFloat(action.httpResult.data.available)});
         case ActionType.AppType.LOGIN_RESULT:
             return state.merge({userData: {...action.data,isLogined:true},moneyBalance:Number(action.data.data.available)});
         case ActionType.AppType.LOG_OUT:

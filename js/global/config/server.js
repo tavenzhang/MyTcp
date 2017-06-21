@@ -1,5 +1,5 @@
-let SERVERADDR = "http://www.monkey.com";
-//let G_SERVERADDR = "http://104.250.140.242:8081"
+//let SERVERADDR = "http://www.monkey.com";
+let SERVERADDR = "http://104.250.128.85:12311"
 // let SERVERADDR = "http://www.orchidf.com";
 
 global.G_SERVERADDR = SERVERADDR;
@@ -262,7 +262,7 @@ global.HTTP_SERVER = {
 
 global.HttpUtil = {
     flushMoneyBalance: () => {
-        ActDispatch.FetchAct.fetchVoWithAction(HTTP_SERVER.MOENY_USER_ACCOUNT, ActionEnum.AppAct.MONEY_ACCOUNT__CHANGE, null, true);
+        ActDispatch.FetchAct.fetchVoWithAction(HTTP_SERVER.MOENY_USER_ACCOUNT, ActionType.AppType.MONEY_ACCOUNT__CHANGE, null, true);
     }
 }
 

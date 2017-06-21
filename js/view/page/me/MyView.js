@@ -6,7 +6,6 @@ import {
 } from 'react-native';
 
 import {connect} from 'react-redux';
-import AIcon from 'react-native-vector-icons/FontAwesome';
 import Button from 'react-native-button';
 import BaseView from "../../componet/BaseView";
 import {HeaderLeftDomain, HeaderRightLoginOut} from "../../componet/navBarMenu/HeaderMenu";
@@ -171,7 +170,6 @@ export default class MyView extends BaseView {
         );
     }
 
-
     clickLogin = () => {
         G_NavUtil.pushToView(G_NavViews.LoginView());
     }
@@ -204,7 +202,7 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
     },
     button: {
-        width: 150,
+        width: 100,
         padding: 5,
         marginTop: 10,
         borderRadius: 5,

@@ -59,6 +59,7 @@ function fetchMiddleware(extraArgument) {
                         }
                         if(action.endAction)
                         {
+                            TLog("endAction-------------------",data)
                             next({type:action.endAction,httpResult:data});
                         }
                         if(data.Msg)//警告提示信息
