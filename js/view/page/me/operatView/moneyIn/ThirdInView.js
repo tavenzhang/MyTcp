@@ -82,7 +82,6 @@ export default class ThirdInView extends React.Component {
     render() {
         //[{"id":4,"third_party_name":"beepay01","third_party_type_name":"beepay","merchant_id":2,"fee_percent":"0.0000","fee_min":0,"fee_max":0,"fee_switch":0,"method_type":"beeepay"}]
         let {platList} = this.props;
-
         return ( platList.length > 0 ?
             <View style={{margin: 20}}>
                 <View style={{flexDirection: "row"}}>
@@ -119,10 +118,10 @@ export default class ThirdInView extends React.Component {
                              onPress={this.onNextStep}/>
                 </View>
                 <View style={{width: 150, height: 200, alignSelf: "center"}}>
-                    <Image
+                    {this.state.imgBase64 ?<Image
                         style={{flex: 1}}
                         source={{uri: this.state.imgBase64}}
-                    />
+                    />:null}
                 </View>
             </View> : null);
     }
@@ -194,16 +193,16 @@ export default class ThirdInView extends React.Component {
                 } else {
                     //  ActDispatch.AppAct.showBox(data.Msg);
                 }
-            }, false, true)
+            }, false, false)
         })
 
     }
 
     onSaveCameraRoll = (data) => {
         CameraRoll.saveToCameraRoll(data, "photo").then((reuslt) => {
-                TLog("onSaveCameraRoll--address----", reuslt);
+            TLog("CameraRoll.saveToCameraRoll------",reuslt)
                 if (this.state.paySelectItem.name.indexOf("支付宝") > -1) {
-                    G_AlertUtil.showWithDestructive("二维码订单成功保存到相册", '请尽快使用支付宝扫一扫支付！', [
+                    G_AlertUtil.showWithDestructive("二维码订单成功保存到相册", '请尽快使用支付宝 扫一扫 相册支付！', [
                         {
                             text: '前往支付宝', onPress: () => {
                             G_Link.openUrl('alipay://', "请先安装支付包app")
@@ -220,7 +219,7 @@ export default class ThirdInView extends React.Component {
 
                 }
                 else {
-                    G_AlertUtil.showWithDestructive("二维码订单成功保存到相册", '请尽快使用微信扫描支付！', [
+                    G_AlertUtil.showWithDestructive("二维码订单成功保存到相册", '请尽快使用微信 扫一扫 相册支付！', [
                         {
                             text: '前往微信', onPress: () => {
                             G_Link.openUrl('weixin://', "请先安装微信app")

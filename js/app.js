@@ -6,16 +6,17 @@ import {
     Platform,
     BackAndroid,
     UIManager,
-    ToastAndroid
+    ToastAndroid,
+    StyleSheet
 } from 'react-native';
 
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import Loading from "./view/componet/Loading";
-import ToastBox from "./view/componet/InfoBox/ToastBox";
-import SplashScreen from 'react-native-smart-splash-screen'
-import TabbarView from "./view/page/TabbarView";
 
+import SplashScreen from 'react-native-smart-splash-screen'
+import TabbarView from "./view/TabbarView";
+import ToastBoxView from "./view/componet/InfoBox/ToastBox";
 
 //定义全局Dispatch 方便使用
 const mapDispatchToProps = (dispatch) => {
@@ -85,19 +86,11 @@ export default class App extends React.Component {
                     renderScene={this.renderScene}
                 />
 
-
-                {/*<ToastBox*/}
-                    {/*msg={infoBox.msg}*/}
-                    {/*style={infoBox.style}*/}
-                    {/*onClose={() =>ActDispatch.AppAct.hideBox()}*/}
-                {/*/>*/}
-                {/*{infoBox.show ? <ToastBox*/}
-                {/*msg={infoBox.msg}*/}
-                {/*style={infoBox.style}*/}
-                {/*onClose={() =>ActDispatch.AppAct.hideBox()}*/}
-                {/*/>*/}
-                {/*: null}*/}
                 <Loading visible={isLoading} isModal={isModal} />
+                {infoBox.show ? <ToastBoxView isError={infoBox.isError}
+                                              visible={infoBox.show}
+                                              msg={infoBox.msg}
+                                              style={infoBox.style}/>:null}
             </View>
         )
     }
@@ -136,3 +129,16 @@ export default class App extends React.Component {
         return true;
     }
 }
+
+
+const styles = StyleSheet.create({
+    viewStyle: {
+        position: "absolute",
+        zIndex: 111,
+        width: G_Theme.windowWidth,
+        height: G_Theme.windowHeight,
+        justifyContent: "center",
+        alignItems: "center"
+    },
+})
+

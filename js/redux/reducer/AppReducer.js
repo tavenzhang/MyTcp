@@ -42,15 +42,12 @@ const appState = (state = initAppState, action) => {
         case ActionType.AppType.LOGIN_RESULT:
             return state.merge({userData: {...action.data,isLogined:true},moneyBalance:Number(action.data.data.available)});
         case ActionType.AppType.LOG_OUT:
-            TLog("ActionType.AppType.LOG_OUT--")
             return state.merge({userData: {isLogined:false},moneyBalance:0});
         case ActionType.AppType.SHOW_INFOBOX:
-            TLog(" ActionType.AppType.SHOW_INFOBOX:")
-            G_ToastShow(action.msg);
             return state.merge({infoBox: {
                     show: true,
                     msg: action.msg,
-                    style: action.style
+                    isError: action.isError
                 }
             });
         case ActionType.AppType.HIDE_INFOBOX:

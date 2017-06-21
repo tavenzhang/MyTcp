@@ -4,7 +4,7 @@ import {
     Animated,
     Easing,
 } from 'react-native';
-import {startImg} from "../../assets/index";
+import {startImg} from "../assets/index";
 import SplashScreen from 'react-native-smart-splash-screen'
 
 export default class GuidView extends React.Component {

@@ -7,36 +7,7 @@ import Toast from 'react-native-root-toast';
 
 const GlobalKey = "global";
 
-let toast=null;
-global.G_ToastShow = (content) => {
-    if(toast)
-    {
-        Toast.hide(toast);
-    }
-    TLog("G_ToastShow-------------------------"+content)
-    toast=Toast.show(content, {
-        duration: Toast.durations.SHORT,
-        position: Toast.positions.CENTER,
-        shadow: true,
-        animation: true,
-        hideOnPress: true,
-        delay: 0
-    });
-};
 
-// global.G_ToastLong = (content) => {
-//     if (toast !== undefined) {
-//         Toast.hide(toast);
-//     }
-//     Toast.show(content.toString(), {
-//         duration: Toast.durations.LONG,
-//         position: Toast.positions.CENTER,
-//         shadow: true,
-//         animation: true,
-//         hideOnPress: true,
-//         delay: 0
-//     });
-// };
 // export const DataStore = new Storage({
 //     // 最大容量，默认值1000条数据循环存储
 //     size: 1000,

@@ -11,7 +11,7 @@ import MoneyOuterView from "../view/page/me/operatView/MoneyOuterView";
 import MoneyCardView from "../view/page/me/operatView/MoneyCardView";
 import PersonPwdView from "../view/page/me/operatView/PersonPwdView";
 import PersonMailView from "../view/page/me/operatView/PersonMailView";
-import TabbarView from "../view/page/TabbarView";
+import TabbarView from "../view/TabbarView";
 import LoginView from "../view/page/me/subView/LoginView";
 import SSC_History from "../view/page/award/subView/SSC_History";
 import ADView from "../view/page/home/subview/ADView";

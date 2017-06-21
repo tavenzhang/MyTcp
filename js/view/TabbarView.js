@@ -6,10 +6,10 @@ import {
 
 import TabNavigator from 'react-native-tab-navigator';
 import AIcon from 'react-native-vector-icons/FontAwesome';
-import Home from "./home/Home";
-import MyView from "./me/MyView";
-import Notice from "./award/GameResultList";
-import Discover from "./notice/Notice";
+import Home from "./page/home/Home";
+import MyView from "./page/me/MyView";
+import Notice from "./page/award/GameResultList";
+import Discover from "./page/notice/Notice";
 
 const tabBarItems = [
     {title: '购彩', icon: 'home', selectIcon: "home", component: Home},
@@ -54,7 +54,7 @@ export default class TabbarView extends React.Component {
     }
 
     componentDidMount() {
-        G_ToastShow("22222");
+        //G_ToastShow("22222");
     }
 }
 
