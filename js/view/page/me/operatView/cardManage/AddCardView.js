@@ -3,7 +3,6 @@ import {
     View,
     Text, StyleSheet,
     TextInput,
-    Alert
 } from 'react-native';
 import BaseView from "../../../../componet/BaseView";
 import ModalDropdown from 'react-native-modal-dropdown';
