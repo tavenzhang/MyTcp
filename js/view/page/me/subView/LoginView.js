@@ -52,20 +52,23 @@ export default class LoginView extends BaseView {
                                        value={this.state.pwdText}
                                        onChangeText={(pwdText) => this.setState({pwdText})}/>
                     </View>
-                    <TButton containerStyle={{padding:5,margin: 20}} btnName={"登录"} onPress={this.clickLogin}/>
+                    <TButton errMsg={this.onErrMsg()} containerStyle={{padding:5,margin: 20}} btnName={"登录"} onPress={this.clickLogin}/>
                 </View>
             </View>
         );
     }
 
+    onErrMsg=()=>{
+        let msg =null;
+        if (!this.state.nameText) {
+            msg= "账号不能为空", "请输入有效的账号";
+        } else if (!this.state.pwdText) {
+            msg= "密码不能为空", "请输入有效的密码"
+        }
+        return msg
+    }
 
     clickLogin = () => {
-        if (!this.state.nameText) {
-            G_AlertUtil.show("账号不能为空", "请输入有效的账号");
-        } else if (!this.state.pwdText) {
-            G_AlertUtil.show("密码不能为空", "请输入有效的密码");
-        }
-        else {
             let bodyData = HTTP_SERVER.LOGIN_IN.body;
             bodyData.username = this.state.nameText;
             bodyData.password = md5.hex_md5(md5.hex_md5(md5.hex_md5(this.state.nameText + this.state.pwdText)));
@@ -79,7 +82,6 @@ export default class LoginView extends BaseView {
                     ActDispatch.AppAct.showBox(data.Msg);
                 }
             },false,true)
-        }
     }
 }
 

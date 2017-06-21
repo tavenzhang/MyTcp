@@ -9,10 +9,11 @@ import {
     Keyboard
 } from 'react-native';
 
-import Button from 'react-native-button'
 import BaseView from "../../../componet/BaseView";
 import AutoHideKeyBoardView from "../../../componet/AutoHideKeyBoardView";
 import {TButton} from "../../../componet/tcustom/button/TButton";
+import {TPicker} from "../../../componet/tcustom/picker/TPicker";
+
 
 export default class MoneyOuterView extends BaseView {
     constructor(props) {
@@ -83,20 +84,12 @@ export default class MoneyOuterView extends BaseView {
                         <Text style={styles.textLeft}>收款银行卡信息:</Text>
                     </View>
                     <View style={styles.trRight}>
-                        <Picker
-                            itemStyle={{fontSize: 13}}
-                            mode={'dropdown'}
-                            selectedValue={this.state.pickValue}
-                            onValueChange={(data) => {
-                                this.setState({pickValue: data})
-                            }}>
-                            {
-                                this.state.dataInfo.bank_cards.map((item, index) => {
-                                    let name = `${item.account}[${item.bank}]`;
-                                    return (<Picker.Item label={name} value={item.id} key={index + "item"}/>)
-                                })
-                            }
-                        </Picker>
+                        <TPicker itemStyle={{width:200, height:150}} pickValue={this.state.pickValue}
+                                 onValueChange={(data) => {
+                                                  this.setState({pickValue: data})
+                                      } }
+                                 onRenderRow={this.onRenderPickRow}
+                        />
                     </View>
                 </View>
                 {bankCountView}
@@ -121,7 +114,7 @@ export default class MoneyOuterView extends BaseView {
                         />
                     </View>
                 </View>
-                <View style={{flexDirection: "row", marginVertical: 5}}>
+                <View style={{flexDirection: "row", marginVertical: 5, marginBottom:20}}>
                     <View style={styles.trLeft}>
                         <Text style={styles.textLeft}>资金密码:</Text>
                     </View>
@@ -141,9 +134,9 @@ export default class MoneyOuterView extends BaseView {
                         />
                     </View>
                 </View>
-                <TButton btnName={"确认提现"} onPress={this.onFirmClick} containerStyle={{
+                <TButton errMsg={this.checkValid()} btnName={"确认提现"} onPress={this.onFirmClick} containerStyle={{
                     padding: 20,
-                    margin: 30,
+                    margin: 20,
                 }}/>
             </View>
         }
@@ -172,43 +165,36 @@ export default class MoneyOuterView extends BaseView {
         })
     }
 
-    // checkValid=()=>{
-    //     let result=true;
-    //     if (!this.state.pickValue) {
-    //         result=false
-    //     }else if (this.state.money.length<=0){
-    //         result=false
-    //     }
-    //     else if ((parseInt(this.state.money) < parseInt(this.state.dataInfo.min_withdraw_amount)) || (parseInt(this.state.money) > parseInt(this.state.dataInfo.max_withdraw_amount))) {
-    //         result=false
-    //     }
-    //     else if(parseInt(this.state.money)>parseInt(this.state.dataInfo.accounts.withdrawable)){
-    //         result=false
-    //     }else if (this.state.pwdText.length<=0){
-    //         result=false
-    //     }
-    //      return result;
-    // }
+    onRenderPickRow=()=>{
+        let view=  this.state.dataInfo.bank_cards.map((item, index) => {
+            let name = `${item.account}[${item.bank}]`;
+            return (<Picker.Item label={name} value={item.id} key={index + "item"}/>)
+        })
+        return view;
+    }
 
-    onFirmClick = () => {
-        TLog("this.state.mone--"+parseInt(this.state.money),this.state.dataInfo.min_withdraw_amount)
+    checkValid=()=>{
+        let errMsg=null;
         if (!this.state.pickValue) {
-            G_AlertUtil.show("", "请先选择一张收款银行卡");
+            errMsg ="请先选择一张收款银行卡";
         }else if (this.state.money.length<=0){
-            G_AlertUtil.show("", "请输入有效的提现金额");
+            errMsg ="请输入有效的提现金额";
         }
         else if ((parseInt(this.state.money) < parseInt(this.state.dataInfo.min_withdraw_amount)) || (parseInt(this.state.money) > parseInt(this.state.dataInfo.max_withdraw_amount))) {
-            G_AlertUtil.show("", "提现金额,不能少于"+this.state.dataInfo.min_withdraw_amount);
+            errMsg= "提现金额,不能少于"+this.state.dataInfo.min_withdraw_amount;
         }
-         else if(parseInt(this.state.money)>parseInt(this.state.dataInfo.accounts.withdrawable)){
-            Alert.alert("","提现金额超过了提现金额,无法转账");
-        }
-        else if (parseInt(this.state.dataInfo.withdraw_limit_num) > 0 && (parseInt(this.state.dataInfo.withdraw_limit_num) <= parseInt(this.state.dataInfo.withdraw_num))) {
-            G_AlertUtil.show("", "转账次数已经达到最大限制");
+        else if(parseInt(this.state.money)>parseInt(this.state.dataInfo.accounts.withdrawable)){
+            errMsg="提现次数已经达到最大限制"
+
+
         }else if (this.state.pwdText.length<=0){
-            G_AlertUtil.show("", "请输入有效的资金密码");
+            errMsg="请输入有效的资金密码"
         }
-        else {
+        return errMsg;
+    }
+
+    onFirmClick = () => {
+
             let newList = this.state.dataInfo.bank_cards.filter((data) => data.id == this.state.pickValue)
             HTTP_SERVER.MONEY_OUTER_1.body.account = newList[0].account;
             HTTP_SERVER.MONEY_OUTER_1.body.id = newList[0].id;
@@ -219,7 +205,6 @@ export default class MoneyOuterView extends BaseView {
                     G_NavUtil.pop();
                 }
             })
-       }
     }
 }
 

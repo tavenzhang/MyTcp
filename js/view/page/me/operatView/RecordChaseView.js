@@ -169,7 +169,7 @@ export default class RecordChaseView extends BaseView {
                     }}>
                     {
                         data.map((item, i) => {
-                            let selectColor = G_Theme.gray;
+                            let selectColor =G_Theme.grayDeep;
                             if (btnName == item.name) {
                                 selectColor = G_Theme.primary;
                             }

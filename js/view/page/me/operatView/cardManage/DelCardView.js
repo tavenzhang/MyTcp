@@ -7,6 +7,7 @@ import {
 } from 'react-native';
 import BaseView from "../../../../componet/BaseView";
 import Button from "react-native-button";
+import {TButton} from "../../../../componet/tcustom/button/TButton";
 
 export default class DelCardView extends BaseView {
     constructor(props) {
@@ -75,43 +76,37 @@ export default class DelCardView extends BaseView {
                         />
                     </View>
                 </View>
-                <Button
-                    containerStyle={{
-                        padding: 8,
-                        margin: 10,
-                        overflow: 'hidden',
-                        borderRadius: 3,
-                        backgroundColor: '#d7213c'
-                    }}
-                    style={{fontSize: 14, color: "white"}}
-                    styleDisabled={{color: '#fff'}}
-                    onPress={this.clickNext}>
-                    删除
-                </Button>
+                <TButton btnName={"删除"}
+                         viewStyle={{
+                             margin: 30,
+                         }}
+                        errMsg={this.onErrMsg()}
+                         onPress={this.clickNext}
+                />
             </View>
         );
     }
 
-    clickNext = () => {
-        //TLog("-----------------------his.state.careNumText-:" + this.state.careNumText.length, this.state.careNumText);
+    onErrMsg=()=>{
+        let msg=null;
         if (this.state.countName.length < 1) {
-            Alert.alert("", "请输入有效的用户名", [
-                {text: '了解'},
-            ])
+            msg= "请输入有效的用户名";
         }
         else if(this.state.careNumText.length<1)
         {
-            Alert.alert("", "请输入有效的卡号", [
+            msg="请输入有效的卡号"
 
-            ])
         }
         else if(this.state.password.length<1)
         {
-            Alert.alert("", "资金密码不能为空", [
-
-            ])
+            msg="资金密码不能为空"
         }
-        else{
+        return msg;
+    }
+
+    clickNext = () => {
+        //TLog("-----------------------his.state.careNumText-:" + this.state.careNumText.length, this.state.careNumText);
+
             let {passProps} = this.props;
             //id:1,account_name:"",account:"",fund_password:""
             HTTP_SERVER.BANK_CARDS_DEL.body.id = passProps.id;
@@ -127,7 +122,6 @@ export default class DelCardView extends BaseView {
                     ActDispatch.FetchAct.fetchVoWithAction(HTTP_SERVER.LIST_BANGK_CARDS, ActionType.AppType.CARD_LIST_GET);
                 }
             })
-        }
     }
 
     componentDidMount() {

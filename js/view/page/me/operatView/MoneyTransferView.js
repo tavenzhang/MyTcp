@@ -88,9 +88,9 @@ export default class MoneyTransferView extends BaseView {
                                         placeholder={"请输入验证银行卡完整卡号"}
                             />
                         </View>
-                        <TButton btnName={"确认转账"} containerStyle={{
+                        <TButton errMsg={this.onDataValid()} btnName={"确认转账"} containerStyle={{
                             padding: 5,
-                            margin: 10,
+                            margin: 20,
                         }} onPress={this.onConfirmClick}
                         />
 
@@ -113,48 +113,31 @@ export default class MoneyTransferView extends BaseView {
         })
     }
 
-  //   onDataValid =()=>{
-  //     let reuslt=true;
-  //     const {passProps} = this.props;
-  //     if (this.state.dropSelectItem == null) {
-  //         reuslt=false;
-  //     } else if (this.state.agentCount.length <= 0) {
-  //         reuslt=false;
-  //     }
-  //     else if (this.state.money.length <= 0) {
-  //         reuslt=false;
-  //     }
-  //     else if (this.state.pwdText.length <= 0) {
-  //         reuslt=false;
-  //     }
-  //     else if (this.state.cardNum.length <= 0) {
-  //         reuslt=false;
-  //     }
-  //     else if (parseInt(passProps.money) < parseInt(this.state.money)) {
-  //         reuslt=false;
-  //     }
-  //     return reuslt;
-  // }
+    onDataValid =()=>{
+      let errMsg=null;
+      const {passProps} = this.props;
+      if (this.state.dropSelectItem == null) {
+          errMsg ="请选择一张验证的银行卡";
+      } else if (this.state.agentCount.length <= 0) {
+          errMsg ="请入收款账号";
+      }
+      else if (this.state.money.length <= 0) {
+        errMsg ="请入转账金额";
+      }
+      else if (this.state.pwdText.length <= 0) {
+         errMsg ="请入资金密码";
+      }
+      else if (this.state.cardNum.length <= 0) {
+          errMsg ="请入银行卡卡号";
+      }
+      else if (parseInt(passProps.money) < parseInt(this.state.money)) {
+          errMsg ="转账金额不能大于账户余额";
+      }
+      return errMsg;
+  }
+
     onConfirmClick = () => {
-        const {passProps} = this.props;
-        if (this.state.dropSelectItem == null) {
-            Alert.alert("", "请选择一张验证的银行卡", []);
-        } else if (this.state.agentCount.length <= 0) {
-            Alert.alert("", "请入收款账号", []);
-        }
-        else if (this.state.money.length <= 0) {
-            Alert.alert("", "请入转账金额", []);
-        }
-        else if (this.state.pwdText.length <= 0) {
-            Alert.alert("", "请入资金密码", []);
-        }
-        else if (this.state.cardNum.length <= 0) {
-            Alert.alert("", "请入银行卡卡号", []);
-        }
-        else if (parseInt(passProps.money) < parseInt(this.state.money)) {
-            Alert.alert("", "转账金额不能大于账户余额", []);
-        }
-        else {
+
             HTTP_SERVER.TRANSFER_SUB_MINT.body.fund_password = this.state.pwdText;
             HTTP_SERVER.TRANSFER_SUB_MINT.body.card_id = this.state.dropSelectItem.id;
             HTTP_SERVER.TRANSFER_SUB_MINT.body.username = this.state.agentCount;
@@ -165,7 +148,6 @@ export default class MoneyTransferView extends BaseView {
                     G_NavUtil.pop();
                 }
             })
-       }
     }
 }
 

@@ -12,11 +12,12 @@ export class TPicker extends React.PureComponent {
         disable:PropTypes.bool,
         itemStyle:PropTypes.any,
         dataList:PropTypes.array,
+        onRenderRow:PropTypes.func
     }
 
 
     render() {
-        const {dataList,itemStyle,onValueChange,pickValue} = this.props;
+        const {dataList,itemStyle,onValueChange,pickValue,onRenderRow} = this.props;
         return (
             <View>
                 <Picker
@@ -27,7 +28,7 @@ export class TPicker extends React.PureComponent {
                         onValueChange(data);
                     }}>
                     {
-                        dataList.map((item, index) => {
+                        onRenderRow ? onRenderRow(): dataList.map((item, index) => {
                             return (<Picker.Item label={item.name} value={item.value} key={index + "item"}/>)
                         })
                     }

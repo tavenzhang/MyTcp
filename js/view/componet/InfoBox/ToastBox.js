@@ -15,7 +15,7 @@ export default class ToastBoxView extends Component {
         visible: PropTypes.bool,
         msg: PropTypes.string,
         onClose: PropTypes.func,
-        isError: PropTypes.bool
+        isError: PropTypes.any
     };
 
     render() {

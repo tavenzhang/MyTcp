@@ -10,6 +10,7 @@ import BaseView from "../../../../componet/BaseView";
 import ModalDropdown from 'react-native-modal-dropdown';
 import Button from "react-native-button";
 import BankCityModel from "../../../../../redux/model/BankCityModel";
+import {TButton} from "../../../../componet/tcustom/button/TButton";
 
 export default class EditCardAddView extends BaseView {
     constructor(props) {
@@ -139,19 +140,12 @@ export default class EditCardAddView extends BaseView {
                         />
                     </View>
                 </View>
-                <Button
-                    containerStyle={{
-                        padding: 8,
-                        margin: 10,
-                        overflow: 'hidden',
-                        borderRadius: 3,
-                        backgroundColor: '#d7213c'
-                    }}
-                    style={{fontSize: 14, color: "white"}}
-                    styleDisabled={{color: '#fff'}}
-                    onPress={this.clickNext}>
-                    更新
-                </Button>
+                <TButton viewStyle={{
+                    margin: 25,
+                }}
+                         btnName={"更新"}
+                         errMsg={this.onValid()}
+                         onPress={this.clickNext}/>
             </View>
         );
     }
@@ -174,31 +168,34 @@ export default class EditCardAddView extends BaseView {
         })
     }
 
-    clickNext = () => {
+    onValid=()=>{
+        let msg=null;
         if (this.state.bankData ==null) {
-            Alert.alert("", "请选择一个开卡银行", [
-                {text: 'ok'},
-            ])
+            msg = "请选择一个开卡银行";
         }
         else if (this.state.provinceData==null) {
-            Alert.alert("", "请选择有效开卡省份", [])
+            msg = "请选择有效开卡省份";
         }
         else if (this.state.cityData ==null) {
-            Alert.alert("", "请选择有效开卡城市", [])
+            msg =  "请选择有效开卡城市"
         }
         else if (this.state.brunchName.length < 1) {
-            Alert.alert("", "支行名称不能为空", [])
+            msg ="支行名称不能为空"
         }
         else if (this.state.countName.length < 1) {
-            Alert.alert("", "开户名不能为空", []);
+            msg ="开户名不能为空"
         }
         else if (this.state.careNumText.length < 1) {
-            Alert.alert("", "银行卡号不能为空", [])
+            msg ="银行卡号不能为空"
         }
         else if (this.state.careNumText != this.state.careNumRepeat) {
-            Alert.alert("", "银行卡号确认不一致，请重新输入!", [])
+            msg = "银行卡号确认不一致，请重新输入!"
         }
-        else {
+      return msg;
+    }
+
+    clickNext = () => {
+
             HTTP_SERVER.BANK_CARD_MODIFY_STEP_2.body.account_name=this.state.countName;
             HTTP_SERVER.BANK_CARD_MODIFY_STEP_2.body.account_confirmation=this.state.careNumRepeat;
             HTTP_SERVER.BANK_CARD_MODIFY_STEP_2.body.account=this.state.careNumText;
@@ -226,7 +223,6 @@ export default class EditCardAddView extends BaseView {
                  }
 
             })
-        }
     }
 }
 

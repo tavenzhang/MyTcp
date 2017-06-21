@@ -8,6 +8,7 @@ import {
 
 import BaseView from "../../../../componet/BaseView";
 import Button from "react-native-button";
+import {TButton} from "../../../../componet/tcustom/button/TButton";
 
 export default class EditCardView extends BaseView {
     constructor(props) {
@@ -75,59 +76,51 @@ export default class EditCardView extends BaseView {
                         />
                     </View>
                 </View>
-                <Button
-                    containerStyle={{
-                        padding: 8,
-                        margin: 10,
-                        overflow: 'hidden',
-                        borderRadius: 3,
-                        backgroundColor: '#d7213c'
-                    }}
-                    style={{fontSize: 14, color: "white"}}
-                    styleDisabled={{color: '#fff'}}
-                    onPress={this.clickNext}>
-                    下一步
-                </Button>
+                <TButton viewStyle={{
+                    padding: 8,
+                    margin: 25,
+                }}
+                         btnName={"下一步"}
+                         errMsg={this.onValid()}
+                         onPress={this.clickNext}/>
             </View>
         );
     }
 
-    clickNext = () => {
-       // TLog("-----------------------his.state.careNumText-:" + this.state.careNumText.length, this.state.careNumText);
+    onValid = () => {
+        let msg = "";
         if (this.state.countName.length < 1) {
-            Alert.alert("", "请输入有效的用户名", [
-                {text: '了解'},
-            ])
+            msg = "请输入有效的用户名";
+
         }
         else if (this.state.careNumText.length < 1) {
-            Alert.alert("", "请输入有效的卡号", [])
+            msg = "请输入有效的卡号";
         }
         else if (this.state.password.length < 1) {
-            Alert.alert("", "资金密码不能为空", [])
+            msg = "资金密码不能为空"
         }
-        else {
-            let {passProps} = this.props;
-            //id:1,account_name:"",account:"",fund_password:""
-            HTTP_SERVER.BANK_CARD_MODIFY_STEP_O.body.id = passProps.id;
-            HTTP_SERVER.BANK_CARD_MODIFY_STEP_O.body.account = passProps.account;
-            HTTP_SERVER.BANK_CARD_MODIFY_STEP_O.body.account_name = this.state.countName;
-            HTTP_SERVER.BANK_CARD_MODIFY_STEP_O.body.fund_password = this.state.password;
-            HTTP_SERVER.BANK_CARD_MODIFY_STEP_O.url=  HTTP_SERVER.BANK_CARD_MODIFY_STEP_O.formatUrl.replace("#id", passProps.id)
-            ActDispatch.FetchAct.fetchVoWithResult(HTTP_SERVER.BANK_CARD_MODIFY_STEP_O, (result) => {
-                if (result.isSuccess) {
-                    G_NavUtil.pushToView(G_NavViews.EditCardAddView({...passProps,title: "2. 修改银行卡",isStep2:true}));
-                }
-                else {
-                    //ActDispatch.AppAct.showErrorBox(result.Msg);
-                }
-            })
-        }
+        return msg;
     }
 
-    componentDidMount() {
+    clickNext = () => {
+        // TLog("-----------------------his.state.careNumText-:" + this.state.careNumText.length, this.state.careNumText);
 
+        let {passProps} = this.props;
+        //id:1,account_name:"",account:"",fund_password:""
+        HTTP_SERVER.BANK_CARD_MODIFY_STEP_O.body.id = passProps.id;
+        HTTP_SERVER.BANK_CARD_MODIFY_STEP_O.body.account = passProps.account;
+        HTTP_SERVER.BANK_CARD_MODIFY_STEP_O.body.account_name = this.state.countName;
+        HTTP_SERVER.BANK_CARD_MODIFY_STEP_O.body.fund_password = this.state.password;
+        HTTP_SERVER.BANK_CARD_MODIFY_STEP_O.url = HTTP_SERVER.BANK_CARD_MODIFY_STEP_O.formatUrl.replace("#id", passProps.id)
+        ActDispatch.FetchAct.fetchVoWithResult(HTTP_SERVER.BANK_CARD_MODIFY_STEP_O, (result) => {
+            if (result.isSuccess) {
+                G_NavUtil.pushToView(G_NavViews.EditCardAddView({...passProps, title: "2. 修改银行卡", isStep2: true}));
+            }
+        })
     }
 }
+
+
 
 
 const styles = StyleSheet.create({

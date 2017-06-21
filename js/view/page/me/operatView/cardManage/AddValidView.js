@@ -10,6 +10,7 @@ import Button from "react-native-button";
 import ModalDropdown from 'react-native-modal-dropdown';
 import TDropListComponet from "../../../../componet/TDropListComponet";
 import {TTextInput} from "../../../../componet/tcustom/textInput/TTextInput";
+import {TButton} from "../../../../componet/tcustom/button/TButton";
 
 export default class AddValidView extends BaseView {
     constructor(props) {
@@ -27,19 +28,19 @@ export default class AddValidView extends BaseView {
         TLog("ValidCardView-----------", passProps);
         return (
             <View style={G_Style.appContentView}>
-                <View style={{backgroundColor: "white", justifyContent:"center", alignItems:"center"}}>
+                <View style={{backgroundColor: "white", justifyContent: "center", alignItems: "center"}}>
                     <View style={styles.rowSp}>
                         <View style={styles.leftView}>
                             <Text>开户银行: </Text>
                         </View>
                         <TDropListComponet
-                            style={{flex:2,marginRight:20}}
-                             itemName={this.state.cardData ? this.state.cardData.accountEny : "请选择转账银行卡"}
-                                       dataList={passProps.cardList}
-                                        rendDropRow={this.rendCardRow}
-                                        onSelect={(idx, value) => {
-                                           this.setState({cardData: value});
-                                       }}
+                            style={{flex: 2, marginRight: 20}}
+                            itemName={this.state.cardData ? this.state.cardData.accountEny : "请选择转账银行卡"}
+                            dataList={passProps.cardList}
+                            rendDropRow={this.rendCardRow}
+                            onSelect={(idx, value) => {
+                                this.setState({cardData: value});
+                            }}
                         />
                     </View>
 
@@ -74,7 +75,7 @@ export default class AddValidView extends BaseView {
                             <Text>资金密码: </Text>
                         </View>
                         <TTextInput
-                            viewStyle ={styles.cardInput}
+                            viewStyle={styles.cardInput}
                             placeholder={"输入您的资金密码"}
                             autoFocus={true}
                             onChangeText={(password) => this.setState({password: password})}
@@ -84,19 +85,12 @@ export default class AddValidView extends BaseView {
                         />
                     </View>
                 </View>
-                <Button
-                    containerStyle={{
-                        padding: 8,
-                        margin: 30,
-                        overflow: 'hidden',
-                        borderRadius: 3,
-                        backgroundColor: '#d7213c'
-                    }}
-                    style={{fontSize: 14, color: "white"}}
-                    styleDisabled={{color: '#fff'}}
-                    onPress={this.clickNext}>
-                    添加
-                </Button>
+                <TButton viewStyle={{
+                    margin: 25,
+                }}
+                         btnName={"下一步"}
+                         errMsg={this.onValid()}
+                  onPress={this.clickNext}/>
             </View>
         );
     }
@@ -108,6 +102,23 @@ export default class AddValidView extends BaseView {
             justifyContent: "center",
             alignItems: "center"
         }}><Text>{rowData.accountEny}</Text></View>)
+    }
+
+    onValid=()=>{
+        let errMsg =null;
+        if (this.state.cardData == null) {
+            errMsg="请先选择一个验证银行卡"
+        }
+        else if (this.state.countName.length < 1) {
+            errMsg="请输入有效的用户名"
+        }
+        else if (this.state.careNumText.length < 1) {
+            errMsg="请输入有效的卡号"
+        }
+        else if (this.state.password.length < 1) {
+            errMsg="资金密码不能为空"
+        }
+        return errMsg;
     }
 
     clickNext = () => {
@@ -136,10 +147,10 @@ export default class AddValidView extends BaseView {
             HTTP_SERVER.BANK_CARD_ADD_STEP_0.body.fund_password = this.state.password.trim();
             ActDispatch.FetchAct.fetchVoWithResult(HTTP_SERVER.BANK_CARD_ADD_STEP_0, (result) => {
                 if (result.isSuccess) {
-                    G_NavUtil.pushToView(G_NavViews.AddCardView({title: "2. 添加新银行卡",isStep2:true}));
+                    G_NavUtil.pushToView(G_NavViews.AddCardView({title: "2. 添加新银行卡", isStep2: true}));
                 }
                 else {
-                   // ActDispatch.AppAct.showErrorBox(result.Msg);
+                    // ActDispatch.AppAct.showErrorBox(result.Msg);
                 }
             })
         }
@@ -152,23 +163,23 @@ export default class AddValidView extends BaseView {
 
 
 const styles = StyleSheet.create({
-    rowSp:{
+    rowSp: {
         paddingVertical: 10,
         flexDirection: "row",
         alignItems: "center",
         borderColor: 'gray',
-        justifyContent:"center",
-        marginHorizontal:20
+        justifyContent: "center",
+        marginHorizontal: 20
 
     },
-    leftView:{
+    leftView: {
         alignItems: "flex-end",
-        flex:1
+        flex: 1
     },
     cardInput: {
         borderBottomWidth: 0.2,
-        flex:2,
-        paddingLeft:10,
+        flex: 2,
+        paddingLeft: 10,
     },
 
 

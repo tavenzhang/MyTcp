@@ -5,9 +5,9 @@ import React, {PropTypes} from 'react';
 import {
     Text,
     StyleSheet,
+    View
 } from 'react-native';
 
-import AIcon from 'react-native-vector-icons/FontAwesome';
 import Button from "react-native-button";
 
 export class TButtonProxy extends React.PureComponent {
@@ -41,18 +41,29 @@ export class TButton extends React.Component {
         onPress:PropTypes.func,
         disable:PropTypes.bool,
         containerStyle:PropTypes.any,
+        viewStyle:PropTypes.any,
         textStyle:PropTypes.any,
         disabledStyle:PropTypes.any,
+        errMsg:PropTypes.any
     }
 
     render() {
-        const {containerStyle,onPress, btnName,textStyle,disabledStyle,disable} = this.props;
+        const {containerStyle,viewStyle,onPress,errMsg, btnName,textStyle,disabledStyle,disable} = this.props;
+         let myDisable=disable;
+         if(errMsg&&errMsg!="")
+         {
+             myDisable = true;
+         }
         return (
+        <View style={[viewStyle]}>
+            {errMsg ? <Text style={{color:"red", alignSelf:"center", marginBottom:5}}>{`(${errMsg})`}</Text>:null}
             <Button containerStyle={[{
-                backgroundColor: disable ? "gray":`#d7213c`, borderRadius: 5,
+                backgroundColor: myDisable ? "gray":`#d7213c`, borderRadius: 5,
                 paddingVertical: 8,paddingHorizontal: 5, alignItems:"center"
-            },containerStyle]}  disabled={disable}  style={[{fontSize: 14, color: "white", textAlign:"center"},textStyle]} styleDisabled={[{backgroundColor:"gray", color:"white"},disabledStyle]} onPress={onPress}>
+            },containerStyle]}  disabled={myDisable}  style={[{fontSize: 14, color: "white", textAlign:"center"},textStyle]} styleDisabled={[{backgroundColor:"gray", color:"white"},disabledStyle]} onPress={onPress}>
                 {btnName}
-            </Button>)
+            </Button>
+        </View>)
+
     }
 }

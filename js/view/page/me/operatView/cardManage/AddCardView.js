@@ -7,14 +7,14 @@ import {
 } from 'react-native';
 import BaseView from "../../../../componet/BaseView";
 import ModalDropdown from 'react-native-modal-dropdown';
-import Button from "react-native-button";
 import BankCityModel from "../../../../../redux/model/BankCityModel";
+import {TButton} from "../../../../componet/tcustom/button/TButton";
 
 export default class AddCardView extends BaseView {
     constructor(props) {
         super(props);
         this.state = {
-            brunchName:"",
+            brunchName: "",
             countName: "",
             careNumText: "",
             careNumRepeat: "",
@@ -78,7 +78,8 @@ export default class AddCardView extends BaseView {
                                            return style;
                                        }}
                         >
-                            <Text style={{textAlign: "center"}}>{this.state.cityData ? this.state.cityData.name : "请选择城市"}</Text>
+                            <Text
+                                style={{textAlign: "center"}}>{this.state.cityData ? this.state.cityData.name : "请选择城市"}</Text>
                         </ModalDropdown>
                     </View>
                     <View style={{flex: 1, alignItems: "center", flexDirection: "row"}}>
@@ -137,19 +138,12 @@ export default class AddCardView extends BaseView {
                         />
                     </View>
                 </View>
-                <Button
-                    containerStyle={{
-                        padding: 8,
-                        margin: 10,
-                        overflow: 'hidden',
-                        borderRadius: 3,
-                        backgroundColor: '#d7213c'
-                    }}
-                    style={{fontSize: 14, color: "white"}}
-                    styleDisabled={{color: '#fff'}}
-                    onPress={this.clickNext}>
-                    添加
-                </Button>
+                <TButton viewStyle={{
+                    margin: 25,
+                }}
+                         btnName={"添加"}
+                         errMsg={this.onValid()}
+                         onPress={this.clickNext}/>
             </View>
         );
     }
@@ -170,58 +164,57 @@ export default class AddCardView extends BaseView {
         })
     }
 
-    clickNext = () => {
-        if (this.state.bankData ==null) {
-            Alert.alert("", "请选择一个开卡银行", [
-                {text: 'ok'},
-            ])
+    onValid = () => {
+        let msg = null;
+        if (this.state.bankData == null) {
+            msg = "请选择一个开卡银行"
         }
-        else if (this.state.provinceData==null) {
-            Alert.alert("", "请选择有效开卡省份", [])
+        else if (this.state.provinceData == null) {
+            msg = "请选择有效开卡省份"
         }
-        else if (this.state.cityData ==null) {
-            Alert.alert("", "请选择有效开卡城市", [])
+        else if (this.state.cityData == null) {
+            msg = "请选择有效开卡城市"
         }
         else if (this.state.brunchName.length < 1) {
-            Alert.alert("", "支行名称不能为空", [])
+            msg = "支行名称不能为空"
         }
         else if (this.state.countName.length < 1) {
-            Alert.alert("", "开户名不能为空", []);
+            msg = "开户名不能为空"
         }
         else if (this.state.careNumText.length < 1) {
-            Alert.alert("", "银行卡号不能为空", [])
+            msg = "银行卡号不能为空"
         }
         else if (this.state.careNumText != this.state.careNumRepeat) {
-            Alert.alert("", "银行卡号确认不一致，请重新输入!", [])
+            msg = "银行卡号确认不一致，请重新输入!"
         }
-        else {
-            HTTP_SERVER.BANK_CARD_ADD_STEP_2.body.account_name=this.state.countName;
-            HTTP_SERVER.BANK_CARD_ADD_STEP_2.body.account_confirmation=this.state.careNumRepeat;
-            HTTP_SERVER.BANK_CARD_ADD_STEP_2.body.account=this.state.careNumText;
-            HTTP_SERVER.BANK_CARD_ADD_STEP_2.body.bank_id=this.state.bankData.id;
-            HTTP_SERVER.BANK_CARD_ADD_STEP_2.body.province_id=this.state.provinceData.id;
-            HTTP_SERVER.BANK_CARD_ADD_STEP_2.body.city_id=this.state.cityData.id;
-            HTTP_SERVER.BANK_CARD_ADD_STEP_2.body.branch=this.state.brunchName;
+        return msg
+    }
+
+    clickNext = () => {
+            HTTP_SERVER.BANK_CARD_ADD_STEP_2.body.account_name = this.state.countName;
+            HTTP_SERVER.BANK_CARD_ADD_STEP_2.body.account_confirmation = this.state.careNumRepeat;
+            HTTP_SERVER.BANK_CARD_ADD_STEP_2.body.account = this.state.careNumText;
+            HTTP_SERVER.BANK_CARD_ADD_STEP_2.body.bank_id = this.state.bankData.id;
+            HTTP_SERVER.BANK_CARD_ADD_STEP_2.body.province_id = this.state.provinceData.id;
+            HTTP_SERVER.BANK_CARD_ADD_STEP_2.body.city_id = this.state.cityData.id;
+            HTTP_SERVER.BANK_CARD_ADD_STEP_2.body.branch = this.state.brunchName;
             let {passProps} = this.props;
-             ActDispatch.FetchAct.fetchVoWithResult(HTTP_SERVER.BANK_CARD_ADD_STEP_2, (result) => {
-                 if(result.isSuccess)
-                 {
-                     if(passProps.isStep2)
-                     {
-                         G_NavUtil.popN(2);
-                     }
-                     else{
-                         G_NavUtil.pop();
-                     }
-                     HTTP_SERVER.LIST_BANGK_CARDS.page=1;
-                     ActDispatch.FetchAct.fetchVoWithAction(HTTP_SERVER.LIST_BANGK_CARDS, ActionType.AppType.CARD_LIST_GET);
-                 }
-                 else{
-                     //ActDispatch.AppAct.showErrorBox(result.Msg);
-                 }
+            ActDispatch.FetchAct.fetchVoWithResult(HTTP_SERVER.BANK_CARD_ADD_STEP_2, (result) => {
+                if (result.isSuccess) {
+                    if (passProps.isStep2) {
+                        G_NavUtil.popN(2);
+                    }
+                    else {
+                        G_NavUtil.pop();
+                    }
+                    HTTP_SERVER.LIST_BANGK_CARDS.page = 1;
+                    ActDispatch.FetchAct.fetchVoWithAction(HTTP_SERVER.LIST_BANGK_CARDS, ActionType.AppType.CARD_LIST_GET);
+                }
+                else {
+                    //ActDispatch.AppAct.showErrorBox(result.Msg);
+                }
 
             })
-        }
     }
 }
 
