@@ -127,10 +127,23 @@ global.G_NavViews = {
     AssignChangeView:(data = {}) => pushView(AssignChangeView, {...data,title:"修改配额"}),
 }
 
+let lastPushView=null;
 
 global.G_NavUtil = {
     pushToView: (data) => {
-        Navgator.push(data);
+        //防止重复push 同一个页面
+        let curRouts=Navgator.getCurrentRoutes();
+        let lastItem=curRouts[curRouts.length-1];
+        if(lastItem&&curRouts.passProps)
+        {
+            let lastItem=curRouts[curRouts.length-1];
+            if(lastItem.passProps.title != data.passProps.title) {
+                Navgator.push(data);
+            }
+        }
+        else{
+            Navgator.push(data);
+        }
     },
     replace: (data) => {
         Navgator.replace(data);
@@ -140,7 +153,6 @@ global.G_NavUtil = {
     },
     pop: () => {
         Navgator.pop()
-
     },
     popN: (n = 1) => {
         Navgator.popN(n)

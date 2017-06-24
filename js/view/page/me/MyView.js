@@ -171,7 +171,7 @@ export default class MyView extends BaseView {
     }
 
     clickLogin = () => {
-        G_NavUtil.pushToView(G_NavViews.LoginView());
+            G_NavUtil.pushToView(G_NavViews.LoginView());
     }
 
     setModalVisible=(visible)=> {

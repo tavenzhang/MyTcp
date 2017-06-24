@@ -31,7 +31,7 @@ export default class SelectAutoOne extends React.Component {
                 <View  style={styles.multipleBtnGrounps}>
 
                     <View style={styles.multipleTextBox}>
-                        <Text>随机</Text>
+                        <Text>随机(摇一摇)</Text>
                     </View>
 
                 </View>
@@ -49,14 +49,17 @@ const styles = StyleSheet.create({
 
     multipleTextBox: {
         alignItems: "center",
-        //width: 100,
+        alignSelf: "center",//width: 100,
+        marginTop: 1,
+        borderRadius: 6,
         height: 30,
         paddingLeft: 5,
         paddingRight: 5,
         borderWidth: 1,
         borderColor: G_Theme.second,
         flexDirection: 'row',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+
     },
 
 });

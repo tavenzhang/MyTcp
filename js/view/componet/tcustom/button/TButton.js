@@ -12,22 +12,23 @@ import Button from "react-native-button";
 
 export class TButtonProxy extends React.PureComponent {
 
-    static propTypes={
-        btnName:PropTypes.any,
-        onPress:PropTypes.func,
-        disable:PropTypes.bool,
-        containerStyle:PropTypes.any,
-        textStyle:PropTypes.any,
-        disabledStyle:PropTypes.any,
+    static propTypes = {
+        btnName: PropTypes.any,
+        onPress: PropTypes.func,
+        disable: PropTypes.bool,
+        containerStyle: PropTypes.any,
+        textStyle: PropTypes.any,
+        disabledStyle: PropTypes.any,
     }
 
     render() {
-        const {containerStyle,onPress, btnName,textStyle,disabledStyle,disable} = this.props;
+        const {containerStyle, onPress, btnName, textStyle, disabledStyle, disable} = this.props;
         return (
             <Button containerStyle={[{
-                backgroundColor: disable ? "gray":G_Theme.bgPbg, borderRadius: 10,
-                paddingVertical: 5,paddingHorizontal: 5,
-            },containerStyle]}  style={[{fontSize: 14, color: "white"},textStyle]} disabled={disable}  styleDisabled={[{backgroundColor:"gray", color:"white"},disabledStyle]} onPress={onPress}>
+                backgroundColor: disable ? "gray" : G_Theme.bgPbg, borderRadius: 10,
+                paddingVertical: 5, paddingHorizontal: 5,
+            }, containerStyle]} style={[{fontSize: 14, color: "white"}, textStyle]} disabled={disable}
+                    styleDisabled={[{backgroundColor: "gray", color: "white"}, disabledStyle]} onPress={onPress}>
                 {btnName}
             </Button>)
     }
@@ -36,34 +37,37 @@ export class TButtonProxy extends React.PureComponent {
 
 export class TButton extends React.Component {
 
-    static propTypes={
-        btnName:PropTypes.string,
-        onPress:PropTypes.func,
-        disable:PropTypes.bool,
-        containerStyle:PropTypes.any,
-        viewStyle:PropTypes.any,
-        textStyle:PropTypes.any,
-        disabledStyle:PropTypes.any,
-        errMsg:PropTypes.any
+    static propTypes = {
+        visible: PropTypes.bool,
+        btnName: PropTypes.string,
+        onPress: PropTypes.func,
+        disable: PropTypes.bool,
+        containerStyle: PropTypes.any,
+        viewStyle: PropTypes.any,
+        textStyle: PropTypes.any,
+        disabledStyle: PropTypes.any,
+        errMsg: PropTypes.any
     }
 
     render() {
-        const {containerStyle,viewStyle,onPress,errMsg, btnName,textStyle,disabledStyle,disable} = this.props;
-         let myDisable=disable;
-         if(errMsg&&errMsg!="")
-         {
-             myDisable = true;
-         }
-        return (
-        <View style={[viewStyle]}>
-            {errMsg ? <Text style={{color:"red", alignSelf:"center", marginBottom:5}}>{`(${errMsg})`}</Text>:null}
-            <Button containerStyle={[{
-                backgroundColor: myDisable ? "gray":`#d7213c`, borderRadius: 5,
-                paddingVertical: 8,paddingHorizontal: 5, alignItems:"center"
-            },containerStyle]}  disabled={myDisable}  style={[{fontSize: 14, color: "white", textAlign:"center"},textStyle]} styleDisabled={[{backgroundColor:"gray", color:"white"},disabledStyle]} onPress={onPress}>
-                {btnName}
-            </Button>
-        </View>)
+        const {visible, containerStyle, viewStyle, onPress, errMsg, btnName, textStyle, disabledStyle, disable} = this.props;
+        let myDisable = disable;
+        if (errMsg && errMsg != "") {
+            myDisable = true;
+        }
+        return (visible || visible == null ?
+            <View style={[viewStyle]}>
+                {errMsg ?
+                    <Text style={{color: "red", alignSelf: "center", marginBottom: 5}}>{`(${errMsg})`}</Text> : null}
+                <Button containerStyle={[{
+                    backgroundColor: myDisable ? "gray" : `#d7213c`, borderRadius: 5,
+                    paddingVertical: 8, paddingHorizontal: 5, alignItems: "center"
+                }, containerStyle]} disabled={myDisable}
+                        style={[{fontSize: 14, color: "white", textAlign: "center"}, textStyle]}
+                        styleDisabled={[{backgroundColor: "gray", color: "white"}, disabledStyle]} onPress={onPress}>
+                    {btnName}
+                </Button>
+            </View> : null)
 
     }
 }

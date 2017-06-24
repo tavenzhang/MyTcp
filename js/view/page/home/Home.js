@@ -6,8 +6,6 @@ import BaseView from "../../componet/BaseView";
 import {connect} from 'react-redux';
 import GameList from "./subview/GameList";
 import MyBannerSwiper from "../../componet/MyBannerSwiper";
-import {HeaderLeftDomain} from "../../componet/navBarMenu/HeaderMenu";
-import ConfigView from "./subview/ConfigView";
 
 
 const mapStateToProps = state => {
@@ -58,7 +56,7 @@ export default class Home extends BaseView {
     }
 
     componentDidMount() {
-
+       // G_Link.openUrl('http://www.baidu.com', "请先安装支付包app")
         G_MyStorage.getItem(G_EnumStroeKeys.DO_MAIN, (data) => {
             if(data&&data!="")
             {
